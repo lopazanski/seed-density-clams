@@ -1,4 +1,5 @@
-# More seeds yield more shoots, but not higher per-seed establishment in a clam-mediated seagrass restoration experiment
+## When is more actually more? 
+### More seeds yield more shoots, but not higher per-seed establishment in a clam-mediated seagrass restoration experiment
 
 Cori Lopazanski et al.
 
