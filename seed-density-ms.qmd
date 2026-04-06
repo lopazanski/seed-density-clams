@@ -24,6 +24,10 @@ author:
 format: 
   pdf:
     mainfont: "Times New Roman"
+  docx: 
+    fig-cap-location: bottom
+    keep-tex: true
+    reference-doc: docs/jfwm_template.docx
 editor_options:
   markdown:
     wrap: 80
@@ -31,6 +35,7 @@ execute:
   echo: false
   warning: false
   error: false
+  freeze: auto
 ---
 
 ## Question
@@ -147,6 +152,16 @@ library(tidyverse)
 library(lme4)
 library(glmmTMB)
 library(DHARMa)
+library(broom.mixed)
+library(gt)
+
+add_significance <- function(df) {df %>%
+    mutate(significance = factor(case_when(p_value < 0.001 ~ "***",
+                                           p_value < 0.01 ~ "**",
+                                           p_value < 0.05 ~ "*",
+                                           is.na(p_value) ~ "NA",
+                                           TRUE ~ "NS"), levels = c("***", "**", "*", "NS", "NA")))
+}
 
 # Read data from Excel file 
 dat <- read_xlsx("data/seed-density.xlsx", na = "NA") 
@@ -164,7 +179,8 @@ dat <- dat %>%
                          levels = c(0, 1),
                          labels = c("Surface", "Buried")),
          date = lubridate::ymd(date),
-         time_days = as.numeric(date - date('2025-10-31'))) %>% 
+         time_days = as.numeric(date - date('2025-10-31')),
+         length_cm_5 = as.numeric(length_cm_5)) %>% 
   # monitoring on 4 Jan 2026 was incomplete because poor conditions (remove)
   filter(date != '2026-01-04') 
   
@@ -234,63 +250,57 @@ accounts for the different starting number of seeds (different number of
 answering questions about density-dependent net shoot establishment.
 
 ```{r}
+#| include: false
+
 # Build "shoot establishment" models 
 # Binomial mixed model:
 # - Response: shoots relative to initial seeds
 # - Fixed: seed density, burial treatment, time
 # - Random: plot_id
-# Modeling germination/establishment as a binomial process - each plot started with a set # of seeds, and at each sampling time we see a number of shoots.
-# The "success" = seeds that produced shoots, and "failures" = seeds that didn't.
-# --- out of X seeds, how many became shoots?
-# --- accounts for different starting number of seeds
-# --- models the probability of germination/establishment per seed, not just raw
-# --- answers q's about density-dependent net shoot establishment
 
-mbinom <- glmmTMB(cbind(shoot_count, failures) ~ 
-                    density + burial + time_days + density:burial + 
-                    (1|plot_id), 
-                  family = binomial, data = dat_prob)
+mbi <- glmmTMB(cbind(shoot_count, density - shoot_count) ~ 
+                 density_c + I(density_c^2) + burial + time_days +
+                 density_c:burial + I(density_c^2):burial + 
+                 (1 | plot_id),
+               family = binomial, data = dat_prob)
 
-summary(mbinom)
+summary(mbi)
 
-# Time is highly significant, positive = establishment increases over time
-# Density terms are non-significant, so no evidence for increasing establishment with density or an intermediate optimum with density. No detectable density-dependent germination response across 10-100 seeds per clam. 
-# Burial treatment not significant, so no overall difference between buried vs. surface treatments.
+# Main findings:
+# - Highly significant increase in shoot establishment over time (duh)
+# - No evidence for inceasing establishment with density or an intermediate optimum (quad term) - no detectable density-dependent establishment response across 10-100 seeds per clam.
+# No overall difference between buried vs. surface treatments.
 # Densiy x Burial interaction terms not significant = no evidence that burial effects depend on density. No support for context-dependent burial effects across densities. 
 # Plot-level heterogeneity a major driver of outcomes.
 # That combination suggests either density range is not limiting (10–100 all sufficient), or other processes dominate (e.g., disturbance, predation, microsite conditions)
 
-res_mbinom <- DHARMa::simulateResiduals(mbinom)
-plot(res_mbinom)
-testDispersion(res_mbinom)
+res_mbi <- DHARMa::simulateResiduals(mbi)
+plot(res_mbi)
+testDispersion(res_mbi)
 
 
-# Overdispersion is close - not significant but there... could use a betabinomial distribution instead.
-mbetabinom <- glmmTMB(cbind(shoot_count, failures) ~ 
-                    density + burial + time_days + density:burial + 
-                    (1|plot_id), 
-                  family = betabinomial(), data = dat_prob)
-summary(mbetabinom)
-res_mbetabinom <- DHARMa::simulateResiduals(mbetabinom)
-plot(res_mbetabinom)
-testDispersion(res_mbetabinom) #no better..
+# Overdispersion... could use a betabinomial distribution instead.
+mbbi <- glmmTMB(cbind(shoot_count, density - shoot_count) ~ 
+                 density_c + I(density_c^2) + burial + time_days +
+                 density_c:burial + I(density_c^2):burial + 
+                 (1 | plot_id),
+               family = betabinomial(), data = dat_prob)
 
-# Test a second model that uses centered density, so the effect sizes are relative to the mean density... 
-mbinom2 <- glmmTMB(
-  cbind(shoot_count, density - shoot_count) ~
-    density_c +
-    I(density_c^2) +
-    burial +
-    time_days +
-    density_c:burial +
-    I(density_c^2):burial +
-    (1 | plot_id),
-  family = betabinomial(),
-  data = dat_prob
-)
+summary(mbbi)
+res_mbbi <- DHARMa::simulateResiduals(mbbi)
 
+plot(res_mbbi)
+testDispersion(res_mbbi)
+```
 
-
+```{r}
+dat_growth <- dat %>% 
+  select(date, plot_id, density, burial, time_days, shoot_count, starts_with("length")) %>% 
+  pivot_longer(starts_with("length"), 
+               names_to = "length_replicate", values_to = "length_cm") %>%
+  filter(!is.na(length_cm)) %>% 
+  group_by(date,  density, burial) %>% 
+  summarize(mean_length_cm = mean(length_cm))
 
 ```
 
@@ -406,68 +416,116 @@ ggplot(dat_prob %>% filter(time_days == 152), aes(x = density, y = est_prob, sha
 
 ```
 
-Figure 3 — Shoot growth (length) over time
+```{r}
+mbi_table <- tidy(mbi, effects = "fixed", conf.int = TRUE) %>%
+  mutate(term = recode(term,
+                       "(Intercept)" = "Intercept",
+                       "density_c" = "Density",
+                       "I(density_c^2)" = "Density²",
+                       "burialBuried" = "Burial (buried)",
+                       "time_days" = "Time (days)",
+                       "density_c:burialBuried" = "Density × Burial",
+                       "I(density_c^2):burialBuried" = "Density² × Burial")) %>%
+  select(term, estimate, std.error, conf.low, conf.high, p_value = p.value) %>%
+  add_significance() %>% 
+  mutate(p_value = case_when(p_value < 0.001 ~ "< 0.001", 
+                             T~as.character(round(p_value, 3)))) %>%
+  mutate(significance = if_else(significance == "NS", NA_character_, significance)) 
 
-Growth response.
+mbi_table_gt <- mbi_table %>% 
+  gt() %>%
+  cols_label(term = "Term",
+             estimate = "Estimate",
+             std.error = "SE",
+             conf.low = "Lower 95% CI",
+             conf.high = "Upper 95% CI",
+             p_value = "p-value",
+             significance = "") %>%
+  fmt_number(columns = c(estimate, std.error, conf.low, conf.high),
+             decimals = 3) %>%
+  sub_missing(columns = everything(), missing_text = "") %>% 
+  tab_style(style = cell_text(weight = "bold"),
+            locations = cells_body(columns = c(p_value, significance), 
+                                   rows = significance %in% c("***", "**", "*") )) %>%
+#  tab_header(title = "Effects of Seed Density and Burial on Establishment Probability",
+ #            subtitle = "Binomial GLMM (logit scale)") %>%
+  cols_align(align = "center",
+             -term) %>%
+  tab_options(table.font.size = px(12),
+              data_row.padding = px(4))
 
-X-axis: time Y-axis: shoot length Lines: predicted growth trajectories Facet by
-density (e.g., 3–4 representative levels) Color by burial
+mbi_table_gt
 
-Purpose:
+# Helpers for writing:
+b_density  <- filter(mbi_table, term == "Density")
+b_density2 <- filter(mbi_table, term == "Density²")
+b_burial   <- filter(mbi_table, term == "Burial (buried)")
+b_time     <- filter(mbi_table, term == "Time (days)")
+```
 
-Tests whether treatments affect early growth rather than establishment Shows
-whether burial influences growth rate (even if germination doesn’t) Figure 4 —
-Early predation effects on establishment
+Seagrass establishment increased strongly over time, with a positive effect of
+time since planting on the probability of shoot presence (β =
+`r round(b_time %>% pull(estimate), 3)`, p `r b_time %>% pull(p_value)`).
 
-Mechanistic figure (important).
+In contrast, there was no evidence that seed density influenced establishment
+probability, either linearly (β = `r round(b_density %>% pull(estimate), 3)`, p
+= `r b_density %>% pull(p_value)`) or nonlinearly (β =
+`r round(b_density2 %>% pull(estimate), 3)`, p =
+`r b_density2 %>% pull(p_value)`), indicating no support for density-dependent
+establishment across the tested range of 10-100 seeds per clam.
 
-X-axis: seed density Y-axis: establishment probability Panels (facet): no early
-predation early predation Lines: predicted relationships (with CI) Color: burial
-(optional)
+Burial treatment also had no detectable effect on establishment (INSERT), and
+there was no evidence that burial modified density effects (linear interaction:
+INSERT, quadratic interaction: INSERT). There was substantial unexplained
+variation among plots (σ =
+`r round(sqrt(summary(mbi)$varcor$cond$plot_id[1]), 3)`), suggesting that
+unmeasured environmental heterogeneity or disturbance processes likely played a
+larger role in structuring establishment outcomes than the manipulated
+treatments.
 
-Alternative simpler version:
+[Shoot growth]{.underline}
 
-Boxplots or points of final establishment by early predation (yes/no)
+```{r shoot-height}
+#| fig-width: 6.5
+#| fig-height: 4
+#| fig-dpi: 300
+#| fig-cap: "Trajectories of mean shoot height (cm) from December 2025 to April 2026. Points and lines represent treatment-level means, for each combination of seed density (shades of green) and clam placement treatment (facets)."
 
-Purpose:
+ggplot(dat_growth %>% 
+         mutate(density = factor(density)),
+       aes(x = date, y = mean_length_cm, group = density, color = density)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~burial, nrow = 1) +
+  scale_color_manual(values = c('#d9f0ea', '#b2e2d8', '#80cdc1', '#4db6ac', '#2ca25f',
+                                '#238b45','#006d2c', '#005824','#00441b','#002e12')) +
+  labs(x = "",
+       y = "Shoot height (cm)",
+       color = "Seed density") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-Tests whether early disturbance suppresses establishment Provides explanation
-for null treatment effects Links field observation to outcome
+```
 
-This is likely your most important mechanistic figure.
+Other potential figures:
 
-Figure 5 — Clam fate / predation over time (optional but strong)
+-   Early predation effects on establishment, with seed density on x-axis and
+    establishment probability on the y-axis. Panels for whether or not there was
+    evidence of predation?
 
-Supports mechanism.
+-   Alternative could make boxplots with final time point based on predation.
+    Explore whether earlier disturbance suppresses establishment (and maybe
+    explain null treatment effects? or just context for the predation
+    observations).
 
-Option A (preferred):
+-   Heatmap showing clam presence over time for first few sampling dates...
+    illustrate level of predation? Also could illustrate whether burial reduces
+    predation risk (but I don't think so).
 
-Y-axis: probability of shell fragments (or live clam) X-axis: time Lines:
-predicted probability Color: burial
-
-Option B:
-
-proportion of plots with shell fragments over time
-
-Purpose:
-
-Shows when predation occurs (early pulse) Tests whether burial reduces predation
-risk Connects directly to
-
-Figure 4 Recommended minimal set (if limiting to 3–4 figures)
-
-If you want a tight paper:
-
-Germination vs density (Fig 1) Germination over time (Fig 2) Early predation
-effect (Fig 4) Growth trajectories (optional, if growth is meaningful)
-
-Clam fate can move to supplement unless it is a central result.
-
-Overall narrative structure across figures Fig 1: No strong density or burial
-effect Fig 2: Time dominates establishment Fig 4: Early predation explains
-variation Fig 3 (optional): Growth also largely insensitive
-
-This sequence makes the paper read as:
+Fig 1: No strong density or burial effect \
+Fig 2: Time dominates establishment \
+Fig 3: Growth also largely insensitive\
+Fig 4: Early predation explains variation
 
 “We expected density and burial to matter; they did not strongly. Instead, early
 disturbance and temporal dynamics structure establishment.”
