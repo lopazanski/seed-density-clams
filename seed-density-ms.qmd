@@ -62,6 +62,69 @@ seagrass seeds) and clam burial method on seagrass germination and growth?
     (maybe – this element somewhat less important, but good to keep in mind
     given crossed factor)
 
+## Abstract
+
+Seagrass restoration increasingly relies on seed-based approaches, yet optimal
+seeding densities and deployment methods remain poorly resolved. We evaluated
+how seed density and clam-mediated seed placement influence eelgrass (*Zostera
+marina*) establishment in a field restoration experiment in Back Sound, North
+Carolina. Eelgrass seeds were attached to live clams at densities ranging from
+10 to 100 seeds per clam, and deployed in a fully factorial design crossing seed
+density with two clam placement treatments - manually buried or placed on the
+sediment surface. Plots were monitored biweekly for shoot establishment and
+growth over six months. Shoot density increased through time and was generally
+higher in plots receiving greater numbers of seeds. However, the proportion of
+seeds that produced shoots did not vary with seed density, indicating that
+higher seeding rates yielded more shoots but did not increase per-seed
+establishment success. We found no evidence that clam placement influenced
+seedling establishment. Similarly, shoot growth trajectories were broadly
+comparable between treatments. Extensive clam predation and disturbance occurred
+shortly after deployment, potentially contributing to unexplained variation
+among plots and reducing treatment effects. Our results suggest that increasing
+seed inputs can increase restoration outcomes by producing more established
+shoots, but does not improve the probability that individual seeds establish.
+Furthermore, manually burying clams provided little measurable benefit over
+surface placement, suggesting that clams likely suffiicently bury seeds through
+natural behavior and therefore this less labor-intensive deployment method may
+be sufficient for large-scale restoration efforts.
+
+## Introduction
+
+Seagrass meadows provide important ecosystem services, including habitat for
+marine organisms, shoreline stabilization, and carbon storage, but they continue
+to decline in many regions worldwide. As a result, restoration has become an
+increasingly important tool for recovering lost seagrass habitat. Seed-based
+restoration is especially attractive because it can be scaled to larger areas
+than traditional transplant-based approaches, but establishment rates are often
+low and highly variable.
+
+One of the major challenges in seed-based restoration is determining how many
+seeds should be deployed. Increasing seed density may increase the total number
+of seedlings that establish simply because more seeds are available. However,
+establishment may not increase proportionally if seeds or seedlings begin
+competing with one another or if other factors limit success. From a restoration
+perspective, it is important to know whether adding more seeds increases the
+number of established shoots, improves the probability that individual seeds
+establish, or both. It is also important to know whether there is an optimal
+seed planting density.
+
+Recent restoration efforts have also explored using clams as a seed delivery
+mechanism. As clams move and bury themselves in the sediment, they may help
+place seeds in conditions that promote germination and reduce seed loss. There
+are also positive interactions between clams and seagrass that can improve
+establishment success. However, manually burying clams requires additional
+effort and may not be practical at large scales, though clams on the surface
+remain vulnerable to predation. Whether manual burial is necessary to achieve
+restoration outcomes remains unclear.
+
+In this study, we tested how seed density and clam placement influence eelgrass
+(*Zostera marina*) establishment in a field restoration experiment in North
+Carolina. Specifically, we asked whether increasing seed density increases
+establishment, whether manually burying clams improves establishment relative to
+placing them on the sediment surface, and whether these effects interact. We
+quantified both total shoot production and per-seed establishment to evaluate
+how restoration efficiency changes across a range of seeding densities.
+
 ## Methods
 
 *Seed retrieval and storage*
@@ -70,10 +133,11 @@ seagrass seeds) and clam burial method on seagrass germination and growth?
 from seagrass beds in Back Sound, NC in May 2025. Shoots were placed in
 flow-through seawater tanks indoors in the lab and seeds were allowed to fall
 naturally to the bottom of the tank. Fallen seeds were collected from the bottom
-of the tank and placed in mesh bags in a flow-through tank. While this tank was
-exposed to general ambient light conditions, the mesh bags reduced overall light
-exposure. Before deployment, 100 seeds were randomly selected to test for
-viability using tetrazolium staining \[add staining method\]. Viability: 89/100.
+of the tank and placed in mesh bags in a flow-through tank. While this storage
+tank was exposed to general ambient light conditions, the mesh bags reduced
+overall light exposure. Before deployment, 100 seeds were randomly selected to
+test for viability using tetrazolium staining \[add staining method; REF\].
+Viability: 89/100.
 
 *Planting experiment*
 
@@ -118,23 +182,6 @@ the number of clams remaining was significantly reduced \[see data\]. By
 mid-December, there were few clams remaining and therefore we stopped checking
 for clams. We suspect blue crabs or bullnose rays to be primary predators.
 
--   Consider taking downward-facing photographs of each quadrat to quantify
-    percent cover and spatial spread over time? Or at set intervals? Or at end?
-
--   Consider whether to destructively sample or leave to see if anything happens
-    next year?
-
-    At the end of the experiment, we collected a single sediment core (X
-    diameter, Y depth) centered on the plot, encompassing both above- and
-    belowground components. Aboveground shoots were clipped at the sediment
-    surface, counted, and measured for length (nearest mm). Sediment cores were
-    washed over a X-mm sieve to recover belowground biomass. Above- and
-    belowground materials were dried at X C for X hours to constant mass.
-    Remaining clams were excavated from each plot and recorded as live or dead;
-    unrecovered clams were classified as lost (presumed displaced or predated).
-
--   Consider collecting sediment samples for organic matter or grain size?
-
 *Data analyses*
 
 This experiment is a fully factorial manipulation of seed density and clam
@@ -144,27 +191,32 @@ density (10-100 seeds per clam) was treated as a continuous predictor, and clam
 placement was modeled as a factor (manually buried vs. placed on the sediment
 surface).
 
-```{r}
+```{r setup}
 # Setup -------------------------------------------------------------------------
-
 library(readxl)
 library(tidyverse)
 library(lme4)
+library(lmerTest)
 library(glmmTMB)
 library(DHARMa)
-library(broom.mixed)
 library(gt)
+library(ggeffects)
+library(emmeans) 
+library(patchwork)
+library(broom.mixed)
 
+# Helper function that will add significance to p values:
 add_significance <- function(df) {df %>%
     mutate(significance = factor(case_when(p_value < 0.001 ~ "***",
                                            p_value < 0.01 ~ "**",
                                            p_value < 0.05 ~ "*",
                                            is.na(p_value) ~ "NA",
-                                           TRUE ~ "NS"), levels = c("***", "**", "*", "NS", "NA")))
+                                           TRUE ~ "NS"), 
+                                 levels = c("***", "**", "*", "NS", "NA")))
 }
 
 # Read data from Excel file 
-dat <- read_xlsx("data/seed-density.xlsx", na = "NA") 
+dat_raw <- read_xlsx("data/seed-density.xlsx", na = "NA") 
 
 # Build ------------------------------------------------------------------------
 # - density is continuous
@@ -173,31 +225,45 @@ dat <- read_xlsx("data/seed-density.xlsx", na = "NA")
 # - time is measured as days since the first sampling date
 # - shoot_count is the number of shoots observed at each sampling event
 
-dat <- dat %>% 
+dat <- dat_raw %>% 
   mutate(plot_id = factor(plot_id),
          burial = factor(burial_treatment,
                          levels = c(0, 1),
-                         labels = c("Surface", "Buried")),
+                         labels = c("Buried", "Surface")),
          date = lubridate::ymd(date),
          time_days = as.numeric(date - date('2025-10-31')),
          length_cm_5 = as.numeric(length_cm_5)) %>% 
   # monitoring on 4 Jan 2026 was incomplete because poor conditions (remove)
-  filter(date != '2026-01-04') 
-  
+  filter(date != '2026-01-04') %>% 
+  # center density once throughout
+  mutate(density_c = density - mean(density, na.rm = T),
+         # quadratic term in case we want it for modeling
+         density_c2 = density_c^2) %>% 
+  # bin densities in case useful for later plotting
+  mutate(density_group = case_when(density <= 30 ~ "Low\n10–30 seeds",
+                                   density <= 70 ~ "Medium\n40–70 seeds",
+                                   density >= 80 ~ "High\n80–100 seeds"),
+         density_group = factor(density_group,
+                                levels = c("Low\n10–30 seeds", "Medium\n40–70 seeds",
+                                           "High\n80–100 seeds"))) %>% 
+  # calculate proportion established relative to seed density
+   mutate(est_prob = shoot_count/density) %>% 
+   mutate(failures = density - shoot_count)
 
+  
 ```
 
 We conducted initial exploratory analyses to characterize temporal patterns in
 shoot density across seed density and clam placement treatments. First, we
 visualized plot-level trajectories of shoot densities through time, stratified
-by seed density to assess whether temporal dynamics differed across density
+by seed density to explore whether temporal dynamics differed across density
 treatments and whether patterns varied with clam placement.
 
 To highlight treatment-level patterns, we calculated average shoot density
 across replicates for each sampling date, seed density, and clam placement
 treatment (n = 4 plots for each combination). We plotted the temporal
 trajectories of these treatment-level means to examine general trends in shoot
-density over time and assess potential differences between clam placement
+density over time and explore potential differences between clam placement
 treatments. These descriptive analyses were used to identify broad patterns (or
 lack thereof) and inform model structure.
 
@@ -206,101 +272,262 @@ also examined shoot density relative to planted seed density. Probability of
 shoot establishment was quantified as the number of live shoots relative to the
 number of seeds initially planted in each plot.
 
-```{r}
+```{r build-dataframes}
+#| include: false
+
 # Calculate treatment-level means through time
 dat_means <- dat %>% 
   group_by(date, density, burial) %>% 
-  summarize(mean_shoot_count = mean(shoot_count))
+  summarize(shoot_count_mean = mean(shoot_count),
+            shoot_count_sd = sd(shoot_count),
+            shoot_count_n = n()) %>% 
+  mutate(shoot_count_se = shoot_count_sd/sqrt(shoot_count_n))
 
-# Calculate proportion established relative to seed density
-dat_prob <- dat %>% 
-  mutate(est_prob = shoot_count/density) %>% 
-  select(plot_id, burial, density, time_days, shoot_count, est_prob) %>% 
-  mutate(failures = density - shoot_count) %>% 
-  mutate(density_c = density - mean(density, na.rm = TRUE))
+# Create predation dataframe from clam checks
+pred <- dat %>% 
+  select(date:dead_clam, burial) %>% 
+  filter(!is.na(clam_code)) %>%
+  filter(date != "2026-04-01") %>% 
+  mutate(date = as.factor(date),
+         clam_code_label = case_when(clam_code == "D" ~ "Empty shell",
+                                     clam_code == "L" ~ "Live",
+                                     clam_code == "S" ~ "Shell fragments",
+                                     clam_code == "N" ~ "Nothing"))
 
-
-```
-
-[Modeling shoot establishment]{.underline} (in progress)
-
-We modeled this response using generalized linear mixed models with a binomial
-distribution, specifying the number of observed shoots as successes and the
-initial seed density as the denominator. Models included fixed effects for
-density, burial treatment, time (days since deployment), an interaction between
-burial and density, and plot as a random intercept to account for repeated
-sampling.
-
-We'll do this a) across time, b) endpoint only, and c) with and without
-quadratic terms.
-
-Test for overdispersion and if present try betabinomial.
-
-We're calling it "shoot establishment" instead of germination because we are
-observing a cumulative net establishment (seed retention, germination, shoot
-survival) at each sampling interval.
-
-Start with a binomial mixed model where the response is the number of shoots
-relative to the initial seeds. Each plot started with a set number of seeds, and
-each sampling event we see a number of shoots. As a binomial process, the
-"successes" are the seeds that produce shoots and the "failures" are seeds that
-didn't. Answers the question "out of \# seeds, how many became shoots?" It also
-accounts for the different starting number of seeds (different number of
-'chances') and explicitly models the probability of establishment per seed,
-answering questions about density-dependent net shoot establishment.
-
-```{r}
-#| include: false
-
-# Build "shoot establishment" models 
-# Binomial mixed model:
-# - Response: shoots relative to initial seeds
-# - Fixed: seed density, burial treatment, time
-# - Random: plot_id
-
-mbi <- glmmTMB(cbind(shoot_count, density - shoot_count) ~ 
-                 density_c + I(density_c^2) + burial + time_days +
-                 density_c:burial + I(density_c^2):burial + 
-                 (1 | plot_id),
-               family = binomial, data = dat_prob)
-
-summary(mbi)
-
-# Main findings:
-# - Highly significant increase in shoot establishment over time (duh)
-# - No evidence for inceasing establishment with density or an intermediate optimum (quad term) - no detectable density-dependent establishment response across 10-100 seeds per clam.
-# No overall difference between buried vs. surface treatments.
-# Densiy x Burial interaction terms not significant = no evidence that burial effects depend on density. No support for context-dependent burial effects across densities. 
-# Plot-level heterogeneity a major driver of outcomes.
-# That combination suggests either density range is not limiting (10–100 all sufficient), or other processes dominate (e.g., disturbance, predation, microsite conditions)
-
-res_mbi <- DHARMa::simulateResiduals(mbi)
-plot(res_mbi)
-testDispersion(res_mbi)
-
-
-# Overdispersion... could use a betabinomial distribution instead.
-mbbi <- glmmTMB(cbind(shoot_count, density - shoot_count) ~ 
-                 density_c + I(density_c^2) + burial + time_days +
-                 density_c:burial + I(density_c^2):burial + 
-                 (1 | plot_id),
-               family = betabinomial(), data = dat_prob)
-
-summary(mbbi)
-res_mbbi <- DHARMa::simulateResiduals(mbbi)
-
-plot(res_mbbi)
-testDispersion(res_mbbi)
-```
-
-```{r}
+# Create growth dataframe
 dat_growth <- dat %>% 
-  select(date, plot_id, density, burial, time_days, shoot_count, starts_with("length")) %>% 
+  select(date, plot_id, density, burial, time_days, 
+         shoot_count, starts_with("length")) %>% 
   pivot_longer(starts_with("length"), 
                names_to = "length_replicate", values_to = "length_cm") %>%
   filter(!is.na(length_cm)) %>% 
-  group_by(date,  density, burial) %>% 
-  summarize(mean_length_cm = mean(length_cm))
+  group_by(date, plot_id, density, burial, time_days) %>% 
+  summarize(length_cm_mean = mean(length_cm) ,
+            length_cm_sd   = sd(length_cm),
+            length_cm_n    = n(), .groups = 'drop') %>% 
+  mutate(length_cm_se = length_cm_sd/sqrt(length_cm_n)) %>% 
+  mutate(time_factor = factor(time_days,
+                              levels = c('47', '78','91','106','152','168'),
+                              labels = c("Dec 17", "Jan 17", "Jan 30", "Feb 14", "Apr 1", "Apr 17")))
+
+# Build "shoot establishment" models using last sampling date (April)
+dat_end <- dat %>% 
+  filter(date == max(date))
+
+# Summarize to show treatment means and error
+dat_end_summary <- dat_end %>% 
+  group_by(density, burial) %>% 
+  summarize(mean_count = mean(shoot_count),
+            se_count = sd(shoot_count) / sqrt(n()),
+            .groups = "drop")
+
+```
+
+[Modeling shoot establishment]{.underline}
+
+NOTE: We're calling it "shoot establishment" instead of germination because we
+are observing a cumulative net establishment (seed retention, germination, shoot
+survival) at each sampling interval.
+
+To evaluate how seed planting density and clam burial treatment influenced
+restoration outcomes at the end of the experiment (April 2025), we fit
+generalized linear models with seed planting density (continuous), clam burial
+treatment, and their interaction as fixed effects. Final shoot count was modeled
+using a negative binomial distribution with a log link to quantify the overall
+effect of planting density on shoot production.
+
+To determine whether differences in shoot production reflected changes in
+establishment efficiency rather than simply the number of seeds planted, we also
+modeled establishment probability (the proportion of planted seeds that produced
+observable shoots) using a beta-binomial distribution with a logit link.
+
+Significance of fixed effects was evaluated using Type II ANOVA ($\chi^2$
+tests), and model assumptions were assessed using simulated residual diagnostics
+(`DHARMa`) to evaluate dispersion and zero inflation. Estimated marginal means
+(`emmeans`) were used to generate model predictions and estimate the average
+change in expected shoot count with increasing planting density.
+
+```{r m_count}
+#| include: false
+
+# Test whether more seeds = more shoots  
+m_count <- glmmTMB(shoot_count ~ density * burial, family = nbinom2, data = dat_end)
+
+summary(m_count)
+
+# Check diagnostics
+res_count <- simulateResiduals(m_count)
+plot(res_count)
+testDispersion(res_count)
+testZeroInflation(res_count)
+
+# Check the fixed effects and save outputs for results text
+m_count_tests <-  car::Anova(m_count, type = 2) %>% 
+  rownames_to_column("term") %>% 
+  rename(p = `Pr(>Chisq)`) %>% 
+  janitor::clean_names() %>% 
+  mutate(chisq = round(chisq, 2),
+         p = round(p, 3))
+
+# Get the values for the results text
+# From the m_count model:
+density_chisq <- filter(m_count_tests, term == "density") %>% pull(chisq)
+density_p     <- filter(m_count_tests, term == "density") %>% pull(p) %>% scales::pvalue()
+burial_chisq  <- filter(m_count_tests, term == "burial")  %>% pull(chisq)
+burial_p      <- filter(m_count_tests, term == "burial")  %>% pull(p) %>% scales::pvalue()
+int_chisq     <- filter(m_count_tests, term == "density:burial") %>% pull(chisq)
+int_p         <- filter(m_count_tests, term == "density:burial") %>% pull(p) %>% scales::pvalue()
+
+# Get the expected shoots counts for 10 vs 100 seeds, averaged over burial treatment
+m_count_pred <- emmeans(m_count, ~ density, 
+                        at = list(density = c(10, 100)),
+                        type = "response") %>%  
+  summary() %>% 
+  janitor::clean_names() %>% 
+  mutate(across(c(response, se, asymp_lcl, asymp_ucl), ~round(.x, 3)))
+
+shoot10      <- filter(m_count_pred, density == 10) %>% pull(response) %>% round(., 1)
+shoot10_low  <- filter(m_count_pred, density == 10) %>% pull(asymp_lcl) %>% round(., 1)
+shoot10_high <- filter(m_count_pred, density == 10) %>% pull(asymp_ucl) %>% round(., 1)
+
+shoot100      <- filter(m_count_pred, density == 100) %>% pull(response) %>% round(., 1)
+shoot100_low  <- filter(m_count_pred, density == 100) %>% pull(asymp_lcl) %>% round(., 1)
+shoot100_high <- filter(m_count_pred, density == 100) %>% pull(asymp_ucl) %>% round(., 1)
+
+# Estimate the average density effect
+m_count_trend <- emtrends(m_count, ~1, var = "density") |>
+  summary()
+
+# Convert avg density effect te expected % increase in final shoot count per 10 additional seeds
+pct10      <- round((exp(m_count_trend$density.trend * 10) - 1) * 100, 1)
+pct10_low  <- round((exp(m_count_trend$asymp.LCL * 10) - 1) * 100, 1)
+pct10_high <- round((exp(m_count_trend$asymp.UCL * 10) - 1) * 100, 1)
+
+# Generate predictions for the figure
+m_count_pred_all <- ggpredict(m_count, terms = c("density[10:100]", "burial")) %>% 
+  rename(density = x, burial = group)
+
+```
+
+```{r m_prop}
+#| include: false
+
+# Start with a binomial mixed model where the response is the number of shoots relative to the initial seeds. Each plot started with a set number of seeds, and each sampling event we see a number of shoots. As a binomial process, the "successes" are the seeds that produce shoots and the "failures" are seeds that didn't. Answers the question "out of # seeds, how many became shoots?" It also accounts for the different starting number of seeds (different number of 'chances') and explicitly models the probability of establishment per seed, answering questions about density-dependent net shoot establishment.
+
+# Test if higher density changes establishment efficiency
+m_prop <- glmmTMB(cbind(shoot_count, density - shoot_count) ~ density * burial,
+                  family = betabinomial(), data = dat_end)
+
+summary(m_prop)
+
+# Check diagnostics
+res_prop <- simulateResiduals(m_prop)
+plot(res_prop)
+testDispersion(res_prop)
+testZeroInflation(res_prop)
+
+# Check the fixed effects
+m_prop_tests <- car::Anova(m_prop, type = 2) %>% 
+  rownames_to_column("term") %>% 
+  rename(p = `Pr(>Chisq)`) %>% 
+  janitor::clean_names() %>% 
+  mutate(chisq = round(chisq, 2),
+         p = round(p, 3))
+
+# Get the values for the results text
+# From the m_prop model:
+m_prop_density_chisq <- filter(m_prop_tests, term == "density") %>% pull(chisq)
+m_prop_density_p     <- filter(m_prop_tests, term == "density") %>% pull(p)
+m_prop_burial_chisq  <- filter(m_prop_tests, term == "burial")  %>% pull(chisq)
+m_prop_burial_p      <- filter(m_prop_tests, term == "burial")  %>% pull(p) 
+m_prop_int_chisq     <- filter(m_prop_tests, term == "density:burial") %>% pull(chisq)
+m_prop_int_p         <- filter(m_prop_tests, term == "density:burial") %>% pull(p) 
+
+# Generate predictions for the figure
+m_prop_pred_all <- ggpredict(m_prop, terms = c("density[10:100]", "burial")) %>% 
+  rename(density = x, burial = group)
+
+```
+
+```{r m_growth}
+# Build model that examines shoot height through time
+m_growth <- lmer(length_cm_mean ~ density * time_factor + burial + (1 | plot_id),
+               data = dat_growth)
+
+m_growth2 <- lmer(length_cm_mean ~ density * time_days * burial + (1 | plot_id),
+               data = dat_growth)
+
+m_growth3 <- lmer(length_cm_mean ~ density * time_factor * burial + (1 | plot_id),
+               data = dat_growth)
+
+m_growth4 <- lmer(length_cm_mean ~ density * time_days + burial + (1 | plot_id),
+               data = dat_growth)
+
+anova(m_growth, m_growth2, m_growth3, m_growth4) 
+
+# Most supported model has time as a factor and only 2-way interaction density * time
+
+summary(m_growth)
+
+# Check out the diagnostics 
+growth_res <- simulateResiduals(m_growth)
+plot(growth_res) # wow looks surprisingly good
+
+# Quick check to see what this looks like
+plot(effects::allEffects(m_growth), multiline = T, confint = list(style = 'auto'))
+# seems like differences in densities emerged in Feb and continued from there
+
+# Check fixed effects with the anova:
+m_growth_tests <- car::Anova(m_growth, type = 2) %>% 
+  as.data.frame() %>% 
+  rownames_to_column("term") %>% 
+  rename(p = `Pr(>Chisq)`) %>% 
+  janitor::clean_names() %>% 
+  mutate(chisq = round(chisq, 2),
+         p = round(p, 3))
+
+m_growth_tests
+# Shoot height increased through time, and the effect of planting density 
+# varied among sampling dates (density × sampling date interaction, Table X).
+
+# Use emtrends to identify when the differences in heights across densities emerged
+emtrends(m_growth, ~ time_factor, var = "density")
+
+# Mean shoot height increased throughout the experiment, and the relationship between 
+# planting density and shoot height varied across sampling dates 
+# (density × sampling date interaction; Table X). 
+# Although the estimated effect of planting density was weakest early in the experiment
+# and strongest during the latter sampling periods, differences among sampling dates 
+# were not statistically distinguishable after adjustment for multiple comparisons.
+
+emm <- emmeans(m_growth, ~ density | time_factor,
+               at = list(density = c(10, 100)))
+
+pairs(emm)
+
+# Generate predictions for the figure
+growth_pred <- ggpredict(m_growth, 
+                         terms = c("time_factor", "density [10,20,40,60,80,100]"))
+
+density_cols <- c("#9ECAE1", "#6BAED6", "#4292C6",
+                  "#2171B5", "#08519C", "#08306B")
+
+ggplot(growth_pred, 
+       aes(x = x, y = predicted, color = group, group = group)) +
+  geom_line(linewidth = 0.9) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group),
+              alpha = 0.12,
+              color = NA) +
+  scale_color_manual(values = density_cols) +
+  scale_fill_manual(values = density_cols) +
+  labs(x = "",
+       y = "Mean shoot height (cm)",
+       color = "Seed density",
+       fill = "Seed density") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "top")
+
 
 ```
 
@@ -318,7 +545,7 @@ shown for each plot through time (Figure 1) as treatment-level means through
 time (Figure 2), and as treatment-level means through time but grouped by clam
 placement (Figure 3).
 
-```{r plot-level-trajectories}
+```{r plot-level-density-trajectories}
 #| fig-width: 6.5
 #| fig-height: 4
 #| fig-dpi: 300
@@ -339,15 +566,17 @@ ggplot(dat, aes(x = date, y = shoot_count, group = plot_id, color = burial)) +
 
 ```
 
-```{r treatment-level-trajectories}
+```{r treatment-level-density-trajectories}
 #| fig-width: 6.5
 #| fig-height: 4
 #| fig-dpi: 300
-#| fig-cap: "Temporal trajectories of mean shoot density (count per 0.0625 m²) from November 2025 through April 2026, shown separately for initial seeding densities from 10 to 100 seeds (facets). Values represent treatment-level means (n = 4 plots per density × clam placement combination). Clam placement treatments are indicated by symbol and line type: clams placed on the sediment surface are shown as green circles with solid lines, and manually buried clams as purple triangles with dashed lines."
+#| fig-cap: "Temporal trajectories of mean shoot density (count per 0.0625 m²) from November 2025 through April 2026, shown separately for initial seeding densities from 10 to 100 seeds (facets). Values represent treatment-level means (n = 4 plots per density × clam placement combination) and error bars show +/- 1 standard error. Clam placement treatments are indicated by symbol and line type: clams placed on the sediment surface are shown as green circles with solid lines, and manually buried clams as purple triangles with dashed lines."
 
-ggplot(dat_means, aes(x = date, y = mean_shoot_count, group = burial, color = burial)) +
+ggplot(dat_means, aes(x = date, y = shoot_count_mean, group = burial, color = burial)) +
   geom_line(aes(linetype = burial)) +
   geom_point(aes(shape = burial)) +
+  geom_errorbar(aes(ymin = shoot_count_mean - shoot_count_se, 
+                    ymax = shoot_count_mean + shoot_count_se)) +
   facet_wrap(~density, nrow = 2) +
   labs(x = "",
        y = expression("Shoot density (count per 0.0625 m"^2*")"),
@@ -358,6 +587,36 @@ ggplot(dat_means, aes(x = date, y = mean_shoot_count, group = burial, color = bu
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+ggplot(dat_means,
+       aes(date, shoot_count_mean,
+           color = factor(density),
+           group = density)) +
+  geom_line(linewidth = 0.8) +
+  facet_wrap(~burial) +
+  theme_classic()
+
+dat_density_group_means <- dat %>%
+  group_by(date, burial, density_group) %>%
+  summarise(shoot_count_mean = mean(shoot_count, na.rm = TRUE),
+            shoot_count_se = sd(shoot_count, na.rm = TRUE) / sqrt(n()),
+            establishment_mean = mean(shoot_count / density, na.rm = TRUE),
+            establishment_se = sd(shoot_count / density, na.rm = TRUE) / sqrt(n()),
+            .groups = "drop")
+
+ggplot(dat_density_group_means,
+       aes(date, shoot_count_mean, 
+           color = density_group, group = density_group)) +
+  geom_line(linewidth = 0.9) +
+  geom_point(size = 2) +
+  geom_errorbar(aes(ymin = shoot_count_mean - shoot_count_se,
+                    ymax = shoot_count_mean + shoot_count_se),
+                width = 4, linewidth = 0.4) +
+  facet_wrap(~burial) +
+  labs(x = "",
+       y = expression("Shoot count per 0.0625 m"^2),
+       color = "Seed planting density") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 ```{r treatment-trajectories-by-placement}
@@ -368,9 +627,10 @@ ggplot(dat_means, aes(x = date, y = mean_shoot_count, group = burial, color = bu
 
 ggplot(dat_means %>% 
          mutate(density = factor(density)),
-       aes(x = date, y = mean_shoot_count, group = density, color = density)) +
+       aes(x = date, y = shoot_count_mean, group = density, color = density)) +
   geom_line() +
   geom_point() +
+  geom_errorbar(aes(ymin = shoot_count_mean - shoot_count_se, ymax = shoot_count_mean + shoot_count_se), width = 3)+
   facet_wrap(~burial, nrow = 1) +
   scale_color_manual(values = c('#d9f0ea', '#b2e2d8', '#80cdc1', '#4db6ac', '#2ca25f',
                                 '#238b45','#006d2c', '#005824','#00441b','#002e12')) +
@@ -382,29 +642,87 @@ ggplot(dat_means %>%
 
 ```
 
+```{r m_count-figure}
+#| fig-width: 6.5
+#| fig-height: 4
+#| fig-dpi: 300
+#| fig-cap: "Relationship between initial seed density and shoot density at the final sampling point. Shoot density is the number of observable shoots, reflecting the combined effects of seed retention, germination, and early seedling survival. Points represent individual plots; lines show model predictions (±95% CI) by clam placement treatment, on the sediment surface (green circles, solid line) or manually buried (purple triangles, dashed line)."
+
+plot_m_count <- ggplot() +
+  geom_point(data = dat_end, 
+             aes(x = density, y = shoot_count, 
+                 color = burial, shape = burial),
+             alpha = 0.8, size = 2.5,
+             position = position_jitter(width = 1.5, height = 0)) +
+  geom_ribbon(data = m_count_pred_all,
+              aes(x = density, ymin = conf.low, ymax = conf.high, fill = burial),
+              alpha = 0.15, color = NA) +
+  geom_line(data = m_count_pred_all,
+            aes(x = density, y = predicted, color = burial, linetype = burial), 
+            linewidth = 1.2) +
+  # geom_point(data = dat_end_summary, 
+  #            aes(x = density, y = mean_count, 
+  #                fill = burial, color = burial, shape = burial), size = 3,
+  #            position = position_dodge(width = 3)) +
+  # geom_errorbar(data = dat_end_summary, 
+  #               aes(x = density, ymin = mean_count - se_count, ymax = mean_count + se_count,
+  #                   color = burial),
+  #               width = 2,linewidth = 0.5,
+  #               position = position_dodge(width = 3)) +
+  scale_x_continuous(n.breaks = 10) +
+  scale_y_continuous(n.breaks = 6) +
+  scale_color_manual(values = c("#1b9e77", "#7570b3")) +
+  scale_fill_manual(values = c("#1b9e77", "#7570b3")) +
+  labs(x = "Seed planting density",
+       y = "Number of shoots per plot",
+       linetype = "Clam placement",
+       color = "Clam placement",
+       fill = "Clam placement",
+       pch = "Clam placement") +
+  theme_classic() +
+  theme(legend.position = c("inside"),
+        legend.position.inside = c(0.2, 0.85))
+
+```
+
+Final shoot count increased significantly with seed planting density ($\chi^2$ =
+`r density_chisq`, *p* = `r density_p`), whereas burial treatment ($\chi^2$ =
+`r burial_chisq`, *p* = `r burial_p`) and the density × burial interaction
+($\chi^2$ = `r int_chisq`, *p* = `r int_p`) were not significant. Each
+additional 10 seeds planted increased expected final shoot count by `r pct10`%
+(95% CI: `r pct10_low`-`r pct10_high`%). Increasing planting density from 10 to
+100 seeds increased the expected number of established shoots from `r shoot10`
+(95% CI: `r shoot10_low`-`r shoot10_high`) to `r shoot100` (95% CI:
+`r shoot100_low`-`r shoot100_high`).
+
 [Proportion of established shoots]{.underline}
 
 While shoot density increased with seed density, the *proportion* of seeds that
 produced shoots did not. Here, the probability of shoot establishment is shown
 based on the most recent sampling date: `r format(max(dat$date), "%B %d, %Y")`.
 
-```{r}
+```{r m_prop-figure}
 #| fig-width: 6.5
 #| fig-height: 4
 #| fig-dpi: 300
-#| fig-cap: "Relationship between initial seed density and shoot establishment at the final sampling point. Establishment is defined as the proportion of seeds that resulted in observable shoots, reflecting the combined effects of seed retention, germination, and early seedling survival. Points represent individual plots; lines show simple linear model predictions (±95% CI) by clam placement treatment, on the sediment surface (solid circles) or manually buried (dashed triangles)."
+#| fig-cap: "Relationship between initial seed density and shoot establishment at the final sampling point. Establishment is defined as the proportion of seeds that resulted in observable shoots, reflecting the combined effects of seed retention, germination, and early seedling survival. Points represent individual plots; lines show model predictions (±95% CI) by clam placement treatment, on the sediment surface (green circles, solid lie) or manually buried (purple triangles, dashed line)."
 
-
-ggplot(dat_prob %>% filter(time_days == 152), aes(x = density, y = est_prob, shape = burial, color = burial)) +
-  geom_smooth(aes(x = density, y = est_prob, linetype = burial, color = burial, fill = burial),
-              method = 'lm', alpha = 0.3) +
-  geom_point(position = position_jitter(width = 0.6, height = 0.005), 
-             alpha = 0.6, size = 3)+
+plot_m_prop <- ggplot() +
+  geom_point(data = dat_end,
+             aes(x = density, y = est_prob, color = burial, fill = burial, shape = burial),
+             alpha = 0.8, size = 2.5,
+             position = position_jitter(width = 1.5, height = 0)) +
+  geom_ribbon(data = m_prop_pred_all,
+              aes(x = density, ymin = conf.low, ymax = conf.high, fill = burial),
+              alpha = 0.15, color = NA) +
+  geom_line(data = m_prop_pred_all,
+            aes(x = density, y = predicted, color = burial, linetype = burial), 
+            linewidth = 1.2) +
   scale_x_continuous(n.breaks = 10) +
   scale_y_continuous(n.breaks = 6) +
   scale_color_manual(values = c("#1b9e77", "#7570b3")) +
   scale_fill_manual(values = c("#1b9e77", "#7570b3")) +
-  labs(x = "Seed density",
+  labs(x = "Seed planting density",
        y = "Proportion of seeds producing shoots",
        linetype = "Clam placement",
        color = "Clam placement",
@@ -416,76 +734,75 @@ ggplot(dat_prob %>% filter(time_days == 152), aes(x = density, y = est_prob, sha
 
 ```
 
-```{r}
-mbi_table <- tidy(mbi, effects = "fixed", conf.int = TRUE) %>%
-  mutate(term = recode(term,
-                       "(Intercept)" = "Intercept",
-                       "density_c" = "Density",
-                       "I(density_c^2)" = "Density²",
-                       "burialBuried" = "Burial (buried)",
-                       "time_days" = "Time (days)",
-                       "density_c:burialBuried" = "Density × Burial",
-                       "I(density_c^2):burialBuried" = "Density² × Burial")) %>%
-  select(term, estimate, std.error, conf.low, conf.high, p_value = p.value) %>%
-  add_significance() %>% 
-  mutate(p_value = case_when(p_value < 0.001 ~ "< 0.001", 
-                             T~as.character(round(p_value, 3)))) %>%
-  mutate(significance = if_else(significance == "NS", NA_character_, significance)) 
+Establishment probability was not significantly affected by seed planting
+density ($\chi^2$ = 2.71*, p* = 0.10), burial treatment ($\chi^2$= 0.16, *p* =
+0.69), or their interaction ($\chi^2$ = 0.79, *p* = 0.37; Table 2, Fig. 2).
 
-mbi_table_gt <- mbi_table %>% 
-  gt() %>%
-  cols_label(term = "Term",
-             estimate = "Estimate",
-             std.error = "SE",
-             conf.low = "Lower 95% CI",
-             conf.high = "Upper 95% CI",
-             p_value = "p-value",
-             significance = "") %>%
-  fmt_number(columns = c(estimate, std.error, conf.low, conf.high),
-             decimals = 3) %>%
-  sub_missing(columns = everything(), missing_text = "") %>% 
-  tab_style(style = cell_text(weight = "bold"),
-            locations = cells_body(columns = c(p_value, significance), 
-                                   rows = significance %in% c("***", "**", "*") )) %>%
-#  tab_header(title = "Effects of Seed Density and Burial on Establishment Probability",
- #            subtitle = "Binomial GLMM (logit scale)") %>%
-  cols_align(align = "center",
-             -term) %>%
-  tab_options(table.font.size = px(12),
-              data_row.padding = px(4))
+```{r fig1}
+#| fig-width: 4
+#| fig-height: 6.5
+#| fig-dpi: 300
+#| fig-cap: "Effects of seed planting density on (A) final shoot count and (B) establishment probability at the final sampling point. Establishment probability was calculated as the proportion of planted seeds that produced observable shoots, integrating seed retention, germination, and early seedling survival. Points represent individual plots. Lines show model predictions (±95% CI) by clam placement treatment: on the sediment surface (purple triangles, dashed line) or manually buried (green circles, solid line)."
 
-mbi_table_gt
+plot_m_prop  <- plot_m_prop  + theme(legend.position = "none")
 
-# Helpers for writing:
-b_density  <- filter(mbi_table, term == "Density")
-b_density2 <- filter(mbi_table, term == "Density²")
-b_burial   <- filter(mbi_table, term == "Burial (buried)")
-b_time     <- filter(mbi_table, term == "Time (days)")
+plot_seed_outcomes <- (plot_m_count / plot_m_prop) +
+  plot_annotation(tag_levels = "A")
+
+plot_seed_outcomes
 ```
 
-Seagrass establishment increased strongly over time, with a positive effect of
-time since planting on the probability of shoot presence (β =
-`r round(b_time %>% pull(estimate), 3)`, p `r b_time %>% pull(p_value)`).
+```{r fig2}
 
-In contrast, there was no evidence that seed density influenced establishment
-probability, either linearly (β = `r round(b_density %>% pull(estimate), 3)`, p
-= `r b_density %>% pull(p_value)`) or nonlinearly (β =
-`r round(b_density2 %>% pull(estimate), 3)`, p =
-`r b_density2 %>% pull(p_value)`), indicating no support for density-dependent
-establishment across the tested range of 10-100 seeds per clam.
+ggplot(dat_density_group_means,
+       aes(date, shoot_count_mean, 
+           color = burial, fill = burial, group = burial)) +
+  geom_line(linewidth = 0.9) +
+  geom_point(size = 2) +
+  geom_ribbon(aes(ymin = shoot_count_mean - shoot_count_se,
+                    ymax = shoot_count_mean + shoot_count_se),
+                alpha = 0.2, color = NULL) +
+  facet_wrap(~density_group) +
+  scale_color_manual(values = c("#1b9e77", "#7570b3")) +
+  scale_fill_manual(values = c("#1b9e77", "#7570b3")) +
+  labs(x = "",
+       y = expression("Shoot count per 0.0625 m"^2),
+       color = "Clam placement",
+       fill = "Clam placement") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "top")
 
-Burial treatment also had no detectable effect on establishment (INSERT), and
-there was no evidence that burial modified density effects (linear interaction:
-INSERT, quadratic interaction: INSERT). There was substantial unexplained
-variation among plots (σ =
-`r round(sqrt(summary(mbi)$varcor$cond$plot_id[1]), 3)`), suggesting that
-unmeasured environmental heterogeneity or disturbance processes likely played a
-larger role in structuring establishment outcomes than the manipulated
-treatments.
+```
+
+```{r fig3}
+#| fig-width: 6.5
+#| fig-height: 4
+#| fig-dpi: 300
+#| fig-cap: "Effects of seed planting density on mean shoot height (cm) over the course of the experiment. Lines show model-predicted mean shoot height (+/- 95% CI) from a linear mixed effects model, averaged across clam placement treatments. Darker blue lines indicated higher seed densities."
+
+density_cols <- c("#8CB9D8", "#6E9FC8", "#4F86B7", "#356DA5", "#245591", "#163D73")
+
+ggplot(growth_pred, aes(x = x, y = predicted, color = group, group = group)) +
+  geom_line(linewidth = 0.9) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group),
+              alpha = 0.12,
+              color = NA) +
+  scale_color_manual(values = density_cols) +
+  scale_fill_manual(values = density_cols) +
+  labs(x = "",
+       y = "Mean shoot height (cm)",
+       color = "Seed density",
+       fill = "Seed density") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "top")
+
+```
 
 [Shoot growth]{.underline}
 
-```{r shoot-height}
+```{r plot-shoot-height}
 #| fig-width: 6.5
 #| fig-height: 4
 #| fig-dpi: 300
@@ -493,9 +810,11 @@ treatments.
 
 ggplot(dat_growth %>% 
          mutate(density = factor(density)),
-       aes(x = date, y = mean_length_cm, group = density, color = density)) +
+       aes(x = date, y = length_cm_mean, group = density, color = density)) +
   geom_line() +
   geom_point() +
+  geom_errorbar(aes(ymin = length_cm_mean - length_cm_se, 
+                    ymax = length_cm_mean + length_cm_se), width = 3) + 
   facet_wrap(~burial, nrow = 1) +
   scale_color_manual(values = c('#d9f0ea', '#b2e2d8', '#80cdc1', '#4db6ac', '#2ca25f',
                                 '#238b45','#006d2c', '#005824','#00441b','#002e12')) +
@@ -504,6 +823,25 @@ ggplot(dat_growth %>%
        color = "Seed density") +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+[Predation]{.underline}
+
+```{r pred-heatmap}
+#| fig-width: 4
+#| fig-height: 6
+#| fig-dpi: 300
+
+ggplot(data = pred) +
+  geom_tile(aes(x = date, y = plot_id, fill = clam_code_label)) +
+  scale_fill_manual(values = c("red3","green4", "grey", "orange2")) +
+  labs(x = "", y = "Plot", fill = NULL) +
+  theme_classic(base_size = 10) +
+  theme(axis.text.x = element_text(size = 7, angle = 45, hjust = 1),
+        axis.text.y = element_text(size = 7),
+        legend.text = element_text(size = 7)) +
+ ggh4x::facet_nested(density~burial, scales = "free", space = "free", independent = "y")
 
 ```
 
@@ -522,8 +860,8 @@ Other potential figures:
     illustrate level of predation? Also could illustrate whether burial reduces
     predation risk (but I don't think so).
 
-Fig 1: No strong density or burial effect \
-Fig 2: Time dominates establishment \
+Fig 1: No strong density or burial effect\
+Fig 2: Time dominates establishment\
 Fig 3: Growth also largely insensitive\
 Fig 4: Early predation explains variation
 
