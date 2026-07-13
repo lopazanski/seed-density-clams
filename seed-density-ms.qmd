@@ -5,7 +5,7 @@ author:
     affiliations:
       - id: duml
         name: Duke University
-        department: Duke University Marine Lab, Nicholas School of the ENvironment
+        department: Duke University Marine Lab, Nicholas School of the Environment
         address: 135 Duke Marine Lab Rd.
         city: Beaufort
         region: NC
@@ -16,6 +16,9 @@ author:
     affiliations:
       - ref: duml
   - name: Mason Ibrahim
+    affiliations:
+      - ref: duml
+  - name: Joseph P. Morton
     affiliations:
       - ref: duml
   - name: Brian Silliman
@@ -38,57 +41,36 @@ execute:
   freeze: auto
 ---
 
-## Question
-
-What are the relative effects of seagrass seed density on clams (number of
-seagrass seeds) and clam burial method on seagrass germination and growth?
-
-## Hypotheses
-
--   Germination probability increases with seed density up to an intermediate
-    optimum then levels off or declines due to space/competition
-
--   Manually buried clams produce higher germination and faster early growth
-    than clams placed on the surface because manual burial reduces seed exposure
-    and displacement
-
-    -   *Applied angle:* Manual burial is more time-consuming and may limit
-        scalability compared to scattering clams on the surface. If there is no
-        difference in germination or growth with clam placement, then that would
-        be a positive effect.
-
--   The benefit of burial is greater at low/moderate seed densities, at very
-    high seed densities negative density effects reduce the advantage of burial
-    (maybe – this element somewhat less important, but good to keep in mind
-    given crossed factor)
-
-## Abstract
+# Abstract
 
 Seagrass restoration increasingly relies on seed-based approaches, yet optimal
 seeding densities and deployment methods remain poorly resolved. We evaluated
 how seed density and clam-mediated seed placement influence eelgrass (*Zostera
 marina*) establishment in a field restoration experiment in Back Sound, North
-Carolina. Eelgrass seeds were attached to live clams at densities ranging from
-10 to 100 seeds per clam, and deployed in a fully factorial design crossing seed
-density with two clam placement treatments - manually buried or placed on the
-sediment surface. Plots were monitored biweekly for shoot establishment and
-growth over six months. Shoot density increased through time and was generally
-higher in plots receiving greater numbers of seeds. However, the proportion of
-seeds that produced shoots did not vary with seed density, indicating that
-higher seeding rates yielded more shoots but did not increase per-seed
-establishment success. We found no evidence that clam placement influenced
-seedling establishment. Similarly, shoot growth trajectories were broadly
-comparable between treatments. Extensive clam predation and disturbance occurred
-shortly after deployment, potentially contributing to unexplained variation
-among plots and reducing treatment effects. Our results suggest that increasing
-seed inputs can increase restoration outcomes by producing more established
-shoots, but does not improve the probability that individual seeds establish.
-Furthermore, manually burying clams provided little measurable benefit over
-surface placement, suggesting that clams likely suffiicently bury seeds through
-natural behavior and therefore this less labor-intensive deployment method may
-be sufficient for large-scale restoration efforts.
+Carolina. Eelgrass seeds were attached to juvenile live clams at densities
+ranging from 10 to 100 seeds per clam, and deployed in a fully factorial design
+crossing seed density with two clam placement treatments - manually buried or
+placed on the sediment surface. Plots were monitored biweekly for shoot
+establishment and growth over six months. Shoot density increased through time
+and was generally higher in plots receiving greater numbers of seeds. However,
+the proportion of seeds that produced shoots did not vary with seed density,
+indicating that higher seeding rates yielded more shoots but did not increase
+per-seed establishment success. We found no evidence that clam placement
+influenced seedling establishment. Similarly, shoot growth trajectories were
+broadly comparable between clam placement treatments, though higher seed
+densities generally yielded taller shoots. Extensive clam predation and
+disturbance occurred shortly after deployment, potentially contributing to
+unexplained variation among plots and influencing treatment effects. Our results
+suggest that increasing seed inputs can increase restoration outcomes by
+producing more established shoots, but does not improve the probability that
+individual seeds establish. These findings suggest that seed density per
+deployment unit can be selected based on desired restoration configuration and
+design. Furthermore, manually burying clams provided little measurable benefit
+over surface placement, suggesting that clams likely sufficiently bury seeds
+through natural behavior and therefore this less labor-intensive deployment
+method may be sufficient for large-scale restoration efforts.
 
-## Introduction
+# Introduction
 
 Seagrass meadows provide important ecosystem services, including habitat for
 marine organisms, shoreline stabilization, and carbon storage, but they continue
@@ -105,91 +87,76 @@ establishment may not increase proportionally if seeds or seedlings begin
 competing with one another or if other factors limit success. From a restoration
 perspective, it is important to know whether adding more seeds increases the
 number of established shoots, improves the probability that individual seeds
-establish, or both. It is also important to know whether there is an optimal
-seed planting density.
+establish, or both. It is also unclear whether increasing seed density results
+in proportional increases in shoot establishment or whether density-dependence
+processes alter establishment success.
 
 Recent restoration efforts have also explored using clams as a seed delivery
 mechanism. As clams move and bury themselves in the sediment, they may help
 place seeds in conditions that promote germination and reduce seed loss. There
 are also positive interactions between clams and seagrass that can improve
-establishment success. However, manually burying clams requires additional
-effort and may not be practical at large scales, though clams on the surface
-remain vulnerable to predation. Whether manual burial is necessary to achieve
-restoration outcomes remains unclear.
+establishment success, potentially through nutrient enhancement (Zhang).
+However, manually burying clams requires additional effort and may not be
+practical at large scales, though clams on the surface remain vulnerable to
+predation. Whether manual burial is necessary to achieve restoration outcomes
+remains unclear.
 
 In this study, we tested how seed density and clam placement influence eelgrass
 (*Zostera marina*) establishment in a field restoration experiment in North
 Carolina. Specifically, we asked whether increasing seed density increases
 establishment, whether manually burying clams improves establishment relative to
 placing them on the sediment surface, and whether these effects interact. We
-quantified both total shoot production and per-seed establishment to evaluate
+quantified both total shoot establishment and per-seed establishment to evaluate
 how restoration efficiency changes across a range of seeding densities.
 
-## Methods
+# Methods
 
-*Seed retrieval and storage*
+## *Seed retrieval and storage*
 
-*Zostera marina* seagrass seeds were retrieved by collecting reproductive shoots
-from seagrass beds in Back Sound, NC in May 2025. Shoots were placed in
-flow-through seawater tanks indoors in the lab and seeds were allowed to fall
-naturally to the bottom of the tank. Fallen seeds were collected from the bottom
-of the tank and placed in mesh bags in a flow-through tank. While this storage
-tank was exposed to general ambient light conditions, the mesh bags reduced
-overall light exposure. Before deployment, 100 seeds were randomly selected to
-test for viability using tetrazolium staining \[add staining method; REF\].
-Viability: 89/100.
+Reproductive *Zostera marina* shoots were collected from seagrass beds in Back
+Sound, NC in May 2025. Shoots were held in flow-through seawater tanks indoors
+until mature seeds were naturally realeased. Released seeds were collected from
+the bottom of the tank and stored in mesh bags in a flow-through tank. While
+this storage tank was exposed to general ambient light conditions, the mesh bags
+reduced overall light exposure. Before deployment, 100 seeds were randomly
+selected to test for viability using tetrazolium staining (REF), with 89% of
+seeds classified as viable.
 
-*Planting experiment*
+## *Planting experiment*
 
-We conducted a field experiment near Harker’s Island, North Carolina, to test
-how seed density and clam burial behavior influences seagrass seed germination
-and seagrass growth. Seagrass seeds were glued to live clams (\~2 cm diameter)
-using a gelatin-based bioglue at one of ten density levels, spanning 10-100
-seeds per clam in increments of 10 seeds. Seed density was crossed with two clam
-placement treatments (manually buried or placed on sediment surface) in a full
-factorial design with four replicates per treatment (80 plots total).
+To test how seed planting density and clam placement influences seagrass
+establishment and growth, we conducted a field experiment near Harker’s Island,
+North Carolina. Seagrass seeds were attached to live clams (*Mercenaria
+mercenaria;* \~2 cm shell length) using a gelatin-based bioglue at one of ten
+density levels, spanning 10-100 seeds per clam in increments of 10 seeds. Seed
+planting density was crossed with two clam placement treatments (manually buried
+or placed on sediment surface) in a fully factorial design with four replicates
+per treatment combination (80 plots total).
 
-We used a gelatin-based bioglue to attach seeds to clams. The bioglue was
-prepared by dissolving dry gelatin powder in saltwater (35 ppt) to a final
-concentration of 9%. The mixture was heated to 35°C until fully dissolved and
-then cooled to 28°C before application. A thin layer of bioglue was pipetted
-onto one shell from each clam and allowed to partially set before seeds were
-arranged in a single layer and covered with a second thin coat of glue. Clams
-were refrigerated at 9°C for 30 minutes to solidify the glue, then transported
-to the field in coolers and deployed the same day. The total time from initial
-glue preparation through field deployment was less than four hours.
+The bioglue was prepared by dissolving dry gelatin powder in saltwater (35 ppt)
+to a final concentration of 9% (w/v). The solution was heated to 35°C until
+fully dissolved and then cooled to 28°C before application. A thin layer of
+bioglue was pipetted onto one shell from each clam and allowed to partially set
+before seeds were arranged in a single layer and covered with a second thin coat
+of glue. Clams were refrigerated at 9°C for 30 minutes to allow the glue to
+solidify, then transported to the field in coolers and deployed the same day.
+The total time from initial glue preparation through field deployment was less
+than four hours.
 
-Clams with glued seeds were assigned to one of two burial treatments: manually
-buried to 2 cm depth or placed on the sediment surface to allow self-burial.
-Each clam was positioned at the center of a 0.25m^2^ plot, with the corner of
-each plot marked with a lawn staple (10-inch length) to facilitate resampling.
-Plots were spaced 0.5 m apart in a grid located on a sandy area with average
-depth \~0.8 m and at least 10-m away from adjacent salt marsh, oyster reef, and
+Clams were either manually buried to a depth of 2 cm or placed on the sediment
+surface to allow natural self-burial. Each clam was positioned at the center of
+a 0.25 m^2^ plot, with the corner of each plot marked with a lawn staple to
+facilitate resampling. Plots were arranged in a grid with 0.5 m spacing in a
+sandy area located at least 10 m away from adjacent salt marsh, oyster reef, and
 seagrass habitat.
 
-Germination and seedling growth were monitored over time to quantify the effects
-of seed density and burial treatment on seagrass establishment success. We
-defined germination as the emergence of the first green shoot above the sediment
-surface. Plots were monitored biweekly. For each plot during each survey, we
-recorded the number of live shoots and the height of up to five random shoots
-(nearest mm). We monitored clam presence using brief visual and tactile
-confirmation near the original placement point, but avoided excavating clams to
+Plots were monitored approximately every two weeks from November 2025 through
+April 2026. During each survey, we recorded the number of live shoots and
+measured the height of up to five randomly selected shoots to the nearest
+millimeter. During the first four sampling dates, we assessed clam presence
+using brief visual and tactile confirmation. We avoided excavating clams to
 limit seedling disturbance. We recorded evidence of clam predation (e.g., shell
 fragments, empty shells), and whether the clam was live, dead, or not located.
-
-Clam predation was extremely high. Within the first few days of the experiment,
-the number of clams remaining was significantly reduced \[see data\]. By
-mid-December, there were few clams remaining and therefore we stopped checking
-for clams. We suspect blue crabs or bullnose rays to be primary predators.
-
-*Data analyses*
-
-This experiment is a fully factorial manipulation of seed density and clam
-placement, with repeated observations of seagrass establishment (counts of live
-shoots) and seagrass growth (shoot height) through time at the plot level. Seed
-density (10-100 seeds per clam) was treated as a continuous predictor, and clam
-placement was modeled as a factor (manually buried vs. placed on the sediment
-surface).
 
 ```{r setup}
 # Setup -------------------------------------------------------------------------
@@ -253,24 +220,33 @@ dat <- dat_raw %>%
   
 ```
 
-We conducted initial exploratory analyses to characterize temporal patterns in
-shoot density across seed density and clam placement treatments. First, we
-visualized plot-level trajectories of shoot densities through time, stratified
-by seed density to explore whether temporal dynamics differed across density
-treatments and whether patterns varied with clam placement.
+## *Data analyses*
 
-To highlight treatment-level patterns, we calculated average shoot density
-across replicates for each sampling date, seed density, and clam placement
-treatment (n = 4 plots for each combination). We plotted the temporal
-trajectories of these treatment-level means to examine general trends in shoot
-density over time and explore potential differences between clam placement
-treatments. These descriptive analyses were used to identify broad patterns (or
-lack thereof) and inform model structure.
+To evaluate how seed planting density and clam placement influenced restoration
+outcomes, we quantified three complementary response variables: shoot density,
+per-seed establishment, and shoot growth. Shoot density was quantified as the
+number of shoots per plot (0.0625 m^2^). Per-seed establishment was quantified
+as the number of observed live shoots relative to the number of seeds initially
+planted in each plot. Both shoot density and per-seed establishment were
+analyzed for the final sampling date: `r format(max(dat$date), "%B %d, %Y")`.
+Shoot growth was quantified as mean shoot height through time.
 
-As shoot density is inherently constrained by the number of seeds planted, we
-also examined shoot density relative to planted seed density. Probability of
-shoot establishment was quantified as the number of live shoots relative to the
-number of seeds initially planted in each plot.
+Final shoot density was analyzed using a generalized linear model with a
+negative binomial distribution and log link. Per-seed establishment was analyzed
+using a beta-binomial distribution with a logit link. Both models included seed
+planting density (continuous), clam placement (factor; buried or surface), and
+their interaction as fixed effects. Mean shoot height was analyzed using a
+linear mixed-effects model with plot included as a random intercept to account
+for repeated measurements through time. Fixed effects for included seed planting
+density, clam placement treatment, sampling date, and the interaction between
+seed planting density and sampling date.
+
+Significance of fixed effects was evaluated using Type II ANOVA ($\chi^2$
+tests), and model assumptions were assessed using simulated residual diagnostics
+(DHARMa; REF) to evaluate dispersion and zero inflation. Model predictions and
+estimated marginal means (emmeans; REF) were used to visualize treatment effects
+and quantify effect sizes. All analyses were conducted in R (version X; REF) &
+RStudio (version X; REF).
 
 ```{r build-dataframes}
 #| include: false
@@ -322,30 +298,6 @@ dat_end_summary <- dat_end %>%
             .groups = "drop")
 
 ```
-
-[Modeling shoot establishment]{.underline}
-
-NOTE: We're calling it "shoot establishment" instead of germination because we
-are observing a cumulative net establishment (seed retention, germination, shoot
-survival) at each sampling interval.
-
-To evaluate how seed planting density and clam burial treatment influenced
-restoration outcomes at the end of the experiment (April 2025), we fit
-generalized linear models with seed planting density (continuous), clam burial
-treatment, and their interaction as fixed effects. Final shoot count was modeled
-using a negative binomial distribution with a log link to quantify the overall
-effect of planting density on shoot production.
-
-To determine whether differences in shoot production reflected changes in
-establishment efficiency rather than simply the number of seeds planted, we also
-modeled establishment probability (the proportion of planted seeds that produced
-observable shoots) using a beta-binomial distribution with a logit link.
-
-Significance of fixed effects was evaluated using Type II ANOVA ($\chi^2$
-tests), and model assumptions were assessed using simulated residual diagnostics
-(`DHARMa`) to evaluate dispersion and zero inflation. Estimated marginal means
-(`emmeans`) were used to generate model predictions and estimate the average
-change in expected shoot count with increasing planting density.
 
 ```{r m_count}
 #| include: false
@@ -450,6 +402,8 @@ m_prop_pred_all <- ggpredict(m_prop, terms = c("density[10:100]", "burial")) %>%
 ```
 
 ```{r m_growth}
+#| include: false
+#| 
 # Build model that examines shoot height through time
 m_growth <- lmer(length_cm_mean ~ density * time_factor + burial + (1 | plot_id),
                data = dat_growth)
@@ -486,19 +440,24 @@ m_growth_tests <- car::Anova(m_growth, type = 2) %>%
   mutate(chisq = round(chisq, 2),
          p = round(p, 3))
 
-m_growth_tests
+# Get the values for the results text
+# From the m_growth model:
+m_growth_density_chisq <- filter(m_growth_tests, term == "density") %>% pull(chisq)
+m_growth_density_p     <- filter(m_growth_tests, term == "density") %>% pull(p)
+m_growth_time_chisq    <- filter(m_growth_tests, term == "time_factor")  %>% pull(chisq)
+m_growth_time_p        <- filter(m_growth_tests, term == "time_factor")  %>% pull(p) 
+m_growth_burial_chisq  <- filter(m_growth_tests, term == "burial")  %>% pull(chisq)
+m_growth_burial_p      <- filter(m_growth_tests, term == "burial")  %>% pull(p) 
+m_growth_int_chisq     <- filter(m_growth_tests, term == "density:time_factor") %>% pull(chisq)
+m_growth_int_p         <- filter(m_growth_tests, term == "density:time_factor") %>% pull(p) 
+
+
 # Shoot height increased through time, and the effect of planting density 
 # varied among sampling dates (density × sampling date interaction, Table X).
 
 # Use emtrends to identify when the differences in heights across densities emerged
 emtrends(m_growth, ~ time_factor, var = "density")
 
-# Mean shoot height increased throughout the experiment, and the relationship between 
-# planting density and shoot height varied across sampling dates 
-# (density × sampling date interaction; Table X). 
-# Although the estimated effect of planting density was weakest early in the experiment
-# and strongest during the latter sampling periods, differences among sampling dates 
-# were not statistically distinguishable after adjustment for multiple comparisons.
 
 emm <- emmeans(m_growth, ~ density | time_factor,
                at = list(density = c(10, 100)))
@@ -509,11 +468,231 @@ pairs(emm)
 growth_pred <- ggpredict(m_growth, 
                          terms = c("time_factor", "density [10,20,40,60,80,100]"))
 
-density_cols <- c("#9ECAE1", "#6BAED6", "#4292C6",
-                  "#2171B5", "#08519C", "#08306B")
+```
 
-ggplot(growth_pred, 
-       aes(x = x, y = predicted, color = group, group = group)) +
+# Results
+
+Shoot establishment increased significantly with seed planting density ($\chi^2$
+= `r density_chisq`, *p* = `r density_p`), whereas both clam placement ($\chi^2$
+= `r burial_chisq`, *p* = `r burial_p`) and the interaction between seed
+planting density and clam placement ($\chi^2$ = `r int_chisq`, *p* = `r int_p`)
+were not significant (@fig-1). Each additional 10 seeds planted increased the
+expected number of established shoots by `r pct10`% (95% CI:
+`r pct10_low`-`r pct10_high`%). Model predictions indicated that increasing
+planting density from 10 to 100 seeds increased the expected number of
+established shoots from `r shoot10` (95% CI: `r shoot10_low`-`r shoot10_high`)
+to `r shoot100` (95% CI: `r shoot100_low`-`r shoot100_high`).
+
+Shoot establishment increased throughout the experiment across all treatments
+(@fig-2). Following the onset of shoot establishment in December, higher
+planting densities accumulated shoots more rapidly than lower planting
+densities, resulting in progressively greater differences in shoot establishment
+through time.
+
+This increase reflected greater shoot establishment rather than higher per-seed
+establishment: while shoot density increased with seed density, the *proportion*
+of seeds that produced shoots did not. Per-seed establishment was not
+significantly affected by seed density ($\chi^2$ = `r m_prop_density_chisq`*, p*
+= `r m_prop_density_p`), clam placmeent ($\chi^2$= `r m_prop_burial_chisq`, *p*
+= `r m_prop_burial_p`), or their interaction ($\chi^2$ = `r m_prop_int_chisq` ,
+*p* = `r m_prop_int_p`) (@fig-1).
+
+Mean shoot height increased throughout the experiment ($\chi^2$ =
+`r m_growth_time_chisq` , *p =* `r m_growth_time_p`), and the relationship
+between seed planting density and shoot height varied across sampling dates
+(seed density x sampling date: $\chi^2$ = `r m_growth_int_chisq` , *p =*
+`r m_growth_int_p`). Clam placement did not affect shoot height ($\chi^2$ =
+`r m_growth_burial_chisq` , *p =* `r m_growth_burial_p`). Model predictions
+indicated that shoot height was similar among planting densities during the
+first three months, whereas shoots in higher-density treatments were
+consistently taller during the latter half of the experiment (@fig-3).
+
+# Discussion
+
+-   Seed density influenced the number of established shoots, but not the
+    probability of establishment
+
+    -   Increasing seed density produced a predictable increase in final shoot
+        establishment.
+
+    -   Establishment probability remained consistent across the densities
+        tested, indicating little evidence for density-dependent effects during
+        early establishment.
+
+    -   This is important because many restoration studies implicitly assume
+        higher local propagule densities could either enhance establishment
+        (facilitations) or reduce it (competition). We suggest neither process
+        dominates over the density range tested.
+
+-   Why?
+
+    -   Tested range perhaps did not reach densities where either facilitation
+        or competition among establishing seedlings became important.
+
+    -   Other processes were more limiting than local density
+
+-   Restoration design may be most effectively based on target shoot density and
+    configuration rather than concerns about per-seed establishment.
+
+    -   We manipulated seed density per deployment unit (clam). Since
+        establishment probability was similar across densities, higher seed
+        density per clam produced more shoots concentrated around one deployment
+        location. Lower seed densities distributed across more clams would be
+        expected to produce a similar total number of shoots but different
+        spatial arrangement.
+
+    -   Future work could explore optimal spacing across deployment units, patch
+        expansion with different initial seed densities, and broader landscape
+        configuration.
+
+-   Growth trajectories also differed across planting densities, suggesting that
+    there are some differences that extend beyond initial establishment. This
+    was
+
+# Figures
+
+```{r m_count-figure}
+#| fig-cap: "Relationship between initial seed density and shoot density at the final sampling point. Shoot density is the number of observable shoots, reflecting the combined effects of seed retention, germination, and early seedling survival. Points represent individual plots; lines show model predictions (±95% CI) by clam placement treatment, on the sediment surface (green circles, solid line) or manually buried (purple triangles, dashed line)."
+
+plot_m_count <- ggplot() +
+  geom_point(data = dat_end, 
+             aes(x = density, y = shoot_count, 
+                 color = burial, shape = burial),
+             alpha = 0.8, size = 2.5,
+             position = position_jitter(width = 1.5, height = 0)) +
+  geom_ribbon(data = m_count_pred_all,
+              aes(x = density, ymin = conf.low, ymax = conf.high, fill = burial),
+              alpha = 0.15, color = NA) +
+  geom_line(data = m_count_pred_all,
+            aes(x = density, y = predicted, color = burial, linetype = burial), 
+            linewidth = 1.2) +
+  # geom_point(data = dat_end_summary, 
+  #            aes(x = density, y = mean_count, 
+  #                fill = burial, color = burial, shape = burial), size = 3,
+  #            position = position_dodge(width = 3)) +
+  # geom_errorbar(data = dat_end_summary, 
+  #               aes(x = density, ymin = mean_count - se_count, ymax = mean_count + se_count,
+  #                   color = burial),
+  #               width = 2,linewidth = 0.5,
+  #               position = position_dodge(width = 3)) +
+  scale_x_continuous(n.breaks = 10) +
+  scale_y_continuous(n.breaks = 6) +
+  scale_color_manual(values = c("#1b9e77", "#7570b3")) +
+  scale_fill_manual(values = c("#1b9e77", "#7570b3")) +
+  labs(x = "Seed planting density",
+       y = "Number of shoots per plot",
+       linetype = "Clam placement",
+       color = "Clam placement",
+       fill = "Clam placement",
+       pch = "Clam placement") +
+  theme_classic() +
+  theme(legend.position = c("inside"),
+        legend.position.inside = c(0.2, 0.85))
+
+```
+
+```{r m_prop-figure}
+#| fig-cap: "Relationship between initial seed density and shoot establishment at the final sampling point. Establishment is defined as the proportion of seeds that resulted in observable shoots, reflecting the combined effects of seed retention, germination, and early seedling survival. Points represent individual plots; lines show model predictions (±95% CI) by clam placement treatment, on the sediment surface (green circles, solid lie) or manually buried (purple triangles, dashed line)."
+# Mean shoot height increased throughout the experiment, and the relationship between 
+# planting density and shoot height varied across sampling dates 
+# (density × sampling date interaction; Table X). 
+# Although the estimated effect of planting density was weakest early in the experiment
+# and strongest during the latter sampling periods, differences among sampling dates 
+# were not statistically distinguishable after adjustment for multiple comparisons.
+
+plot_m_prop <- ggplot() +
+  geom_point(data = dat_end,
+             aes(x = density, y = est_prob, color = burial, fill = burial, shape = burial),
+             alpha = 0.8, size = 2.5,
+             position = position_jitter(width = 1.5, height = 0)) +
+  geom_ribbon(data = m_prop_pred_all,
+              aes(x = density, ymin = conf.low, ymax = conf.high, fill = burial),
+              alpha = 0.15, color = NA) +
+  geom_line(data = m_prop_pred_all,
+            aes(x = density, y = predicted, color = burial, linetype = burial), 
+            linewidth = 1.2) +
+  scale_x_continuous(n.breaks = 10) +
+  scale_y_continuous(n.breaks = 6) +
+  scale_color_manual(values = c("#1b9e77", "#7570b3")) +
+  scale_fill_manual(values = c("#1b9e77", "#7570b3")) +
+  labs(x = "Seed planting density",
+       y = "Proportion of seeds producing shoots",
+       linetype = "Clam placement",
+       color = "Clam placement",
+       fill = "Clam placement",
+       pch = "Clam placement") +
+  theme_classic() +
+  theme(legend.position = c("inside"),
+        legend.position.inside = c(0.9, 0.8))
+
+```
+
+```{r fig-1}
+#| label: fig-1
+#| fig-width: 4
+#| fig-height: 7
+#| out-width: "3.5in"
+#| fig-dpi: 300
+#| fig-cap: "Effects of seed planting density on (A) final shoot count and (B) establishment probability at the final sampling point. Establishment probability was calculated as the proportion of planted seeds that produced observable shoots, integrating seed retention, germination, and early seedling survival. Points represent individual plots. Lines show model predictions (±95% CI) by clam placement treatment: on the sediment surface (purple triangles, dashed line) or manually buried (green circles, solid line)."
+
+plot_m_prop  <- plot_m_prop  + theme(legend.position = "none")
+
+plot_seed_outcomes <- (plot_m_count / plot_m_prop) +
+  plot_annotation(tag_levels = "A")
+
+plot_seed_outcomes
+```
+
+```{r fig-2}
+#| label: fig-2
+#| fig-width: 6
+#| fig-height: 4.5
+#| out-width: "6in"
+#| fig-dpi: 300
+#| fig-cap: "Temporal patterns in shoot establishment across seed planting density groups and clam placement treatments. For visualization, seed planting densities were grouped into low (10-30 seeds), medium (40-70 seeds), and high (80-100 seeds) categories. Points represent the average shoot count per plot (±SE) at each sampling date, averaged across all plots within each seed density group and clam placement treatment. Green circles and solid lines indicate manually buried clams; purple triangles and dashed lines indicate clams placed on the sediment surface."
+
+dat_density_group_means <- dat %>%
+  group_by(date, burial, density_group) %>%
+  summarise(shoot_count_mean = mean(shoot_count, na.rm = TRUE),
+            shoot_count_se = sd(shoot_count, na.rm = TRUE) / sqrt(n()),
+            establishment_mean = mean(shoot_count / density, na.rm = TRUE),
+            establishment_se = sd(shoot_count / density, na.rm = TRUE) / sqrt(n()),
+            .groups = "drop")
+
+ggplot(dat_density_group_means,
+       aes(date, shoot_count_mean, 
+           color = burial, fill = burial, group = burial, pch = burial, linetype = burial)) +
+  geom_line(linewidth = 0.9) +
+  geom_point(size = 2) +
+  geom_ribbon(aes(ymin = shoot_count_mean - shoot_count_se,
+                    ymax = shoot_count_mean + shoot_count_se),
+                alpha = 0.2, color = NULL) +
+  facet_wrap(~density_group) +
+  scale_color_manual(values = c("#1b9e77", "#7570b3")) +
+  scale_fill_manual(values = c("#1b9e77", "#7570b3")) +
+  labs(x = "",
+       y = expression("Shoot count per 0.0625 m"^2),
+       color = "Clam placement",
+       fill = "Clam placement",
+       pch = "Clam placement",
+       linetype = "Clam placement") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "top")
+
+```
+
+```{r fig-3}
+#| label: fig-3
+#| fig-width: 4.5
+#| fig-height: 4
+#| out-width: "4.5in"
+#| fig-dpi: 300
+#| fig-cap: "Effects of seed planting density on mean shoot height (cm) over the course of the experiment. Lines show model-predicted mean shoot height (±95% CI) from a linear mixed effects model, averaged across clam placement treatments. Darker blue lines indicated higher seed densities."
+
+density_cols <- c("#8CB9D8", "#6E9FC8", "#4F86B7", "#356DA5", "#245591", "#163D73")
+
+ggplot(growth_pred, aes(x = x, y = predicted, color = group, group = group)) +
   geom_line(linewidth = 0.9) +
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group),
               alpha = 0.12,
@@ -528,12 +707,130 @@ ggplot(growth_pred,
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         legend.position = "top")
 
-
 ```
 
-## Results
+Other potential figures:
+
+-   Early predation effects on establishment, with seed density on x-axis and
+    establishment probability on the y-axis. Panels for whether or not there was
+    evidence of predation?
+
+-   Alternative could make boxplots with final time point based on predation.
+    Explore whether earlier disturbance suppresses establishment (and maybe
+    explain null treatment effects? or just context for the predation
+    observations).
+
+-   Heatmap showing clam presence over time for first few sampling dates...
+    illustrate level of predation? Also could illustrate whether burial reduces
+    predation risk (but I don't think so).
+
+Fig 1: No strong density or burial effect\
+Fig 2: Time dominates establishment\
+Fig 3: Growth also largely insensitive\
+Fig 4: Early predation explains variation
+
+“We expected density and burial to matter; they did not strongly. Instead, early
+disturbance and temporal dynamics structure establishment.”
+
+# **Notes**
+
+[*Storage copied from Mason's MS:*]{.underline}
+
+Storage tanks were housed in an indoor facility equipped with bubblers
+and maintained on a 12-hour light cycle. Tanks were stirred daily to prevent
+shoot desiccation and to encourage seed release. After 4 weeks, excess plant
+material was removed by hand. Released seeds were panned to separate them from
+extraneous material and maintained in flow-through tanks until October 2025. 
+
+Juvenile clams were sourced from Carteret Community College located in Morehead
+City, North Carolina and maintained in a flow-through seawater system at the
+Duke University Marine Laboratory prior to planting. 
+
+Planting timing coincided with observed natural germination periods in North
+Carolina, when water temperatures consistently reach 15 °C or below,
+the optimal temperature for Zostera marina seed germination. 
+
+[*Deployed Friday October 31, 2025 at 12pm (during low tide).*]{.underline}
+
+We marked the corners of each plot with tall bamboo poles (3 m) hammered into
+the sediment using a rubber mallet while standing on the stern of the boat. We
+established transects for each row in the grid, marking the start and end of
+each transect with small bamboo poles (1 m) sunk into the sediment (left
+permanently during the experiment to facilitate resampling). Rows were oriented
+roughly parallel to the adjacent marsh shoreline, with seed density treatments
+increasing each row from the side of the site closest to the marsh edge (lowest
+density) to the outermost row (highest density). Note that the site itself is
+\~50m from the marsh edge. Facing the marsh, the four columns on the left side
+of the site contained manually buried clams, and the four columns on the right
+side of the site contained clams placed on the sediment surface (see site
+diagram, below).
+
+On at least two occasions, the bioglue detached from the clam during underwater
+handling, though the seeds remained intact within the glue matrix. These cases
+were treated as valid experimental conditions rather than handling errors, and
+both the detached bioglue-seed cluster and the corresponding clam were placed in
+the assigned treatment position. Similar detachment events were anecdotally
+observed during other planting experiments that season. 
+
+Conditions during deployment were fairly windy (15-25 mph) with air temperatures
+18.3°C and water temperatures 21.7°C. Visibility was poor; less than 0.5 m,
+which prevented any visual confirmation of activity of “surface” clams (e.g.,
+movement, burial). Deployment was \~30 minutes after low tide (+0.47ft) and
+water depth was \~0.5-0.8 m during deployment (rising; knee to hip). Sediment
+was sand covered by a thin layer of mud with minimal detritus, though some
+sparse *Halodule wrightii* was observed at the margins of the site, especially
+towards the outermost row (highest density treatments). Upon re-examining the
+site under better conditions, a few plots contained sparse *Halodule* within the
+plot.
+
+[*Site diagram (for internal purposes)*]{.underline}
+
+*(All plots 0.25m2 and are equally spaced by 0.5m2)*
+
+Letters mark tall bamboo poles, and x's mark short bamboo poles used to lay out
+rows. Pole B is closest to Harker’s Island Boat Ramp. A-B parallel to marsh, B-C
+closest to bridge and parallel to oysters, A-D farthest to bridge parallel
+opposite oysters, D-C closest to entrance/exit to study area and adjacent
+seagrass beds.
+
+\~\~\~\~ MARSH EDGE, Mason + Christy Experiments \~\~\~\~
+
+| A     |      |      |      |      |      |      |      |      | B     |
+|-------|------|------|------|------|------|------|------|------|-------|
+| x     | B10  | B10  | B10  | B10  | S10  | S10  | S10  | S10  | x     |
+| x     | B20  | B20  | B20  | B20  | S20  | S20  | S20  | S20  | x     |
+| x     | B30  | B20  | B20  | B20  | S30  | S30  | S30  | S30  | x     |
+| x     | B40  | B40  | B40  | B40  | S40  | S40  | S40  | S40  | x     |
+| x     | B50  | B50  | B50  | B50  | S50  | S50  | S50  | S50  | x     |
+| x     | B60  | B60  | B60  | B60  | S60  | S60  | S60  | S60  | x     |
+| x     | B70  | B70  | B70  | B70  | S70  | S70  | S70  | S70  | x     |
+| x     | B80  | B80  | B80  | B80  | S80  | S80  | S80  | S80  | x     |
+| x     | B90  | B90  | B90  | B90  | S90  | S90  | S90  | S90  | x     |
+| x     | B100 | B100 | B100 | B100 | S100 | S100 | S100 | S100 | x     |
+| **D** |      |      |      |      |      |      |      |      | **C** |
+
+\~\~\~\~ ACCESS EDGE, towards deeper water \~\~\~\~
 
 *Descriptive visualizations*
+
+We conducted initial exploratory analyses to characterize temporal patterns in
+shoot density across seed density and clam placement treatments. First, we
+visualized plot-level trajectories of shoot densities through time, stratified
+by seed density to explore whether temporal dynamics differed across density
+treatments and whether patterns varied with clam placement.
+
+To highlight treatment-level patterns, we calculated average shoot density
+across replicates for each sampling date, seed density, and clam placement
+treatment (n = 4 plots for each combination). We plotted the temporal
+trajectories of these treatment-level means to examine general trends in shoot
+density over time and explore potential differences between clam placement
+treatments. These descriptive analyses were used to identify broad patterns (or
+lack thereof) and inform model structure.
+
+As shoot density is inherently constrained by the number of seeds planted, we
+also examined shoot density relative to planted seed density. Probability of
+shoot establishment was quantified as the number of live shoots relative to the
+number of seeds initially planted in each plot.
 
 [Trajectories of raw shoot densities]{.underline}
 
@@ -642,164 +939,6 @@ ggplot(dat_means %>%
 
 ```
 
-```{r m_count-figure}
-#| fig-width: 6.5
-#| fig-height: 4
-#| fig-dpi: 300
-#| fig-cap: "Relationship between initial seed density and shoot density at the final sampling point. Shoot density is the number of observable shoots, reflecting the combined effects of seed retention, germination, and early seedling survival. Points represent individual plots; lines show model predictions (±95% CI) by clam placement treatment, on the sediment surface (green circles, solid line) or manually buried (purple triangles, dashed line)."
-
-plot_m_count <- ggplot() +
-  geom_point(data = dat_end, 
-             aes(x = density, y = shoot_count, 
-                 color = burial, shape = burial),
-             alpha = 0.8, size = 2.5,
-             position = position_jitter(width = 1.5, height = 0)) +
-  geom_ribbon(data = m_count_pred_all,
-              aes(x = density, ymin = conf.low, ymax = conf.high, fill = burial),
-              alpha = 0.15, color = NA) +
-  geom_line(data = m_count_pred_all,
-            aes(x = density, y = predicted, color = burial, linetype = burial), 
-            linewidth = 1.2) +
-  # geom_point(data = dat_end_summary, 
-  #            aes(x = density, y = mean_count, 
-  #                fill = burial, color = burial, shape = burial), size = 3,
-  #            position = position_dodge(width = 3)) +
-  # geom_errorbar(data = dat_end_summary, 
-  #               aes(x = density, ymin = mean_count - se_count, ymax = mean_count + se_count,
-  #                   color = burial),
-  #               width = 2,linewidth = 0.5,
-  #               position = position_dodge(width = 3)) +
-  scale_x_continuous(n.breaks = 10) +
-  scale_y_continuous(n.breaks = 6) +
-  scale_color_manual(values = c("#1b9e77", "#7570b3")) +
-  scale_fill_manual(values = c("#1b9e77", "#7570b3")) +
-  labs(x = "Seed planting density",
-       y = "Number of shoots per plot",
-       linetype = "Clam placement",
-       color = "Clam placement",
-       fill = "Clam placement",
-       pch = "Clam placement") +
-  theme_classic() +
-  theme(legend.position = c("inside"),
-        legend.position.inside = c(0.2, 0.85))
-
-```
-
-Final shoot count increased significantly with seed planting density ($\chi^2$ =
-`r density_chisq`, *p* = `r density_p`), whereas burial treatment ($\chi^2$ =
-`r burial_chisq`, *p* = `r burial_p`) and the density × burial interaction
-($\chi^2$ = `r int_chisq`, *p* = `r int_p`) were not significant. Each
-additional 10 seeds planted increased expected final shoot count by `r pct10`%
-(95% CI: `r pct10_low`-`r pct10_high`%). Increasing planting density from 10 to
-100 seeds increased the expected number of established shoots from `r shoot10`
-(95% CI: `r shoot10_low`-`r shoot10_high`) to `r shoot100` (95% CI:
-`r shoot100_low`-`r shoot100_high`).
-
-[Proportion of established shoots]{.underline}
-
-While shoot density increased with seed density, the *proportion* of seeds that
-produced shoots did not. Here, the probability of shoot establishment is shown
-based on the most recent sampling date: `r format(max(dat$date), "%B %d, %Y")`.
-
-```{r m_prop-figure}
-#| fig-width: 6.5
-#| fig-height: 4
-#| fig-dpi: 300
-#| fig-cap: "Relationship between initial seed density and shoot establishment at the final sampling point. Establishment is defined as the proportion of seeds that resulted in observable shoots, reflecting the combined effects of seed retention, germination, and early seedling survival. Points represent individual plots; lines show model predictions (±95% CI) by clam placement treatment, on the sediment surface (green circles, solid lie) or manually buried (purple triangles, dashed line)."
-
-plot_m_prop <- ggplot() +
-  geom_point(data = dat_end,
-             aes(x = density, y = est_prob, color = burial, fill = burial, shape = burial),
-             alpha = 0.8, size = 2.5,
-             position = position_jitter(width = 1.5, height = 0)) +
-  geom_ribbon(data = m_prop_pred_all,
-              aes(x = density, ymin = conf.low, ymax = conf.high, fill = burial),
-              alpha = 0.15, color = NA) +
-  geom_line(data = m_prop_pred_all,
-            aes(x = density, y = predicted, color = burial, linetype = burial), 
-            linewidth = 1.2) +
-  scale_x_continuous(n.breaks = 10) +
-  scale_y_continuous(n.breaks = 6) +
-  scale_color_manual(values = c("#1b9e77", "#7570b3")) +
-  scale_fill_manual(values = c("#1b9e77", "#7570b3")) +
-  labs(x = "Seed planting density",
-       y = "Proportion of seeds producing shoots",
-       linetype = "Clam placement",
-       color = "Clam placement",
-       fill = "Clam placement",
-       pch = "Clam placement") +
-  theme_classic() +
-  theme(legend.position = c("inside"),
-        legend.position.inside = c(0.9, 0.8))
-
-```
-
-Establishment probability was not significantly affected by seed planting
-density ($\chi^2$ = 2.71*, p* = 0.10), burial treatment ($\chi^2$= 0.16, *p* =
-0.69), or their interaction ($\chi^2$ = 0.79, *p* = 0.37; Table 2, Fig. 2).
-
-```{r fig1}
-#| fig-width: 4
-#| fig-height: 6.5
-#| fig-dpi: 300
-#| fig-cap: "Effects of seed planting density on (A) final shoot count and (B) establishment probability at the final sampling point. Establishment probability was calculated as the proportion of planted seeds that produced observable shoots, integrating seed retention, germination, and early seedling survival. Points represent individual plots. Lines show model predictions (±95% CI) by clam placement treatment: on the sediment surface (purple triangles, dashed line) or manually buried (green circles, solid line)."
-
-plot_m_prop  <- plot_m_prop  + theme(legend.position = "none")
-
-plot_seed_outcomes <- (plot_m_count / plot_m_prop) +
-  plot_annotation(tag_levels = "A")
-
-plot_seed_outcomes
-```
-
-```{r fig2}
-
-ggplot(dat_density_group_means,
-       aes(date, shoot_count_mean, 
-           color = burial, fill = burial, group = burial)) +
-  geom_line(linewidth = 0.9) +
-  geom_point(size = 2) +
-  geom_ribbon(aes(ymin = shoot_count_mean - shoot_count_se,
-                    ymax = shoot_count_mean + shoot_count_se),
-                alpha = 0.2, color = NULL) +
-  facet_wrap(~density_group) +
-  scale_color_manual(values = c("#1b9e77", "#7570b3")) +
-  scale_fill_manual(values = c("#1b9e77", "#7570b3")) +
-  labs(x = "",
-       y = expression("Shoot count per 0.0625 m"^2),
-       color = "Clam placement",
-       fill = "Clam placement") +
-  theme_classic() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.position = "top")
-
-```
-
-```{r fig3}
-#| fig-width: 6.5
-#| fig-height: 4
-#| fig-dpi: 300
-#| fig-cap: "Effects of seed planting density on mean shoot height (cm) over the course of the experiment. Lines show model-predicted mean shoot height (+/- 95% CI) from a linear mixed effects model, averaged across clam placement treatments. Darker blue lines indicated higher seed densities."
-
-density_cols <- c("#8CB9D8", "#6E9FC8", "#4F86B7", "#356DA5", "#245591", "#163D73")
-
-ggplot(growth_pred, aes(x = x, y = predicted, color = group, group = group)) +
-  geom_line(linewidth = 0.9) +
-  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group),
-              alpha = 0.12,
-              color = NA) +
-  scale_color_manual(values = density_cols) +
-  scale_fill_manual(values = density_cols) +
-  labs(x = "",
-       y = "Mean shoot height (cm)",
-       color = "Seed density",
-       fill = "Seed density") +
-  theme_classic() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.position = "top")
-
-```
-
 [Shoot growth]{.underline}
 
 ```{r plot-shoot-height}
@@ -826,8 +965,6 @@ ggplot(dat_growth %>%
 
 ```
 
-[Predation]{.underline}
-
 ```{r pred-heatmap}
 #| fig-width: 4
 #| fig-height: 6
@@ -844,89 +981,3 @@ ggplot(data = pred) +
  ggh4x::facet_nested(density~burial, scales = "free", space = "free", independent = "y")
 
 ```
-
-Other potential figures:
-
--   Early predation effects on establishment, with seed density on x-axis and
-    establishment probability on the y-axis. Panels for whether or not there was
-    evidence of predation?
-
--   Alternative could make boxplots with final time point based on predation.
-    Explore whether earlier disturbance suppresses establishment (and maybe
-    explain null treatment effects? or just context for the predation
-    observations).
-
--   Heatmap showing clam presence over time for first few sampling dates...
-    illustrate level of predation? Also could illustrate whether burial reduces
-    predation risk (but I don't think so).
-
-Fig 1: No strong density or burial effect\
-Fig 2: Time dominates establishment\
-Fig 3: Growth also largely insensitive\
-Fig 4: Early predation explains variation
-
-“We expected density and burial to matter; they did not strongly. Instead, early
-disturbance and temporal dynamics structure establishment.”
-
-## **Notes**
-
-[*Deployed Friday October 31, 2025 at 12pm (during low tide).*]{.underline}
-
-We marked the corners of each plot with tall bamboo poles (3 m) hammered into
-the sediment using a rubber mallet while standing on the stern of the boat. We
-established transects for each row in the grid, marking the start and end of
-each transect with small bamboo poles (1 m) sunk into the sediment (left
-permanently during the experiment to facilitate resampling). Rows were oriented
-roughly parallel to the adjacent marsh shoreline, with seed density treatments
-increasing each row from the side of the site closest to the marsh edge (lowest
-density) to the outermost row (highest density). Note that the site itself is
-\~50m from the marsh edge. Facing the marsh, the four columns on the left side
-of the site contained manually buried clams, and the four columns on the right
-side of the site contained clams placed on the sediment surface (see site
-diagram, below).
-
-On at least two occasions, the bioglue detached from the clam during underwater
-handling, though the seeds remained intact within the glue matrix. These cases
-were treated as valid experimental conditions rather than handling errors, and
-both the detached bioglue-seed cluster and the corresponding clam were placed in
-the assigned treatment position. Similar detachment events were anecdotally
-observed during other planting experiments that season. 
-
-Conditions during deployment were fairly windy (15-25 mph) with air temperatures
-18.3°C and water temperatures 21.7°C. Visibility was poor; less than 0.5 m,
-which prevented any visual confirmation of activity of “surface” clams (e.g.,
-movement, burial). Deployment was \~30 minutes after low tide (+0.47ft) and
-water depth was \~0.5-0.8 m during deployment (rising; knee to hip). Sediment
-was sand covered by a thin layer of mud with minimal detritus, though some
-sparse *Halodule wrightii* was observed at the margins of the site, especially
-towards the outermost row (highest density treatments). Upon re-examining the
-site under better conditions, a few plots contained sparse *Halodule* within the
-plot.
-
-[*Site diagram (for internal purposes)*]{.underline}
-
-*(All plots 0.25m2 and are equally spaced by 0.5m2)*
-
-Letters mark tall bamboo poles, and x's mark short bamboo poles used to lay out
-rows. Pole B is closest to Harker’s Island Boat Ramp. A-B parallel to marsh, B-C
-closest to bridge and parallel to oysters, A-D farthest to bridge parallel
-opposite oysters, D-C closest to entrance/exit to study area and adjacent
-seagrass beds.
-
-\~\~\~\~ MARSH EDGE, Mason + Christy Experiments \~\~\~\~
-
-| A     |      |      |      |      |      |      |      |      | B     |
-|-------|------|------|------|------|------|------|------|------|-------|
-| x     | B10  | B10  | B10  | B10  | S10  | S10  | S10  | S10  | x     |
-| x     | B20  | B20  | B20  | B20  | S20  | S20  | S20  | S20  | x     |
-| x     | B30  | B20  | B20  | B20  | S30  | S30  | S30  | S30  | x     |
-| x     | B40  | B40  | B40  | B40  | S40  | S40  | S40  | S40  | x     |
-| x     | B50  | B50  | B50  | B50  | S50  | S50  | S50  | S50  | x     |
-| x     | B60  | B60  | B60  | B60  | S60  | S60  | S60  | S60  | x     |
-| x     | B70  | B70  | B70  | B70  | S70  | S70  | S70  | S70  | x     |
-| x     | B80  | B80  | B80  | B80  | S80  | S80  | S80  | S80  | x     |
-| x     | B90  | B90  | B90  | B90  | S90  | S90  | S90  | S90  | x     |
-| x     | B100 | B100 | B100 | B100 | S100 | S100 | S100 | S100 | x     |
-| **D** |      |      |      |      |      |      |      |      | **C** |
-
-\~\~\~\~ ACCESS EDGE, towards deeper water \~\~\~\~
