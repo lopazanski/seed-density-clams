@@ -184,6 +184,17 @@ add_significance <- function(df) {df %>%
                                  levels = c("***", "**", "*", "NS", "NA")))
 }
 
+# Helper function that will clean up the fixed effects:
+clean_fixed_effects <- function(df){df %>% 
+    as.data.frame() %>% 
+    rownames_to_column("term") %>% 
+    rename(p = `Pr(>Chisq)`) %>% 
+    rename_with(~"chisq", matches("LR Chisq|Chisq")) %>%
+    janitor::clean_names() %>% 
+    mutate(chisq = round(chisq, 2),
+           p = round(p, 3))
+}
+
 # Read data from Excel file 
 dat_raw <- read_xlsx("data/seed-density.xlsx", na = "NA") 
 
@@ -276,7 +287,7 @@ dat_means <- dat %>%
 pred <- dat %>% 
   select(date:dead_clam, burial) %>% 
   filter(!is.na(clam_code)) %>%
-  filter(date != "2026-04-01") %>% 
+  filter(date < "2026-04-01") %>% 
   mutate(date = as.factor(date),
          clam_code_label = case_when(clam_code == "D" ~ "Empty shell",
                                      clam_code == "L" ~ "Live",
@@ -310,6 +321,15 @@ dat_end_summary <- dat_end %>%
             se_count = sd(shoot_count) / sqrt(n()),
             .groups = "drop")
 
+# Clam observations from first two surveys
+dat_clam <- dat %>%
+  filter(date %in% c("2025-11-05","2025-11-17")) %>%
+  group_by(plot_id) %>%
+  summarize(ever_live  = any(live_clam == 1, na.rm = TRUE),
+            ever_shell = any(shell_frag == 1 | dead_clam == 1, na.rm = TRUE),
+            .groups = "drop") %>%
+  left_join(dat_end, by = "plot_id")
+
 ```
 
 ```{r m_count}
@@ -327,13 +347,8 @@ testDispersion(res_count)
 testZeroInflation(res_count)
 
 # Check the fixed effects and save outputs for results text
-m_count_tests <-  car::Anova(m_count, type = 2) %>% 
-  rownames_to_column("term") %>% 
-  rename(p = `Pr(>Chisq)`) %>% 
-  janitor::clean_names() %>% 
-  mutate(chisq = round(chisq, 2),
-         p = round(p, 3))
-
+m_count_tests <-  car::Anova(m_count, type = 2) %>% clean_fixed_effects()
+  
 # Get the values for the results text
 # From the m_count model:
 density_chisq <- filter(m_count_tests, term == "density") %>% pull(chisq)
@@ -392,12 +407,7 @@ testDispersion(res_prop)
 testZeroInflation(res_prop)
 
 # Check the fixed effects
-m_prop_tests <- car::Anova(m_prop, type = 2) %>% 
-  rownames_to_column("term") %>% 
-  rename(p = `Pr(>Chisq)`) %>% 
-  janitor::clean_names() %>% 
-  mutate(chisq = round(chisq, 2),
-         p = round(p, 3))
+m_prop_tests <- car::Anova(m_prop, type = 2) %>% clean_fixed_effects()
 
 # Get the values for the results text
 # From the m_prop model:
@@ -416,7 +426,7 @@ m_prop_pred_all <- ggpredict(m_prop, terms = c("density[10:100]", "burial")) %>%
 
 ```{r m_growth}
 #| include: false
-#| 
+ 
 # Build model that examines shoot height through time
 m_growth <- lmer(length_cm_mean ~ density * time_factor + burial + (1 | plot_id),
                data = dat_growth)
@@ -445,13 +455,7 @@ plot(effects::allEffects(m_growth), multiline = T, confint = list(style = 'auto'
 # seems like differences in densities emerged in Feb and continued from there
 
 # Check fixed effects with the anova:
-m_growth_tests <- car::Anova(m_growth, type = 2) %>% 
-  as.data.frame() %>% 
-  rownames_to_column("term") %>% 
-  rename(p = `Pr(>Chisq)`) %>% 
-  janitor::clean_names() %>% 
-  mutate(chisq = round(chisq, 2),
-         p = round(p, 3))
+m_growth_tests <- car::Anova(m_growth, type = 2) %>% clean_fixed_effects()
 
 # Get the values for the results text
 # From the m_growth model:
@@ -484,32 +488,39 @@ growth_pred <- ggpredict(m_growth,
 ```
 
 ```{r m_predation}
-
-# Clam observations from first two surveys
-dat_clam <- dat %>%
-  filter(date %in% c("2025-11-05","2025-11-17")) %>%
-  group_by(plot_id) %>%
-  summarise(
-    ever_live  = any(live_clam == 1, na.rm = TRUE),
-    ever_shell = any(shell_frag == 1 | dead_clam == 1, na.rm = TRUE),
-    .groups = "drop"
-  ) %>%
-  left_join(dat_end, by = "plot_id")
+#| include: false
 
 # Burial effects on clam fate
 m_live_fate  <- glm(ever_live  ~ burial, family = binomial, data = dat_clam)
 m_shell_fate <- glm(ever_shell ~ burial, family = binomial, data = dat_clam)
 
+plot(simulateResiduals(m_live_fate)) # good
+plot(simulateResiduals(m_shell_fate)) # good
+
 # Clam fate effects on final shoot establishment
-m_live_shoots  <- glmmTMB(shoot_count ~ density + burial + ever_live,
+m_live_shoots  <- glmmTMB(shoot_count ~ density * burial + ever_live,
                           family = nbinom2, data = dat_clam)
-m_shell_shoots <- glmmTMB(shoot_count ~ density + burial + ever_shell,
+m_shell_shoots <- glmmTMB(shoot_count ~ density * burial + ever_shell,
                           family = nbinom2, data = dat_clam)
 
-car::Anova(m_live_fate,  type = "II")
-car::Anova(m_shell_fate, type = "II")
-car::Anova(m_live_shoots,  type = "II")
-car::Anova(m_shell_shoots, type = "II")
+plot(simulateResiduals(m_live_shoots)) 
+plot(simulateResiduals(m_shell_shoots)) 
+
+# Check fixed effects
+m_live_fate_tests   <- car::Anova(m_live_fate, type = 2) %>% clean_fixed_effects()
+m_shell_fate_tests  <- car::Anova(m_shell_fate, type = 2) %>% clean_fixed_effects()
+m_live_shoot_tests  <- car::Anova(m_live_shoots, type = 2) %>% clean_fixed_effects()
+m_shell_shoot_tests <- car::Anova(m_shell_shoots, type = 2) %>% clean_fixed_effects()
+
+# Pull values for results text
+m_live_fate_chisq  <- filter(m_live_fate_tests, term == "burial") %>% pull(chisq)
+m_live_fate_p      <- filter(m_live_fate_tests, term == "burial") %>% pull(p)
+m_shell_fate_chisq <- filter(m_shell_fate_tests, term == "burial") %>% pull(chisq)
+m_shell_fate_p     <- filter(m_shell_fate_tests, term == "burial") %>% pull(p)
+m_live_shoot_chisq <- filter(m_live_shoot_tests, term == "ever_live") %>% pull(chisq)
+m_live_shoot_p     <- filter(m_live_shoot_tests, term == "ever_live") %>% pull(p)
+m_shell_shoot_chisq <- filter(m_shell_shoot_tests, term == "ever_shell") %>% pull(chisq)
+m_shell_shoot_p     <- filter(m_shell_shoot_tests, term == "ever_shell") %>% pull(p)
 
 # Despite frequent failure to relocate clams after deployment (Fig. S1), exploratory analyses found no relationship between early clam observations and subsequent shoot establishment after accounting for planting density (data not shown). Together, these observations suggest that clam persistence after deployment was either difficult to quantify or contributed little to early restoration outcomes.
 
@@ -676,24 +687,27 @@ significantly affected by seed density ($\chi^2$ = `r m_prop_density_chisq`*, p*
 *p* = `r m_prop_int_p`) (@fig-1).
 
 Mean shoot height increased throughout the experiment ($\chi^2$ =
-`r m_growth_time_chisq` , *p =* `r m_growth_time_p`), and the relationship
+`r m_growth_time_chisq` , *p* = `r m_growth_time_p`), and the relationship
 between seed planting density and shoot height varied across sampling dates
-(seed density x sampling date: $\chi^2$ = `r m_growth_int_chisq` , *p =*
+(seed density x sampling date: $\chi^2$ = `r m_growth_int_chisq` , *p* =
 `r m_growth_int_p`). Clam placement did not affect shoot height ($\chi^2$ =
-`r m_growth_burial_chisq` , *p =* `r m_growth_burial_p`). Model predictions
+`r m_growth_burial_chisq` , *p* = `r m_growth_burial_p`). Model predictions
 indicated that shoot height was similar among planting densities during the
 first three months, whereas shoots in higher-density treatments were
 consistently taller during the latter half of the experiment (@fig-3).
 
-Clam placement influenced the short-term fate of deployed clams \[ADD FIGURE
-4\]. Manually buried clams were more likely to be relocated alive during the
-first two post-deployment surveys than surface-deployed clams \[INSERT MODEL
-RESULTS\], whereas shell fragments or empty shells were more frequently observed
-in surface treatments \[MODEL RESULTS\]. However, neither live clam observations
-\[RESULTS\] nor shell evidence \[RESULTS\] were associated with final shoot
-establishment after accounting for seed planting density and clam placement
-treatment. In both models, seed planting density remained the only significant
-predictor of final shoot establishment \[RESULTS\].
+Clam placement influenced the short-term fate of deployed clams (@fig-4).
+Manually buried clams were more likely to be relocated alive during the first
+two post-deployment surveys than surface-deployed clams ($\chi^2$ =
+`r m_live_fate_chisq`, *p* = `r m_live_fate_p`), whereas shell fragments or
+empty shells were more frequently observed in surface treatments ($\chi^2$ =
+`r m_shell_fate_chisq`, *p* = `r m_shell_fate_p`). However, neither live clam
+observations ($\chi^2$ = `r m_live_shoot_chisq`, *p* = `r m_live_shoot_p`) nor
+shell evidence ($\chi^2$ = `r m_shell_shoot_chisq`, *p* = `r m_shell_shoot_p`)
+were associated with final shoot establishment after accounting for seed
+planting density and clam placement. In both models, seed planting density
+remained the only significant predictor of final shoot establishment (ADD TABLE
+SX WITH MODEL RESULTS).
 
 # Discussion
 
@@ -888,7 +902,13 @@ ggplot(growth_pred, aes(x = x, y = predicted, color = group, group = group)) +
 ```
 
 ```{r fig-4}
-p_live <- emmeans(m_live_fate, ~ burial, type = "response") |> as.data.frame() |>
+#| fig-width: 4.5
+#| fig-height: 4
+#| out-width: "4.5in"
+#| fig-dpi: 300
+#| fig-cap: "Effects of clam placement treatment on short-term clam fate. Model-predicted probabilities (±95% CI) of observing (A) a live clam and (B) shell evidence (shell fragments or empty shells) during the first two post-deployment surveys from binomial generalized linear models."
+
+p_live <- emmeans(m_live_fate, ~ burial, type = "response") %>% as.data.frame() %>% 
   ggplot(aes(burial, prob)) +
   geom_errorbar(aes(ymin = asymp.LCL, ymax = asymp.UCL),
                 width = 0.08,
@@ -898,7 +918,7 @@ p_live <- emmeans(m_live_fate, ~ burial, type = "response") |> as.data.frame() |
   labs(x = "Clam placement", y = "Probability of live clam observation", tag = "A") +
   theme_classic()
 
-p_shell <- emmeans(m_shell_fate, ~ burial, type = "response") |> as.data.frame() |>
+p_shell <- emmeans(m_shell_fate, ~ burial, type = "response") %>% as.data.frame() %>% 
   ggplot(aes(burial, prob)) +
   geom_errorbar(aes(ymin = asymp.LCL, ymax = asymp.UCL),
                 width = 0.08,
@@ -917,7 +937,7 @@ p_shell <- emmeans(m_shell_fate, ~ burial, type = "response") |> as.data.frame()
 ```{r}
 # Options for alternate figure 4
 
-pred <- bind_rows(
+pred2 <- bind_rows(
   emmeans(m_live_fate, ~ burial, type = "response") |> as.data.frame() |>
     mutate(response = "Live clam observed"),
   emmeans(m_shell_fate, ~ burial, type = "response") |> as.data.frame() |>
@@ -934,7 +954,7 @@ ggplot() +
               aes(burial, y),
               width = 0.08, height = 0.03,
               alpha = 0.25, size = 1.8) +
-  geom_pointrange(data = pred,
+  geom_pointrange(data = pred2,
                   aes(burial, prob,
                       ymin = asymp.LCL,
                       ymax = asymp.UCL),
