@@ -1,7 +1,7 @@
 ---
 title: "More seeds yield more shoots, but not higher per-seed establishment in a clam-mediated seagrass restoration experiment"
 author: 
-  - name: Cori Lopazanski
+  - name: Cori Lopazanski^1^
     affiliations:
       - id: duml
         name: Duke University
@@ -12,16 +12,16 @@ author:
         postal-code: 28516
     attributes:
       corresponding: true
-  - name: Christina Cutshaw
+  - name: Christina Cutshaw^1^
     affiliations:
       - ref: duml
-  - name: Mason Ibrahim
+  - name: Mason Ibrahim^1^
     affiliations:
       - ref: duml
-  - name: Joseph P. Morton
+  - name: Joseph P. Morton^1^
     affiliations:
       - ref: duml
-  - name: Brian Silliman
+  - name: Brian Silliman^1^
     affiliations:
       - ref: duml
 format: 
@@ -40,6 +40,8 @@ execute:
   error: false
   freeze: auto
 ---
+
+^1^Nicholas School of the Environment, Duke University, Durham, NC 28516
 
 # Abstract
 
@@ -145,8 +147,8 @@ than four hours.
 
 Clams were either manually buried to a depth of 2 cm or placed on the sediment
 surface to allow natural self-burial. Each clam was positioned at the center of
-a 0.25 m^2^ plot, with the corner of each plot marked with a lawn staple to
-facilitate resampling. Plots were arranged in a grid with 0.5 m spacing in a
+a 0.25 m x 0.25 m plot, with the corner of each plot marked with a lawn staple
+to facilitate resampling. Plots were arranged in a grid with 0.5 m spacing in a
 sandy area located at least 10 m away from adjacent salt marsh, oyster reef, and
 seagrass habitat.
 
@@ -240,6 +242,17 @@ linear mixed-effects model with plot included as a random intercept to account
 for repeated measurements through time. Fixed effects for included seed planting
 density, clam placement treatment, sampling date, and the interaction between
 seed planting density and sampling date.
+
+To evaluate whether clam placement influenced the short-term fate of deployed
+clams, we conducted two additional binomial generalized linear models examining
+the probability of observing (1) a live clam and (2) shell fragments or empty
+shells during the first two post-deployment clam surveys. Only the first two
+surveys were included because they occurred before the first seedling was
+observed. To determine whether variation in clam fate was associated with
+restoration outcomes, two exploratory negative binomial generalized linear
+models were fit for final shoot density, each including seed planting density,
+clam placement, and either live clam observations or shell evidence as an
+additional fixed effect.
 
 Significance of fixed effects was evaluated using Type II ANOVA ($\chi^2$
 tests), and model assumptions were assessed using simulated residual diagnostics
@@ -470,6 +483,171 @@ growth_pred <- ggpredict(m_growth,
 
 ```
 
+```{r m_predation}
+
+# Clam observations from first two surveys
+dat_clam <- dat %>%
+  filter(date %in% c("2025-11-05","2025-11-17")) %>%
+  group_by(plot_id) %>%
+  summarise(
+    ever_live  = any(live_clam == 1, na.rm = TRUE),
+    ever_shell = any(shell_frag == 1 | dead_clam == 1, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  left_join(dat_end, by = "plot_id")
+
+# Burial effects on clam fate
+m_live_fate  <- glm(ever_live  ~ burial, family = binomial, data = dat_clam)
+m_shell_fate <- glm(ever_shell ~ burial, family = binomial, data = dat_clam)
+
+# Clam fate effects on final shoot establishment
+m_live_shoots  <- glmmTMB(shoot_count ~ density + burial + ever_live,
+                          family = nbinom2, data = dat_clam)
+m_shell_shoots <- glmmTMB(shoot_count ~ density + burial + ever_shell,
+                          family = nbinom2, data = dat_clam)
+
+car::Anova(m_live_fate,  type = "II")
+car::Anova(m_shell_fate, type = "II")
+car::Anova(m_live_shoots,  type = "II")
+car::Anova(m_shell_shoots, type = "II")
+
+# Despite frequent failure to relocate clams after deployment (Fig. S1), exploratory analyses found no relationship between early clam observations and subsequent shoot establishment after accounting for planting density (data not shown). Together, these observations suggest that clam persistence after deployment was either difficult to quantify or contributed little to early restoration outcomes.
+
+dat_clam <- dat %>% 
+  filter(date %in% c("2025-11-05", "2025-11-17")) %>% 
+  group_by(plot_id) %>% 
+  summarise(ever_live  = any(live_clam == 1, na.rm = TRUE),
+            ever_shell = any(shell_frag == 1 | dead_clam == 1, na.rm = TRUE),
+            .groups = "drop") %>% 
+  left_join(dat_end, by = "plot_id") %>% 
+  mutate(live_label = factor(ever_live,
+                             levels = c(FALSE, TRUE),
+                             labels = c("No live clam observed", "Live clam observed")),
+         shell_label = factor(ever_shell,
+                              levels = c(FALSE, TRUE),
+                              labels = c("No shell evidence", "Shell evidence observed")),
+         shoot_presence = if_else(shoot_count > 0, 1, 0))
+
+table(dat_clam$ever_live)
+table(dat_clam$ever_shell)
+
+# Quick exploratory plots
+ggplot(dat_clam, aes(factor(live_label), shoot_count)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.15, aes(color = density)) +
+  labs(x = "",
+       y = "Number of shoots per plot")
+
+ggplot(dat_clam, aes(factor(shell_label), shoot_count)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.15, aes(color = density)) +
+  labs(x = "",
+       y = "Number of shoots per plot")
+
+dat_clam %>%
+  group_by(shell_label) %>%
+  summarise(
+    p = mean(shoot_presence),
+    n = n(),
+    se = sqrt(p * (1 - p) / n),
+    .groups = "drop"
+  ) %>%
+  ggplot(aes(shell_label, p)) +
+  geom_col(width = 0.6) +
+  geom_errorbar(aes(ymin = p - 1.96 * se,
+                    ymax = p + 1.96 * se),
+                width = 0.15) +
+  scale_y_continuous(labels = scales::percent, limits = c(0, 1)) +
+  labs(x = NULL, y = "Plots with ≥1 shoot")
+
+ggplot(filter(dat_clam, shoot_presence == 1),
+       aes(live_label, shoot_count)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.15)
+
+ggplot(dat_clam,
+       aes(live_label, shoot_count)) +
+  geom_violin(trim = FALSE) +
+  geom_jitter(width = 0.15, alpha = 0.6)
+
+ggplot(filter(dat_clam, shoot_presence == 1),
+       aes(shell_label, shoot_count)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.15)
+
+ggplot(dat_clam,
+       aes(shell_label, shoot_count)) +
+  geom_violin(trim = FALSE) +
+  geom_jitter(width = 0.15, alpha = 0.6)
+
+ggplot(dat_clam,
+       aes(shell_label, shoot_count)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.15) +
+  facet_wrap(~ density, nrow = 2)
+
+dat_clam %>%
+  mutate(density_group = cut(
+    density,
+    breaks = c(0, 30, 70, 100),
+    labels = c("Low", "Medium", "High")
+  )) %>%
+  ggplot(aes(live_label, shoot_count)) +
+  geom_boxplot() +
+  facet_wrap(~ density_group)
+
+
+m0 <- glmmTMB(shoot_count ~ ever_live,
+              family = nbinom2,
+              data = dat_clam)
+
+m1 <- glmmTMB(shoot_count ~ ever_live + density,
+              family = nbinom2,
+              data = dat_clam)
+
+m2 <- glmmTMB(shoot_count ~ ever_live + density + burial,
+              family = nbinom2,
+              data = dat_clam)
+
+summary(m0)
+summary(m1)
+summary(m2)
+
+table(dat_clam$ever_shell, dat_clam$density)
+
+dat_clam %>%
+  group_by(ever_shell) %>%
+  summarise(mean_density = mean(density))
+
+m_shell <- glmmTMB(
+  shoot_count ~ density + burial + ever_shell,
+  family = nbinom2,
+  data = dat_clam
+)
+
+car::Anova(m_shell, type = 2)
+
+
+m_live <- glmmTMB(
+  shoot_count ~ density + burial + ever_live,
+  family = nbinom2,
+  data = dat_clam
+)
+
+car::Anova(m_live, type = 2)
+
+m3 <-  glm(ever_live ~ burial,
+    family = binomial,
+    data = dat_clam)
+
+summary(m3)
+
+m4 <- glm(ever_shell ~ burial,
+    family = binomial,
+    data = dat_clam)
+summary(m4)
+```
+
 # Results
 
 Shoot establishment increased significantly with seed planting density ($\chi^2$
@@ -507,47 +685,47 @@ indicated that shoot height was similar among planting densities during the
 first three months, whereas shoots in higher-density treatments were
 consistently taller during the latter half of the experiment (@fig-3).
 
+Clam placement influenced the short-term fate of deployed clams \[ADD FIGURE
+4\]. Manually buried clams were more likely to be relocated alive during the
+first two post-deployment surveys than surface-deployed clams \[INSERT MODEL
+RESULTS\], whereas shell fragments or empty shells were more frequently observed
+in surface treatments \[MODEL RESULTS\]. However, neither live clam observations
+\[RESULTS\] nor shell evidence \[RESULTS\] were associated with final shoot
+establishment after accounting for seed planting density and clam placement
+treatment. In both models, seed planting density remained the only significant
+predictor of final shoot establishment \[RESULTS\].
+
 # Discussion
 
--   Seed density influenced the number of established shoots, but not the
-    probability of establishment
+\[Start of very rough draft, edits + major changes welcome\]: Increasing seed
+planting density produced proportionally more established shoots without
+altering per-seed establishment. This indicates that, over the range of planting
+densities tested, early restoration outcomes were determined primarily by the
+number of seeds planted rather than changes in establishment efficiency. This
+distinction is important because it separates the effects of propagule supply
+from the processes governing per-seed establishment.
 
-    -   Increasing seed density produced a predictable increase in final shoot
-        establishment.
+The absence of a planting density effect on per-seed establishment suggests
+little evidence for either facilitation or competition during early
+establishment. Increasing local seed density neither enhanced nor reduced
+establishment success, indicating that other processes, such as \[add some:
+microsite-level sediment heterogeneity, non-focal bioturbators/grazers, and
+seed-associated fungal or microbial load\], likely played a greater role in
+determining which seeds ultimately established. Whether density-dependent
+effects emerge at higher planting densities or later stages remains an important
+question for future work.
 
-    -   Establishment probability remained consistent across the densities
-        tested, indicating little evidence for density-dependent effects during
-        early establishment.
+These findings shift the practical question for seed-based restoration from how
+many seeds should be planted to how those seeds should be allocated. Because
+per-seed establishment remained similar across planting densities, restoration
+practitioners can select seed density per deployment unit based on desired
+restoration outcomes rather than concerns about establishment efficiency. For
+example, concentrating many seeds on a single clam is expected to produce dense
+founder patches, whereas distributing the same number of seeds among multiple
+clams would produce a similar number of established shoots distributed across a
+larger area.
 
-    -   This is important because many restoration studies implicitly assume
-        higher local propagule densities could either enhance establishment
-        (facilitations) or reduce it (competition). We suggest neither process
-        dominates over the density range tested.
-
--   Why?
-
-    -   Tested range perhaps did not reach densities where either facilitation
-        or competition among establishing seedlings became important.
-
-    -   Other processes were more limiting than local density
-
--   Restoration design may be most effectively based on target shoot density and
-    configuration rather than concerns about per-seed establishment.
-
-    -   We manipulated seed density per deployment unit (clam). Since
-        establishment probability was similar across densities, higher seed
-        density per clam produced more shoots concentrated around one deployment
-        location. Lower seed densities distributed across more clams would be
-        expected to produce a similar total number of shoots but different
-        spatial arrangement.
-
-    -   Future work could explore optimal spacing across deployment units, patch
-        expansion with different initial seed densities, and broader landscape
-        configuration.
-
--   Growth trajectories also differed across planting densities, suggesting that
-    there are some differences that extend beyond initial establishment. This
-    was
+\[Rest of discussion TBD, suggestions welcome\].
 
 # Figures
 
@@ -709,6 +887,147 @@ ggplot(growth_pred, aes(x = x, y = predicted, color = group, group = group)) +
 
 ```
 
+```{r fig-4}
+p_live <- emmeans(m_live_fate, ~ burial, type = "response") |> as.data.frame() |>
+  ggplot(aes(burial, prob)) +
+  geom_errorbar(aes(ymin = asymp.LCL, ymax = asymp.UCL),
+                width = 0.08,
+                linewidth = 0.5) +
+  geom_point(size = 2.8) +
+  scale_y_continuous(limits = c(0,1), labels = scales::percent) +
+  labs(x = "Clam placement", y = "Probability of live clam observation", tag = "A") +
+  theme_classic()
+
+p_shell <- emmeans(m_shell_fate, ~ burial, type = "response") |> as.data.frame() |>
+  ggplot(aes(burial, prob)) +
+  geom_errorbar(aes(ymin = asymp.LCL, ymax = asymp.UCL),
+                width = 0.08,
+                linewidth = 0.5) +
+  geom_point(size = 2.8) +
+  scale_y_continuous(limits = c(0,1), labels = scales::percent) +
+  labs(x = "Clam placement", y = "Probability of shell evidence", tag = "B") +
+  theme_classic()
+
+(p_live + p_shell) +
+  plot_layout(axes = "collect_x")
+
+
+```
+
+```{r}
+# Options for alternate figure 4
+
+pred <- bind_rows(
+  emmeans(m_live_fate, ~ burial, type = "response") |> as.data.frame() |>
+    mutate(response = "Live clam observed"),
+  emmeans(m_shell_fate, ~ burial, type = "response") |> as.data.frame() |>
+    mutate(response = "Shell evidence")
+)
+
+raw <- bind_rows(
+  dat_clam |> transmute(burial, response = "Live clam observed", y = ever_live),
+  dat_clam |> transmute(burial, response = "Shell evidence", y = ever_shell)
+)
+
+ggplot() +
+  geom_jitter(data = raw,
+              aes(burial, y),
+              width = 0.08, height = 0.03,
+              alpha = 0.25, size = 1.8) +
+  geom_pointrange(data = pred,
+                  aes(burial, prob,
+                      ymin = asymp.LCL,
+                      ymax = asymp.UCL),
+                  size = 0.6, fatten = 3) +
+  facet_wrap(~response) +
+  scale_x_discrete(labels = c("Buried", "Surface")) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = scales::percent_format()) +
+  labs(x = "Clam placement treatment",
+       y = "Probability",
+       caption = "Points show model-predicted probabilities ±95% CI.") +
+  theme_classic()
+
+live <- emmeans(m_live_fate, ~ burial, type = "response") |> as.data.frame()
+shell <- emmeans(m_shell_fate, ~ burial, type = "response") |> as.data.frame()
+
+p1 <- ggplot(live, aes(burial, prob)) +
+  geom_pointrange(aes(ymin = asymp.LCL, ymax = asymp.UCL),
+                  size = 0.6, fatten = 3) +
+  scale_x_discrete(labels = c("Buried", "Surface")) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = scales::percent) +
+  labs(x = NULL,
+       y = "Probability of\nlive clam observation",
+       tag = "A") +
+  theme_classic()
+
+p2 <- ggplot(shell, aes(burial, prob)) +
+  geom_pointrange(aes(ymin = asymp.LCL, ymax = asymp.UCL),
+                  size = 0.6, fatten = 3) +
+  scale_x_discrete(labels = c("Buried", "Surface")) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = scales::percent) +
+  labs(x = NULL,
+       y = "Probability of\nshell evidence",
+       tag = "B") +
+  theme_classic()
+
+p1 + p2
+
+or <- bind_rows(
+  tidy(m_live_fate, conf.int = TRUE, exponentiate = TRUE) %>%
+    filter(term == "burialSurface") %>%
+    mutate(response = "Live clam observation"),
+  tidy(m_shell_fate, conf.int = TRUE, exponentiate = TRUE) %>%
+    filter(term == "burialSurface") %>%
+    mutate(response = "Shell evidence")
+)
+
+ggplot(or,
+       aes(estimate, response)) +
+  geom_vline(xintercept = 1, linetype = 2, colour = "grey50") +
+  geom_errorbarh(aes(xmin = conf.low,
+                     xmax = conf.high),
+                 height = 0.15) +
+  geom_point(size = 3) +
+  scale_x_log10() +
+  labs(x = "Odds ratio (Surface relative to buried)",
+       y = NULL) +
+  theme_classic()
+
+
+sum_live <- dat_clam %>%
+  group_by(burial) %>%
+  summarise(success = sum(ever_live),
+            n = n(), .groups = "drop") %>%
+  bind_cols(binom::binom.confint(.$success, .$n, methods = "wilson")) %>%
+  mutate(response = "Live clam observed")
+
+sum_shell <- dat_clam %>%
+  group_by(burial) %>%
+  summarise(success = sum(ever_shell),
+            n = n(), .groups = "drop") %>%
+  bind_cols(binom::binom.confint(.$success, .$n, methods = "wilson")) %>%
+  mutate(response = "Shell evidence")
+
+plot_dat <- bind_rows(sum_live, sum_shell)
+
+ggplot(plot_dat,
+       aes(x = burial, y = mean)) +
+  geom_col(width = 0.65, fill = "#4F86B7") +
+  geom_errorbar(aes(ymin = lower, ymax = upper),
+                width = 0.15, linewidth = 0.5) +
+  facet_wrap(~response) +
+  scale_x_discrete(labels = c("Buried", "Surface")) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = scales::percent_format()) +
+  labs(x = "Clam placement treatment",
+       y = "Plots (%)") +
+  theme_classic(base_size = 12)
+
+```
+
 Other potential figures:
 
 -   Early predation effects on establishment, with seed density on x-axis and
@@ -732,7 +1051,7 @@ Fig 4: Early predation explains variation
 “We expected density and burial to matter; they did not strongly. Instead, early
 disturbance and temporal dynamics structure establishment.”
 
-# **Notes**
+# **Extra Figures/Notes**
 
 [*Storage copied from Mason's MS:*]{.underline}
 
