@@ -62,29 +62,30 @@ indicating that higher seeding rates yielded more shoots but did not increase
 per-seed establishment success. We found no evidence that clam placement
 influenced seedling establishment. Similarly, shoot growth trajectories were
 broadly comparable between clam placement treatments, though higher seed
-densities generally yielded taller shoots. \[REVISE:\] Extensive clam predation
-and disturbance occurred shortly after deployment, potentially contributing to
-unexplained variation among plots and influencing treatment effects. Our results
-suggest that increasing seed inputs can increase restoration outcomes by
-producing more established shoots, but does not improve the probability that
-individual seeds establish. These findings suggest that seed density per
-deployment unit can be selected based on desired restoration configuration and
-design. Furthermore, manually burying clams provided little measurable benefit
-over surface placement, suggesting that clams likely sufficiently bury seeds
-through natural behavior and therefore this less labor-intensive deployment
-method may be sufficient for large-scale restoration efforts.
-
-\newpage
+densities generally yielded taller shoots. Although manually buried clams were
+more frequently relocated during early monitoring and shell fragments were more
+common in surface treatments, these differences did not influence restoration
+outcomes, suggesting that successful seed deployment occurred despite
+substantial early clam loss. Our results suggest that increasing seed inputs can
+increase restoration outcomes by producing more established shoots, but does not
+improve the probability that individual seeds establish. These findings indicate
+that seed density per deployment unit can be selected based on desired
+restoration configuration and design. Furthermore, manually burying clams
+provided little measurable benefit over surface placement, suggesting that less
+labor-intensive surface deployment may be sufficient for large-scale restoration
+efforts.\newpage
 
 # Introduction
+
+<!--# Mason: 1) Maybe add a few sentences in the beginning about more generalized coastal restoration and the issues with large scale restoration, before jumping into seagrass as the system? 2) And maybe some larger theory on competition and/or density dependence. 3) Perhaps add something in this paragraph about the amount of seeds available for restoration potentially being a bottleneck resource. So if more dense seed additions do have a negative or null effect, then seeds can be more properly allocated to make the most of the stock at hand.  -->
 
 Seagrass meadows provide important ecosystem services, including habitat for
 marine organisms, shoreline stabilization, and carbon storage, but they continue
 to decline in many regions worldwide. As a result, restoration has become an
 increasingly important tool for recovering lost seagrass habitat. Seed-based
-restoration is especially attractive because it can be scaled to larger areas
-than traditional transplant-based approaches, but establishment rates are often
-low and highly variable.
+seagrass restoration is especially attractive because it can be scaled to larger
+areas than traditional transplant-based approaches, but establishment rates are
+often low and highly variable.
 
 One of the major challenges in seed-based restoration is determining how many
 seeds should be deployed. Increasing seed density may increase the total number
@@ -121,7 +122,7 @@ how restoration efficiency changes across a range of seeding densities.
 
 Reproductive *Zostera marina* shoots were collected from seagrass beds in Back
 Sound, NC in May 2025. Shoots were held in flow-through seawater tanks indoors
-until mature seeds were naturally realeased. Released seeds were collected from
+until mature seeds were naturally released. Released seeds were collected from
 the bottom of the tank and stored in mesh bags in a flow-through tank. While
 this storage tank was exposed to general ambient light conditions, the mesh bags
 reduced overall light exposure. Before deployment, 100 seeds were randomly
@@ -132,22 +133,24 @@ seeds classified as viable.
 
 To test how seed planting density and clam placement influences seagrass
 establishment and growth, we conducted a field experiment near Harker’s Island,
-North Carolina. Seagrass seeds were attached to live clams (*Mercenaria
-mercenaria;* \~2 cm shell length) using a gelatin-based bioglue at one of ten
-density levels, spanning 10-100 seeds per clam in increments of 10 seeds. Seed
-planting density was crossed with two clam placement treatments (manually buried
-or placed on sediment surface) in a fully factorial design with four replicates
-per treatment combination (80 plots total).
+North Carolina. Juvenile live clams (*Mercenaria mercenaria;* \~2 cm shell
+length) were sourced from aquaculture facilities at Carteret Community College
+and stored in flow-through seawater tanks prior to deployment. Seagrass seeds
+were attached to live clams using a gelatin-based bioglue at one of ten density
+levels, spanning 10-100 seeds per clam in increments of 10 seeds. Seed planting
+density was crossed with two clam placement treatments (manually buried or
+placed on sediment surface) in a fully factorial design with four replicates per
+treatment combination (80 plots total).
 
 The bioglue was prepared by dissolving dry gelatin powder in saltwater (35 ppt)
 to a final concentration of 9% (w/v). The solution was heated to 35°C until
 fully dissolved and then cooled to 28°C before application. A thin layer of
 bioglue was pipetted onto one shell from each clam and allowed to partially set
 before seeds were arranged in a single layer and covered with a second thin coat
-of glue. Clams were refrigerated at 9°C for 30 minutes to allow the glue to
-solidify, then transported to the field in coolers and deployed the same day.
-The total time from initial glue preparation through field deployment was less
-than four hours.
+of glue. Clams with seeds were refrigerated at 9°C for 30 minutes to allow the
+glue to solidify, then transported to the field in coolers and deployed the same
+day. The total time from initial glue preparation through field deployment was
+less than four hours.
 
 Clams were either manually buried to a depth of 2 cm or placed on the sediment
 surface to allow natural self-burial. Each clam was positioned at the center of
@@ -577,7 +580,9 @@ of seeds that produced shoots did not. Per-seed establishment was not
 significantly affected by seed density ($\chi^2$ = `r m_prop_density_chisq`*, p*
 = `r m_prop_density_p`), clam placmeent ($\chi^2$= `r m_prop_burial_chisq`, *p*
 = `r m_prop_burial_p`), or their interaction ($\chi^2$ = `r m_prop_int_chisq` ,
-*p* = `r m_prop_int_p`) (@fig-1).
+*p* = `r m_prop_int_p`) (@fig-1). Model-predicted per-seed establishment ranged
+from approximately 5% to 12% across planting densities, although these
+differences were not statistically significant.
 
 Mean shoot height increased throughout the experiment ($\chi^2$ =
 `r m_growth_time_chisq` , *p*
@@ -609,8 +614,6 @@ and final shoot height (SI: @tbl-s1).
 
 # Discussion
 
-\[Start of very rough draft, edits + major changes welcome\]
-
 Increasing seed planting density produced proportionally more established shoots
 without altering per-seed establishment. This indicates that, over the range of
 planting densities tested, early restoration outcomes were determined primarily
@@ -621,31 +624,36 @@ supply from the processes governing per-seed establishment.
 The absence of a planting density effect on per-seed establishment suggests
 little evidence for either facilitation or competition during early
 establishment. Increasing local seed density neither enhanced nor reduced
-establishment success, indicating that other processes, such as \[add some:
-microsite-level sediment heterogeneity, non-focal bioturbators/grazers, and
-seed-associated fungal or microbial load\], likely played a greater role in
-determining which seeds ultimately established. Whether density-dependent
-effects emerge at higher planting densities or later stages remains an important
-question for future work.
+establishment success, indicating that microsite conditions or other local
+environmental factors likely played a greater role in determining which seeds
+ultimately established. Whether density-dependent effects emerge at higher
+planting densities or later stages remains an important question for future
+work.
 
-Although manually burying clams was intended to assess \[something like: early
-predation risk and/or clam burial behavior when they have seeds attached\],
-burial did not improve shoot establishment or per-seed establishment. This
-suggests that clams under these conditions primarily functioned as short-term
-deployment vectors, with their persistence after deployment having little
-influence on early restoration outcomes. \[Probably lots more to unpack here\].
-\[Something more about shell as evidence of high predation on clams: Shell
-fragments were observed more frequently in surface treatments, suggesting that
-surface-deployed clams may have experienced greater predation or exposure.
-However, shell observations occasionally occurred in plots where live clams were
-subsequently relocated, indicating that shell evidence alone could not reliably
-distinguish mortality of deployed clams from other processes such as shell
-persistence or observation uncertainty. We therefore based our mechanistic
-analysis on confirmed live clam observations, which provide a more direct
-measure of clam presence. Despite greater early live-clam relocation in buried
-treatments, live clam presence was not associated with eelgrass establishment,
-suggesting that differences in early clam persistence were insufficient to
-influence restoration outcomes.\]
+Although manually burying clams increased the probability of relocating live
+clams during the first two post-deployment surveys, this difference did not
+translate into greater shoot establishment, per-seed establishment, or shoot
+growth. Shell fragments and empty shells were observed more frequently in
+surface treatments, suggesting that surface-deployed clams experienced greater
+loss, likely through predation or exposure. Despite this apparent clam loss,
+restoration outcomes were unaffected, indicating that seed deployment was
+largely successful regardless of subsequent clam fate. One plausible explanation
+is that seeds detached from clams and became incorporated into the sediment
+before many clams were lost, allowing seed establishment to proceed even when
+the deployment vector was no longer present. This suggests that clam-mediated
+deployment may be relatively robust to post-deployment clam loss, provided seed
+release occurs shortly after deployment.
+
+The absence of a clam effect on eelgrass establishment should not be interpreted
+as evidence that clams are unimportant to seagrass ecosystems more broadly.
+Numerous studies have demonstrated that bivalves can facilitate seagrass growth
+through mechanisms such as nutrient enrichment, sediment modification, and
+bioturbation. However, these facilitative effects typically develop over longer
+timescales and involve persistent bivalve populations interacting with
+established plants. In contrast, our experiment evaluated whether short-term
+persistence of deployed clams influenced the earliest stages of seed
+establishment. Under these conditions, clams appear to function primarily as
+temporary seed deployment vectors rather than long-term ecosystem engineers
 
 These findings shift the practical question for seed-based restoration from how
 many seeds should be planted to how those seeds should be allocated. Because
@@ -656,8 +664,6 @@ example, concentrating many seeds on a single clam is expected to produce dense
 founder patches, whereas distributing the same number of seeds among multiple
 clams would produce a similar number of established shoots distributed across a
 larger area.
-
-\[Rest of discussion TBD, suggestions welcome\].
 
 \newpage
 
@@ -755,6 +761,8 @@ plot_seed_outcomes <- (plot_m_count / plot_m_prop) +
 plot_seed_outcomes
 ```
 
+\newpage
+
 ```{r fig-2}
 #| fig-width: 6
 #| fig-height: 4.5
@@ -794,6 +802,8 @@ ggplot(dat_density_group_means,
 
 ```
 
+\newpage
+
 ```{r fig-3}
 #| fig-width: 4.5
 #| fig-height: 4
@@ -820,6 +830,8 @@ ggplot(growth_pred, aes(x = x, y = predicted, color = group, group = group)) +
         legend.position = "top")
 
 ```
+
+\newpage
 
 ```{r fig-4}
 #| fig-width: 4.5
@@ -929,6 +941,7 @@ ft <- ft |>
 ft
 ```
 
+\newpage
 
 ```{r fig-s1}
 #| fig-width: 3
@@ -936,7 +949,7 @@ ft
 #| fig-dpi: 300
 #| fig-pos: "H"
 #| out-width: "3.5in"
-#| fig-cap: "Recorded observations for confirmed clam presence and shells (fragments or empty shells). Observations are shown for each plot – the left column is clams that were manually buried and the right column is clams that were placed on the sediment surface. Rows are grouped by seed density levels (10-100 seeds per plot). Colors indicate whether the clam was confirmed live (green), shell fragments or empty shells were observed (yellow), or nothing was observed (grey)."
+#| fig-cap: "Clam observations are shown for each plot – the left column is clams that were manually buried and the right column is clams that were placed on the sediment surface. Rows are grouped by seed density levels (10-100 seeds per plot). Colors indicate whether the clam was confirmed live (green), shell fragments or empty shells were observed (yellow), or nothing was observed (grey)."
 
 ggplot(data = pred %>% 
          filter(date %in% c("2025-11-05","2025-11-17")) %>% 
@@ -954,188 +967,4 @@ ggplot(data = pred %>%
  ggh4x::facet_nested(density~burial, scales = "free", space = "free", independent = "y")
 
 
-```
-
-
-## *Descriptive visualizations*
-
-We conducted initial exploratory analyses to characterize temporal patterns in
-shoot density across seed density and clam placement treatments. First, we
-visualized plot-level trajectories of shoot densities through time, stratified
-by seed density to explore whether temporal dynamics differed across density
-treatments and whether patterns varied with clam placement.
-
-To highlight treatment-level patterns, we calculated average shoot density
-across replicates for each sampling date, seed density, and clam placement
-treatment (n = 4 plots for each combination). We plotted the temporal
-trajectories of these treatment-level means to examine general trends in shoot
-density over time and explore potential differences between clam placement
-treatments. These descriptive analyses were used to identify broad patterns (or
-lack thereof) and inform model structure.
-
-As shoot density is inherently constrained by the number of seeds planted, we
-also examined shoot density relative to planted seed density. Probability of
-shoot establishment was quantified as the number of live shoots relative to the
-number of seeds initially planted in each plot.
-
-### [Trajectories of raw shoot densities]{.underline}
-
-Initial visualizations show that shoot densities increase over time, and that
-higher seed densities generally yield higher shoot densities (Figure 1). This
-pattern does not appear to vary depending on whether clams were manually buried
-or placed on the sediment surface. For visualization purposes, these trends are
-shown for each plot through time (Figure 1) as treatment-level means through
-time (Figure 2), and as treatment-level means through time but grouped by clam
-placement (Figure 3).
-
-```{r plot-level-density-trajectories}
-#| fig-width: 6.5
-#| fig-height: 4
-#| fig-dpi: 300
-#| fig-cap: "Temporal trajectories of shoot density (count per 0.0625 m²) from November 2025 through April 2026 across experimental plots, shown separately for initial seed densities from 10 to 100 seeds (facets). Each line represents a single plot. Clam placement treatments are indicated by symbol and line type: clams placed on the sediment surface are shown as green circles with solid lines, and manually buried clams as purple triangles with dashed lines."
-
-ggplot(dat, aes(x = date, y = shoot_count, group = plot_id, color = burial)) +
-  geom_line(aes(linetype = burial), alpha = 0.7) +
-  geom_point(aes(shape = burial), alpha = 0.7) +
-  facet_wrap(~density, nrow = 2) +
-  labs(x = "",
-       y = expression("Shoot density (count per 0.0625 m"^2*")"),
-       shape = "Clam placement",
-       linetype = "Clam placement",
-       color = "Clam placement") +
-  scale_color_manual(values = c("#1b9e77", "#7570b3")) +
-  theme_classic() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-```
-
-```{r treatment-level-density-trajectories}
-#| fig-width: 6.5
-#| fig-height: 4
-#| fig-dpi: 300
-#| fig-cap: "Temporal trajectories of mean shoot density (count per 0.0625 m²) from November 2025 through April 2026, shown separately for initial seeding densities from 10 to 100 seeds (facets). Values represent treatment-level means (n = 4 plots per density × clam placement combination) and error bars show +/- 1 standard error. Clam placement treatments are indicated by symbol and line type: clams placed on the sediment surface are shown as green circles with solid lines, and manually buried clams as purple triangles with dashed lines."
-
-ggplot(dat_means, aes(x = date, y = shoot_count_mean, group = burial, color = burial)) +
-  geom_line(aes(linetype = burial)) +
-  geom_point(aes(shape = burial)) +
-  geom_errorbar(aes(ymin = shoot_count_mean - shoot_count_se, 
-                    ymax = shoot_count_mean + shoot_count_se)) +
-  facet_wrap(~density, nrow = 2) +
-  labs(x = "",
-       y = expression("Shoot density (count per 0.0625 m"^2*")"),
-       shape = "Clam placement",
-       linetype = "Clam placement",
-       color = "Clam placement") +
-  scale_color_manual(values = c("#1b9e77", "#7570b3")) +
-  theme_classic() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-```
-
-```{r density-group-means}
-#| fig-width: 6.5
-#| fig-height: 4
-#| fig-dpi: 300
-#| fig-cap: "Temporal trajectories of mean shoot density (count per 0.0625 m²). For visualization, seed planting densities were grouped into low (10-30 seeds), medium (40-70 seeds), and high (80-100 seeds) categories. Points represent the average shoot count per plot (±SE) at each sampling date, averaged across all plots within each seed density group and clam placement treatment. Colors indicate seed planting density groups, while facets indicate clam placement."
-
-dat_density_group_means <- dat %>%
-  group_by(date, burial, density_group) %>%
-  summarise(shoot_count_mean = mean(shoot_count, na.rm = TRUE),
-            shoot_count_se = sd(shoot_count, na.rm = TRUE) / sqrt(n()),
-            establishment_mean = mean(shoot_count / density, na.rm = TRUE),
-            establishment_se = sd(shoot_count / density, na.rm = TRUE) / sqrt(n()),
-            .groups = "drop")
-
-ggplot(dat_density_group_means,
-       aes(date, shoot_count_mean, 
-           color = density_group, group = density_group)) +
-  geom_line(linewidth = 0.9) +
-  geom_point(size = 2) +
-  geom_errorbar(aes(ymin = shoot_count_mean - shoot_count_se,
-                    ymax = shoot_count_mean + shoot_count_se),
-                width = 4, linewidth = 0.4) +
-  facet_wrap(~burial) +
-  labs(x = "",
-       y = expression("Shoot count per 0.0625 m"^2),
-       color = "Seed planting density") +
-  theme_classic() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
-
-```{r treatment-trajectories-by-placement}
-#| fig-width: 6.5
-#| fig-height: 4
-#| fig-dpi: 300
-#| fig-cap: "Temporal trajectories of mean shoot density (count per 0.0625 m²) from November 2025 through April 2026, shown separately by clam placement treatment (facets). Values represent treatment-level means (n = 4 plots per density × clam placement combination). Colors denote initial seed density from 10 to 100 seeds, with darker shades indicating higher densities."
-
-ggplot(dat_means %>% 
-         mutate(density = factor(density)),
-       aes(x = date, y = shoot_count_mean, group = density, color = density)) +
-  geom_line() +
-  geom_point() +
-  geom_errorbar(aes(ymin = shoot_count_mean - shoot_count_se, ymax = shoot_count_mean + shoot_count_se), width = 3)+
-  facet_wrap(~burial, nrow = 1) +
-  scale_color_manual(values = c('#d9f0ea', '#b2e2d8', '#80cdc1', '#4db6ac', '#2ca25f',
-                                '#238b45','#006d2c', '#005824','#00441b','#002e12')) +
-  labs(x = "",
-       y = expression("Shoot density (count per 0.0625 m"^2*")"),
-       color = "Seed density") +
-  theme_classic() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-```
-
-
-```{r}
-
-transitions <- pred %>%
-  mutate(shell = if_else(shell_frag == 1 | dead_clam == 1, 1, 0)) %>% 
-  select(date, plot_id, density, burial, shell, live = live_clam) %>% 
-  filter(date %in% c("2025-11-05", "2025-11-17")) 
-
-transitions2 <- transitions %>% 
-  arrange(plot_id, date) %>%
-  mutate(
-    state = case_when(
-      live == 1 & shell == 1 ~ "Live + shell",
-      live == 1              ~ "Live",
-      shell == 1             ~ "Shell",
-      TRUE                   ~ "None"
-    )
-  ) %>%
-  group_by(plot_id) %>%
-  mutate(survey = row_number()) %>%
-  ungroup() %>%
-  select(plot_id, survey, state) %>%
-  pivot_wider(
-    names_from = survey,
-    values_from = state,
-    names_prefix = "survey_"
-  ) %>%
-  mutate(
-    transition = paste(survey_1, "\u2192", survey_2)
-  )
-  
-transitions2 %>%
-  count(transition, sort = TRUE)
-
-transitions2 %>%
-  count(survey_1, survey_2) %>%
-  pivot_wider(
-    names_from = survey_2,
-    values_from = n,
-    values_fill = 0
-  )
-
-transition_summary <- transitions %>%
-  arrange(plot_id, date) %>%
-  group_by(plot_id) %>%
-  summarise(
-    ever_live = any(live == 1),
-    ever_shell = any(shell == 1),
-    .groups = "drop"
-  )
-
-transition_summary %>%
-  count(ever_live, ever_shell)
 ```
