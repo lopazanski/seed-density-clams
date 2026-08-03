@@ -64,30 +64,31 @@ per-seed establishment success. We found no evidence that clam placement
 influenced seedling establishment. Similarly, shoot growth trajectories were
 broadly comparable between clam placement treatments, though higher seed
 densities generally yielded taller shoots. Although manually buried clams were
-more frequently \[reword: relocated\] during early monitoring and shell
-fragments were more common in surface treatments, these differences did not
-influence restoration outcomes, suggesting that successful seed deployment
-occurred despite substantial early clam loss. Our results suggest that
-increasing seed inputs can increase restoration outcomes by producing more
-established shoots, but does not improve the probability that individual seeds
-establish. These findings indicate that seed density per deployment unit can be
-selected based on desired restoration configuration and design. Furthermore,
-manually burying clams provided little measurable benefit over surface
-placement, suggesting that less labor-intensive surface deployment may be
-sufficient for large-scale restoration efforts.\newpage
+more frequently detected during early monitoring and shell fragments were more
+common in surface treatments, these differences did not influence restoration
+outcomes, suggesting that successful seed deployment occurred despite
+substantial early clam loss. Our results suggest that increasing seed inputs can
+increase restoration outcomes by producing more established shoots, but does not
+improve the probability that individual seeds establish. These findings indicate
+that seed density per deployment unit can be selected based on desired
+restoration configuration and design. Furthermore, manually burying clams
+provided little measurable benefit over surface placement, suggesting that less
+labor-intensive surface deployment may be sufficient for large-scale restoration
+efforts.\newpage
 
 # Introduction
 
 <!--# Mason: 1) Maybe add a few sentences in the beginning about more generalized coastal restoration and the issues with large scale restoration, before jumping into seagrass as the system? 2) And maybe some larger theory on competition and/or density dependence. 3) Perhaps add something in this paragraph about the amount of seeds available for restoration potentially being a bottleneck resource. So if more dense seed additions do have a negative or null effect, then seeds can be more properly allocated to make the most of the stock at hand.  -->
 
 Seagrass meadows provide important ecosystem services, including habitat for
-marine organisms, shoreline stabilization, and carbon storage [@barbier2011],
-but they continue to decline in many regions worldwide [@waycott2009,
-@dunic2021, @peng2026]. As a result, restoration has become an increasingly
-important tool for recovering lost seagrass habitat [@vankatwijk2016].
-Seed-based seagrass restoration is especially attractive because it can be
-scaled to larger areas than traditional transplant-based approaches, but
-establishment rates are often low and highly variable [@bayraktarov2016,
+marine organisms, shoreline stabilization, and carbon storage [@barbier2011;
+@fourqurean2012], but they continue to decline in many regions worldwide
+[@waycott2009; @dunic2021; @peng2026]. As a result, restoration has become an
+increasingly important tool for recovering lost seagrass habitat
+[@vankatwijk2016]. Seed-based seagrass restoration is especially attractive
+because it can be scaled to larger areas than traditional transplant-based
+approaches with less damage do donor meadows [@reynolds2012; @orth2000], but
+establishment rates are often low and highly variable [@bayraktarov2016;
 @orth2020].
 
 One of the challenges in seed-based restoration is determining how many seeds
@@ -106,12 +107,12 @@ Recent restoration studies have increasingly suggested incorporating positive
 species interactions to enhance success [@valdez2020]. In seagrass, experimental
 studies have shown that bivalve addition can enhance several measures of
 performance, including patch expansion, increased shoot density and biomass, and
-greater resilience to disturbance [@zhang2021, @donaher2021]. Proposed
+greater resilience to disturbance [@zhang2021; @donaher2021]. Proposed
 mechanisms include nutrient inputs through excretion, sediment bioturbation,
 suspension feeding that improves water clarity, and modification of sediment
-biogeochemistry [@peterson2001, @wall2008].
+biogeochemistry [@peterson2001; @wall2008].
 
-BBuilding on these positive interactions, attaching seagrass seeds to live clams
+Building on these positive interactions, attaching seagrass seeds to live clams
 may provide a novel means of harnessing their natural burrowing behavior for
 seed delivery. As clams burrow, they may carry attached seeds below the sediment
 surface where conditions are favorable for germination. However, it remains
@@ -119,8 +120,8 @@ unclear whether clams burrow rapidly enough after deployment to protect both
 themselves and attached seeds from predation or physical disturbance. Manually
 burying seeded clams may reduce this initial vulnerability but also increases
 deployment effort and may limit scalability. Whether natural clam burrowing is
-sufficient, or whether manual burial is required, will affect the scalability
-clam-mediated seagrass restoration.
+sufficient for seed deployment will affect the scalability of clam-mediated
+seagrass restoration.
 
 In this study, we tested how seed density and clam placement influence eelgrass
 (*Zostera marina*) establishment in a field restoration experiment in North
@@ -628,56 +629,106 @@ and final shoot height (SI: @tbl-s1).
 
 # Discussion
 
-Increasing seed planting density produced proportionally more established shoots
-without altering per-seed establishment. This indicates that, over the range of
-planting densities tested, early restoration outcomes were determined primarily
-by the number of seeds planted rather than changes in establishment efficiency.
-This distinction is important because it separates the effects of propagule
-supply from the processes governing per-seed establishment.
+Our study suggests that attaching eelgrass seeds to live clams offers a viable
+seed deployment strategy for restoration. Increasing seed planting density
+produced proportionally more established shoots while maintaining similar
+per-seed establishment. Likewise, manually burying clams increased short-term
+clam retention but did not improve shoot establishment or growth compared to
+surface deployment. These findings suggest that early restoration outcomes were
+primarily driven by seed supply rather than differences in establishment
+efficiency or short-term clam persistence. More broadly, they suggest that
+clam-mediated seed deployment can provide predictable restoration outcomes
+across a wide range of planting densities, offering practitioners flexibility in
+how limited seed resources are allocated during restoration efforts [@orth2003;
+@orth2012; @vankatwijk2016].
 
-The absence of a planting density effect on per-seed establishment suggests
-little evidence for either facilitation or competition during early
-establishment. Increasing local seed density neither enhanced nor reduced
-establishment success, indicating that microsite conditions or other local
-environmental factors likely played a greater role in determining which seeds
-ultimately established. Whether density-dependent effects emerge at higher
-planting densities or later stages remains an important question for future
-work.
+The positive relationship between planting density and shoot establishment is
+consistent with previous seed-based eelgrass restoration studies, where planting
+more seeds generally results in more established seedlings or shoots [@orth2003;
+@marion2010; @orth2012]. However, relatively few studies have examined
+establishment efficiency on a per-seed basis. Although @gräfnings2023 reported
+lower per-seed recruitment at a higher seed density using seed injection in the
+Dutch Wadden Sea (2 vs. 20 seeds per injection), per-seed establishment remained
+constant across 10-100 seeds per clam evaluated here. This lack of density
+dependence suggests that neither competition nor facilitation strongly
+influenced seedling establishment during the first growing season. Instead,
+establishment appears to have been governed by seed viability and local
+environmental conditions rather than interactions among neighboring seedlings.
+Similar patterns are consistent with restoration systems in which propagule
+availability, rather than density-dependent mortality, limits early
+establishment \[consider: Suding 2011; Corbin & Holl 2012\]. Whether positive or
+negative density dependence emerges at substantially lower or higher planting
+densities, or later during seagrass meadow development, remains an important
+question for future work.
 
-Although manually burying clams increased the probability of relocating live
-clams during the first two post-deployment surveys, this difference did not
-translate into greater shoot establishment, per-seed establishment, or shoot
-growth. Shell fragments and empty shells were observed more frequently in
-surface treatments, suggesting that surface-deployed clams experienced greater
-loss, likely through predation or exposure. Despite this apparent clam loss,
-restoration outcomes were unaffected, indicating that seed deployment was
-largely successful regardless of subsequent clam fate. One plausible explanation
-is that seeds detached from clams and became incorporated into the sediment
-before many clams were lost, allowing seed establishment to proceed even when
-the deployment vector was no longer present. This suggests that clam-mediated
-deployment may be relatively robust to post-deployment clam loss, provided seed
-release occurs shortly after deployment.
+One of the primary uncertainties surrounding clam-mediated seed deployment was
+whether natural burrowing would rapidly incorporate attach seeds into the
+sediment. Although manually burying clams increased the probability of
+relocating live clams during the first two post-deployment surveys, this
+difference did not translate into greater shoot establishment, per-seed
+establishment, or shoot growth. A likely explanation is that seeds detached from
+clams and became incorporated into the sediment soon after deployment,
+regardless of whether clams were initially placed on the sediment surface or
+buried manually. \[Add something about how the adhesive attachment time may play
+an important role in ensuring rapid seed deployment to ensure planting is
+independent of clam fate; our initial lab trials suggest that our gelatin-based
+adhesive maintained attached seeds for 8-10 hours\].
 
-The absence of a clam effect on eelgrass establishment should not be interpreted
-as evidence that clams are unimportant to seagrass ecosystems more broadly.
-Numerous studies have demonstrated that bivalves can facilitate seagrass growth
-through mechanisms such as nutrient enrichment, sediment modification, and
-bioturbation. However, these facilitative effects typically develop over longer
-timescales and involve persistent bivalve populations interacting with
-established plants. In contrast, our experiment evaluated whether short-term
-persistence of deployed clams influenced the earliest stages of seed
-establishment. Under these conditions, clams appear to function primarily as
-temporary seed deployment vectors rather than long-term ecosystem engineers
+Although manually buried clams were more frequently detected alive shortly after
+deployment, overall clam persistence was low in both treatments.
+Surface-deployed plots also contained more shell fragments and empty shells,
+patterns that are consistent with greater mortality and predation following
+deployment. Juvenile *Mercenaria* are susceptible to predation by blue crabs,
+mud grabs, gastropods, and cownose rays, making predation a plausible
+explanation for the observed losses [@peterson2001]. Since restoration outcomes
+were unaffected, seed delivery likely occurred soon after deployment, but future
+studies should evaluate whether larger clams, different clam densities, or
+predator exclusions improve clam persistence and whether greater persistence
+ultimately enhances restoration outcomes or longer-term seagrass performance.
 
-These findings shift the practical question for seed-based restoration from how
-many seeds should be planted to how those seeds should be allocated. Because
-per-seed establishment remained similar across planting densities, restoration
-practitioners can select seed density per deployment unit based on desired
-restoration outcomes rather than concerns about establishment efficiency. For
-example, concentrating many seeds on a single clam is expected to produce dense
-founder patches, whereas distributing the same number of seeds among multiple
-clams would produce a similar number of established shoots distributed across a
-larger area.
+The limited relationship between clam persistence and restoration outcomes
+should not be interpreted as evidence that bivalves do not facilitate seagrass
+restoration. Previous studies have shown that persistent bivalve populations can
+enhance seagrass performance [@peterson2001; @zhang2021; @donaher2021]. In
+contrast, our experiment evaluated only the first six months post-deployment and
+included a single juvenile clam per plot. This density and timescale was likely
+insufficient to generate the ecosystem engineering effects typically associated
+with mature bivalve populations. Instead, our results highlight that successful
+seed deployment did not depend on prolonged clam persistence during the initial
+establishment phase.
+
+Although planting density did not influence establishment efficiency, shoots in
+higher-density treatments became taller later in the experiment. Increased shoot
+height may represent the early development of positive interactions among
+neighboring shoots as patches begin to expand. Greater local shoot density could
+reduce hydrodynamic stress or enhance sediment stabilization, processes that
+become increasingly important as patches develop \[consider: Fonseca & Fisher,
+Maxwell et al. 2017, Temmink et al2021\]. Since these responses emerged only
+after shoot establishment, they likely reflect post-establishment interactions
+rather than mechanisms affecting initial seed establishment.
+
+From a restoration perspective, these findings shift the practical question from
+how many seeds should be planted to how limited seed resources should be
+allocated. Seed availability requently constrains the scale of seagrass
+restoration [@orth2003; @vankatwijk2016], making efficient allocation a central
+management challenge. Because per-seed establishment remained similar across
+planting densities, practitioners can select seed density per deployment unit
+based on desired restoration outcomes without sacrificing per-seed performance.
+For example, concentrating many seeds on fewer clams is expected to produce
+dense patches, whereas distributing the same number of seeds among more clams
+would produce a similar number of established shoots distributed across a larger
+area. Determining which strategy best promotes long-term seagrass expansion will
+depend on site conditions, restoration goals, and the importance of patch
+connectivity, natural expansion, and landscape configuration \[REFS\].
+
+Overall, our results demonstrate that live hard clams can function as effective
+seed deployment agents despite limited long-term persistence. Early restoration
+success was determined primarily by seed supply rather than clam placement or
+persistence, and establishment efficiency remained consistent across a broad
+range of planting densities. These findings support clam-mediated seed
+deployment as a practical addition to the growing suite of seed-based
+restoration approaches and provide a framework for optimizing seed allocation at
+larger spatial scales.
 
 \newpage
 
