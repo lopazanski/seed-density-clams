@@ -1,7 +1,7 @@
 ---
 title: "More seeds yield more shoots, but not higher per-seed establishment in a clam-mediated seagrass restoration experiment"
 author: 
-  - name: Cori Lopazanski^1^
+  - name: Cori Lopazanski^1*^
     affiliations:
       - id: duml
         name: Duke University
@@ -30,8 +30,9 @@ format:
   docx: 
     fig-cap-location: bottom
     keep-tex: true
-    reference-doc: docs/jfwm_template.docx
+    reference-doc: docs/Frontiers_Template.docx
 bibliography: references.bib
+csl: docs/frontiers-in-marine-science.csl
 editor_options:
   markdown:
     wrap: 80
@@ -42,7 +43,10 @@ execute:
   freeze: auto
 ---
 
-^1^Nicholas School of the Environment, Duke University, Durham, NC 28516
+^1^Duke University Marine Lab, Nicholas School of the Environment, Duke
+University, Beaufort, NC 28517
+
+\*Corresponding author (cori.lopazanski\@duke.edu)
 
 \newpage
 
@@ -50,31 +54,33 @@ execute:
 
 Seagrass restoration increasingly relies on seed-based approaches, yet optimal
 seeding densities and deployment methods remain poorly resolved. We evaluated
-how seed density and clam-mediated seed placement influence eelgrass (*Zostera
-marina*) establishment in a field restoration experiment in Back Sound, North
-Carolina. Eelgrass seeds were attached to juvenile live clams at densities
-ranging from 10 to 100 seeds per clam, and deployed in a fully factorial design
-crossing seed density with two clam placement treatments - manually buried or
-placed on the sediment surface. Plots were monitored biweekly for shoot
-establishment and growth over six months. Shoot density increased through time
-and was generally higher in plots receiving greater numbers of seeds. However,
-the proportion of seeds that produced shoots did not vary with seed density,
-indicating that higher seeding rates yielded more shoots but did not increase
-per-seed establishment success. We found no evidence that clam placement
+the relative effects of seed density and clam-mediated seed placement on
+eelgrass (*Zostera marina*) establishment in a field restoration experiment in
+Back Sound, North Carolina. Eelgrass seeds were attached to juvenile live clams
+using a gelatin adhesive at densities ranging from 10 to 100 seeds per clam, and
+deployed in a fully factorial design crossing seed density with two clam
+placement treatments - manually buried or placed on the sediment surface. Plots
+were monitored biweekly for shoot establishment and growth over six months.
+Shoot density increased through time and was higher in plots receiving greater
+numbers of seeds. However, the proportion of seeds that produced shoots did not
+vary with seed density, indicating that higher seeding rates yielded more shoots
+but did not increase per-seed establishment success. We found no evidence that
+initial clam placement (i.e., on the surface or buried in the sediment)
 influenced seedling establishment. Similarly, shoot growth trajectories were
 broadly comparable between clam placement treatments, though higher seed
-densities generally yielded taller shoots. Although manually buried clams were
-more frequently detected during early monitoring and shell fragments were more
-common in surface treatments, these differences did not influence restoration
-outcomes, suggesting that successful seed deployment occurred despite
-substantial early clam loss. Our results suggest that increasing seed inputs can
-increase restoration outcomes by producing more established shoots, but does not
-improve the probability that individual seeds establish. These findings indicate
-that seed density per deployment unit can be selected based on desired
-restoration configuration and design. Furthermore, manually burying clams
-provided little measurable benefit over surface placement, suggesting that less
-labor-intensive surface deployment may be sufficient for large-scale restoration
-efforts.\newpage
+densities yielded taller shoots. Although manually buried clams were more
+frequently detected during early monitoring and shell fragments were more common
+in surface treatments, these differences did not influence restoration outcomes,
+suggesting that successful seed deployment occurred despite substantial early
+clam loss, potentially because seeds detached from clams soon after deployment.
+Our results suggest that increasing seed inputs can increase restoration
+outcomes by producing more established shoots, but does not improve the
+probability that individual seeds establish. These findings indicate that seed
+density per deployment unit can be selected based on desired restoration
+configuration and design. Furthermore, manually burying clams provided little
+measurable benefit over surface placement, suggesting that less labor-intensive
+surface deployment of clams with attached seeds may be sufficient for
+large-scale restoration efforts.\newpage
 
 # Introduction
 
@@ -87,12 +93,12 @@ marine organisms, shoreline stabilization, and carbon storage [@barbier2011;
 increasingly important tool for recovering lost seagrass habitat
 [@vankatwijk2016]. Seed-based seagrass restoration is especially attractive
 because it can be scaled to larger areas than traditional transplant-based
-approaches with less damage do donor meadows [@reynolds2012; @orth2000], but
+approaches with less damage to donor meadows [@reynolds2012; @orth2000], but
 establishment rates are often low and highly variable [@bayraktarov2016;
 @orth2020].
 
 One of the challenges in seed-based restoration is determining how many seeds
-should be deployed [@orth2003, @gräfnings2023]. Increasing seed density may
+should be deployed [@orth2003; @gräfnings2023]. Increasing seed density may
 increase the total number of seedlings that establish simply because more seeds
 are available. However, establishment may not increase proportionally if seeds
 or seedlings begin competing with one another or if other factors limit success
@@ -100,7 +106,7 @@ or seedlings begin competing with one another or if other factors limit success
 whether adding more seeds increases the number of established shoots, improves
 the probability that individual seeds establish, or both. It is also unclear
 whether increasing seed density results in proportional increases in shoot
-establishment or whether density-dependence processes alter establishment
+establishment or whether density-dependent processes alter establishment
 success.
 
 Recent restoration studies have increasingly suggested incorporating positive
@@ -123,13 +129,15 @@ deployment effort and may limit scalability. Whether natural clam burrowing is
 sufficient for seed deployment will affect the scalability of clam-mediated
 seagrass restoration.
 
-In this study, we tested how seed density and clam placement influence eelgrass
-(*Zostera marina*) establishment in a field restoration experiment in North
+In this study, we attached eelgrass (*Zostera marina*) seeds to live hard clams
+(*Mercenaria mercenaria)*, and tested how seed density and clam placement
+influence eelgrass establishment in a field restoration experiment in North
 Carolina. Specifically, we asked whether increasing seed density increases
 establishment, whether manually burying clams improves establishment relative to
 placing them on the sediment surface, and whether these effects interact. We
-quantified both total shoot establishment and per-seed establishment to evaluate
-how restoration efficiency changes across a range of seeding densities.
+quantified total shoot establishment, per-seed establishment, and shoot height
+through time to evaluate how restoration efficiency changes across a range of
+seeding densities.
 
 # Methods
 
@@ -159,20 +167,23 @@ treatment combination (80 plots total).
 
 The bioglue was prepared by dissolving dry gelatin powder in saltwater (35 ppt)
 to a final concentration of 9% (w/v). The solution was heated to 35°C until
-fully dissolved and then cooled to 28°C before application. A thin layer of
-bioglue was pipetted onto one shell from each clam and allowed to partially set
-before seeds were arranged in a single layer and covered with a second thin coat
-of glue. Clams with seeds were refrigerated at 9°C for 30 minutes to allow the
-glue to solidify, then transported to the field in coolers and deployed the same
-day. The total time from initial glue preparation through field deployment was
-less than four hours.
+fully dissolved and then cooled to 25°C before application, as exposure to high
+temperatures can reduce viability [@pan2011]. A thin layer of bioglue was
+pipetted onto one shell from each clam and allowed to partially set before seeds
+were arranged in a single layer and covered with a second thin coat of glue.
+Clams with seeds were refrigerated at 9°C for 30 minutes to allow the glue to
+solidify, then transported to the field in coolers and deployed the same day.
+The total time from initial glue preparation through field deployment was less
+than four hours, during which all seeds remained attached to clams; preliminary
+lab trials indicated that adhesive dissolved and seeds detached from clams
+within 8-12 hours.
 
-Clams were either manually buried to a depth of 2 cm or placed on the sediment
-surface \[add why\] to allow natural self-burial. Each clam was positioned at
-the center of a 0.25 m x 0.25 m plot, with the corner of each plot marked with a
-lawn staple to facilitate resampling. Plots were arranged in a grid with 0.5 m
-spacing in a sandy area located at least 10 m away from adjacent salt marsh,
-oyster reef, and seagrass habitat.
+Clams were either manually buried to a depth of 2 cm [@jørgensen2019] or placed
+on the sediment surface to allow natural self-burial. Each clam was positioned
+at the center of a 0.25 m x 0.25 m plot, with the corner of each plot marked
+with a lawn staple to facilitate resampling. Plots were arranged in a grid with
+0.5 m spacing in a sandy area located at least 10 m away from adjacent salt
+marsh, oyster reef, and seagrass habitat.
 
 Plots were monitored approximately every two weeks from November 2025 through
 April 2026. During each survey, we recorded the number of live shoots and
@@ -274,7 +285,7 @@ using a beta-binomial distribution with a logit link. Both models included seed
 planting density (continuous), clam placement (factor; buried or surface), and
 their interaction as fixed effects. Mean shoot height was analyzed using a
 linear mixed-effects model with plot included as a random intercept to account
-for repeated measurements through time. Fixed effects for included seed planting
+for repeated measurements through time. Fixed effects included seed planting
 density, clam placement treatment, sampling date, and the interaction between
 seed planting density and sampling date.
 
@@ -297,10 +308,10 @@ after accounting for the experimental treatments.
 
 Significance of fixed effects was evaluated using Type II ANOVA ($\chi^2$
 tests), and model assumptions were assessed using simulated residual diagnostics
-(DHARMa; REF) to evaluate dispersion and zero inflation. Model predictions and
-estimated marginal means (emmeans; REF) were used to visualize treatment effects
-and quantify effect sizes. All analyses were conducted in R version 4.5.3 (REF)
-& RStudio (version 2025.09.2+418; REF).
+(DHARMa; [@hartig2026]) to evaluate dispersion and zero inflation. Model
+predictions and estimated marginal means were used to visualize treatment
+effects and quantify effect sizes. All analyses were conducted in R version
+4.5.3 [@rcoreteam2025] & RStudio (version 2025.09.2+418; [@positteam2025]).
 
 ```{r build-dataframes}
 #| include: false
@@ -593,7 +604,7 @@ This increase reflected greater shoot establishment rather than higher per-seed
 establishment: while shoot density increased with seed density, the *proportion*
 of seeds that produced shoots did not. Per-seed establishment was not
 significantly affected by seed density ($\chi^2$ = `r m_prop_density_chisq`*, p*
-= `r m_prop_density_p`), clam placmeent ($\chi^2$= `r m_prop_burial_chisq`, *p*
+= `r m_prop_density_p`), clam placement ($\chi^2$ = `r m_prop_burial_chisq`, *p*
 = `r m_prop_burial_p`), or their interaction ($\chi^2$ = `r m_prop_int_chisq` ,
 *p* = `r m_prop_int_p`) (@fig-1). Model-predicted per-seed establishment ranged
 from approximately 5% to 12% across planting densities, although these
@@ -625,7 +636,7 @@ height ($\chi^2$ = `r m_live_height_chisq`, *p* = `r m_live_height_p`) after
 accounting for seed planting density and clam placement. Seed planting density
 remained the only significant predictor in the model of final shoot
 establishment, and was marginally significant for both per-seed establishment
-and final shoot height (SI: @tbl-s1).
+and final shoot height (Table S1).
 
 # Discussion
 
@@ -634,13 +645,10 @@ seed deployment strategy for restoration. Increasing seed planting density
 produced proportionally more established shoots while maintaining similar
 per-seed establishment. Likewise, manually burying clams increased short-term
 clam retention but did not improve shoot establishment or growth compared to
-surface deployment. These findings suggest that early restoration outcomes were
-primarily driven by seed supply rather than differences in establishment
-efficiency or short-term clam persistence. More broadly, they suggest that
-clam-mediated seed deployment can provide predictable restoration outcomes
-across a wide range of planting densities, offering practitioners flexibility in
-how limited seed resources are allocated during restoration efforts [@orth2003;
-@orth2012; @vankatwijk2016].
+surface deployment. These findings indicate that clam-mediated seed deployment
+can provide predictable restoration outcomes across a wide range of planting
+densities, offering practitioners flexibility in how limited seed resources are
+allocated during restoration efforts.
 
 The positive relationship between planting density and shoot establishment is
 consistent with previous seed-based eelgrass restoration studies, where planting
@@ -649,77 +657,79 @@ more seeds generally results in more established seedlings or shoots [@orth2003;
 establishment efficiency on a per-seed basis. Although @gräfnings2023 reported
 lower per-seed recruitment at a higher seed density using seed injection in the
 Dutch Wadden Sea (2 vs. 20 seeds per injection), per-seed establishment remained
-constant across 10-100 seeds per clam evaluated here. This lack of density
+constant across the 10-100 seeds per clam evaluated here. This lack of density
 dependence suggests that neither competition nor facilitation strongly
 influenced seedling establishment during the first growing season. Instead,
 establishment appears to have been governed by seed viability and local
 environmental conditions rather than interactions among neighboring seedlings.
-Similar patterns are consistent with restoration systems in which propagule
-availability, rather than density-dependent mortality, limits early
-establishment \[consider: Suding 2011; Corbin & Holl 2012\]. Whether positive or
-negative density dependence emerges at substantially lower or higher planting
-densities, or later during seagrass meadow development, remains an important
-question for future work.
+Whether positive or negative density dependence emerges at substantially lower
+or higher planting densities, or later during seagrass meadow development,
+remains an important question for future work.
 
 One of the primary uncertainties surrounding clam-mediated seed deployment was
-whether natural burrowing would rapidly incorporate attach seeds into the
+whether natural burrowing would rapidly incorporate attached seeds into the
 sediment. Although manually burying clams increased the probability of
 relocating live clams during the first two post-deployment surveys, this
 difference did not translate into greater shoot establishment, per-seed
-establishment, or shoot growth. A likely explanation is that seeds detached from
-clams and became incorporated into the sediment soon after deployment,
-regardless of whether clams were initially placed on the sediment surface or
-buried manually. \[Add something about how the adhesive attachment time may play
-an important role in ensuring rapid seed deployment to ensure planting is
-independent of clam fate; our initial lab trials suggest that our gelatin-based
-adhesive maintained attached seeds for 8-10 hours\].
-
-Although manually buried clams were more frequently detected alive shortly after
-deployment, overall clam persistence was low in both treatments.
-Surface-deployed plots also contained more shell fragments and empty shells,
-patterns that are consistent with greater mortality and predation following
-deployment. Juvenile *Mercenaria* are susceptible to predation by blue crabs,
-mud grabs, gastropods, and cownose rays, making predation a plausible
-explanation for the observed losses [@peterson2001]. Since restoration outcomes
-were unaffected, seed delivery likely occurred soon after deployment, but future
-studies should evaluate whether larger clams, different clam densities, or
-predator exclusions improve clam persistence and whether greater persistence
-ultimately enhances restoration outcomes or longer-term seagrass performance.
+establishment, or shoot growth. Likewise, overall clam persistence was low in
+both treatments, and surface-deployed plots contained more shell fragments and
+empty shells, suggesting greater predation or mortality following deployment.
+Juvenile clams are susceptible to predation by blue crabs, mud crabs,
+gastropods, and cownose rays, making predation a plausible explanation for the
+observed losses [@micheli1997; @peterson1982]. Collectively, this suggests that
+seed incorporation occurred rapidly regardless of clam fate. A likely
+explanation is that seeds detached from clams soon after deployment. Preliminary
+laboratory trials indicated that the gelatin adhesive retained attached seeds
+for approximately 8-12 hours, potentially allowing sufficient time for natural
+burrowing before seed release. The duration of seed attachment is therefore
+likely to be an important consideration in the design of this restoration
+approach, with the objective of timing seed release with initial sediment
+incorporation rather than maintaining long-term attachment.
 
 The limited relationship between clam persistence and restoration outcomes
 should not be interpreted as evidence that bivalves do not facilitate seagrass
 restoration. Previous studies have shown that persistent bivalve populations can
-enhance seagrass performance [@peterson2001; @zhang2021; @donaher2021]. In
+enhance seagrass performance [@peterson2001; @zhang2021; @donaher2021]. More
+broadly, positive species interactions are increasingly recognized as important
+drivers of restoration success, although their strength often depends on
+ecological context and the stage of ecosystem development [@silliman2024]. In
 contrast, our experiment evaluated only the first six months post-deployment and
 included a single juvenile clam per plot. This density and timescale was likely
 insufficient to generate the ecosystem engineering effects typically associated
-with mature bivalve populations. Instead, our results highlight that successful
-seed deployment did not depend on prolonged clam persistence during the initial
-establishment phase.
+with mature bivalve populations, and any facilitative effects are also likely to
+depend on local environmental conditions, including sediment characteristics and
+nutrient availability. Instead, our results highlight that successful seed
+deployment and early establishment did not depend on prolonged clam persistence
+during the initial establishment phase.
 
 Although planting density did not influence establishment efficiency, shoots in
 higher-density treatments became taller later in the experiment. Increased shoot
-height may represent the early development of positive interactions among
-neighboring shoots as patches begin to expand. Greater local shoot density could
-reduce hydrodynamic stress or enhance sediment stabilization, processes that
-become increasingly important as patches develop \[consider: Fonseca & Fisher,
-Maxwell et al. 2017, Temmink et al2021\]. Since these responses emerged only
-after shoot establishment, they likely reflect post-establishment interactions
-rather than mechanisms affecting initial seed establishment.
+height at higher planting densities may represent the early development of
+positive interactions among neighboring shoots, or increased competition for
+light as local canopy density increased. As patches expand, greater local shoot
+density could reduce hydrodynamic stress or enhance sediment stabilization,
+processes known to reinforce seagrass growth and persistence [@fonseca1986;
+@vankatwijk2009]. Since these responses emerged only after shoot establishment,
+they likely reflect post-establishment interactions rather than mechanisms
+affecting initial seed establishment.
 
 From a restoration perspective, these findings shift the practical question from
 how many seeds should be planted to how limited seed resources should be
-allocated. Seed availability requently constrains the scale of seagrass
-restoration [@orth2003; @vankatwijk2016], making efficient allocation a central
-management challenge. Because per-seed establishment remained similar across
-planting densities, practitioners can select seed density per deployment unit
-based on desired restoration outcomes without sacrificing per-seed performance.
-For example, concentrating many seeds on fewer clams is expected to produce
-dense patches, whereas distributing the same number of seeds among more clams
-would produce a similar number of established shoots distributed across a larger
-area. Determining which strategy best promotes long-term seagrass expansion will
-depend on site conditions, restoration goals, and the importance of patch
-connectivity, natural expansion, and landscape configuration \[REFS\].
+allocated. Seed availability frequently constrains the scale of seagrass
+restoration [@orth2003; @vankatwijk2016], making efficient seed allocation a
+central management challenge. Because per-seed establishment remained similar
+across planting densities, practitioners can select seed density per clam based
+on desired restoration outcomes without sacrificing per-seed performance. For
+example, concentrating many seeds on fewer clams is expected to produce dense
+patches, whereas distributing the same number of seeds among more clams would
+produce a similar number of established shoots distributed across a larger area.
+Whether these alternative planting strategies ultimately produce comparable
+restoration outcomes over longer timescales remains unknown, as
+density-dependent facilitation or competition may emerge as restored patches
+develop. Determining the planting and deployment design that best promotes
+long-term seagrass expansion will therefore require longer-term studies that
+evaluate how planting density influences survival, patch development, and
+seagrass persistence under different environmental conditions.
 
 Overall, our results demonstrate that live hard clams can function as effective
 seed deployment agents despite limited long-term persistence. Early restoration
@@ -727,8 +737,11 @@ success was determined primarily by seed supply rather than clam placement or
 persistence, and establishment efficiency remained consistent across a broad
 range of planting densities. These findings support clam-mediated seed
 deployment as a practical addition to the growing suite of seed-based
-restoration approaches and provide a framework for optimizing seed allocation at
-larger spatial scales.
+restoration approaches, and illustrate how harnessing natural organismal
+behaviors can inform the design of restoration techniques that work with, rather
+than against, ecological processes [@silliman2026]. Together, these findings
+provide a framework for optimizing seed allocation and deployment at broader
+scales.
 
 \newpage
 
@@ -808,6 +821,17 @@ plot_m_prop <- ggplot() +
   theme(legend.position = c("inside"),
         legend.position.inside = c(0.9, 0.8))
 
+
+```
+
+```{r fig-method}
+#| echo: false
+#| out-width: "6in"
+#| fig-pos: "H"
+#| fig.cap: "Clam-mediated seed deployment and subsequent seagrass establishment. A) Juvenile hard clam (*Mercenaria mercenaria*) with eelgrass (*Zostera marina*) seeds attached using a gelatin adhesive prior to deployment. B) Experimental plot showing seagrass within the PVC monitoring quadrat used for repeated surveys in April 2026, five months post-deployment."
+
+knitr::include_graphics("photos/figure1-methods.png")
+
 ```
 
 ```{r fig-1}
@@ -875,7 +899,7 @@ ggplot(dat_density_group_means,
 #| out-width: "4.5in"
 #| fig-dpi: 300
 #| fig-pos: "H"
-#| fig-cap: "Effects of seed planting density on mean shoot height (cm) over the course of the experiment. Lines show model-predicted mean shoot height (±95% CI) from a linear mixed effects model, averaged across clam placement treatments. Darker blue lines indicated higher seed densities. [Refine wording:] Only six densities are shown to facilitate visualization, other density treatments follow the same trend."
+#| fig-cap: "Effects of seed planting density on mean shoot height (cm) over the course of the experiment. Lines show model-predicted mean shoot height (±95% CI) from a linear mixed effects model, averaged across clam placement treatments. Darker blue lines indicate higher seed densities. For clarity, only six seed densities are shown; ommitted densities follow the same trend."
 
 density_cols <- c("#8CB9D8", "#6E9FC8", "#4F86B7", "#356DA5", "#245591", "#163D73")
 
@@ -934,105 +958,35 @@ p_shell <- emmeans(m_shell_fate, ~ burial, type = "response") %>% as.data.frame(
 
 \newpage
 
+# Data Availability
+
+The data that support the findings of this study are available on request from
+the corresponding author, CL.
+
+# Author Contributions
+
+CL, CLC, MI, JPM, and BRS conceived of and designed the experiment. CL, CLC, and
+MI conducted the experiment and subsequent monitoring. CL analyzed the data. The
+first draft of the manuscript was written by CL, and all authors contributed to
+revision and approved the final manuscript.
+
+# Funding
+
+This research was funded by Oceankind and the Oak Foundation. CL, CLC, MI, and
+BRS were supported by this funding. BRS is grateful for support from the JR and
+Jennifer Mathews Foundation. 
+
+# Conflict of Interest
+
+The authors declare that the research was conducted in the absence of any
+commercial or financial relationships that could be construed as a potential
+conflict of interest.
+
+# Acknowledgments
+
+Facilities were provided by the Duke University Marine Lab.
+
 # References
 
 ::: {#refs}
 :::
-
-\newpage
-
-# Supplementary Information
-
-```{r tbl-s1}
-#| tbl-pos: "H"
-#| tbl-cap: "Results of exploratory models evaluating whether early live clam observations explained variation in restoration outcomes after accounting for seed planting density and clam placement treatment. Models included the binary live-clam indicator, seed planting density, clam placement treatment, and their interaction. Significant effects (p < 0.05) are shown in bold."
-
-library(flextable)
-library(officer)
-
-# Build data --------------------------------------------------------------
-
-tab_s1 <- bind_rows(
-  m_live_shoot_tests %>%
-    mutate(Model = "Model 1. Effects on shoot establishment"),
-  m_live_prop_tests %>%
-    mutate(Model = "Model 2. Effects on per-seed establishment probability"),
-  m_live_height_tests %>%
-    mutate(Model = "Model 3. Effects on final shoot height (cm)")) %>%
-  select(Model, Term = term, chisq, df, p_value = p) %>%
-  add_significance() %>%
-  mutate(p_value = if_else(p_value < 0.001, "< 0.001", sprintf("%.3f", p_value)),
-         significance = na_if(significance, "NS"),
-         Term = str_to_sentence(Term) %>%
-           str_replace_all("_", " "),
-         Term = recode(
-           Term,
-           "Density" = "Seed density",
-           "Burial" = "Clam placement",
-           "Ever live" = "Live clam observed",
-           "Ever shell" = "Shell evidence observed",
-           "Density:burial" = "Seed density × Clam placement"))
-
-# Flextable ---------------------------------------------------------------
-
-ft <- flextable(tab_s1)
-
-ft <- ft |>
-  merge_v(j = "Model")  %>% 
-  valign(j = "Model", valign = "top")  %>% 
-  bold(j = "Model", bold = TRUE)  %>% 
-  bold(part = "header")  %>% 
-  align(j = "Term", align = "left")  %>% 
-  align(j = c("chisq", "df", "p_value", "significance"), align = "center")  %>% 
-  bold(i = ~ !is.na(significance),
-    j = c("p_value", "significance"),
-    bold = TRUE)  %>% 
-  set_header_labels(
-    Model = "",
-    Term = "Term",
-    chisq = "\u03C7\u00B2",
-    df = "df",
-    p_value = "p",
-    significance = ""
-  )  %>% 
-  theme_booktabs()  %>% 
-  fontsize(size = 11, part = "all")  %>% 
-  font(fontname = "Arial", part = "all")  %>% 
-  width(j = "Model", width = 2.3) %>% 
-  width(j = "Term", width = 1.8) %>% 
-  width(j = c("chisq"), width = 0.5)  %>% 
-  width(j = c("p_value"), width = 0.6)  %>% 
-  width(j = c("df", "significance"), width = 0.3) 
-
-ft
-```
-
-\newpage
-
-```{r fig-s1}
-#| fig-width: 3
-#| fig-height: 6
-#| fig-dpi: 300
-#| fig-pos: "H"
-#| out-width: "3.5in"
-#| fig-cap: "Clam observations are shown for each plot – the left column is clams that were manually buried and the right column is clams that were placed on the sediment surface. Rows are grouped by seed density levels (10-100 seeds per plot). Colors indicate whether the clam was confirmed live (green), shell fragments or empty shells were observed (yellow), or nothing was observed (grey)."
-
-ggplot(data = pred %>% 
-         filter(date %in% c("2025-11-05","2025-11-17")) %>% 
-         mutate(clam_code_label = 
-                  if_else(clam_code_label %in% c("Empty shell", "Shell fragments"), 
-                          "Shell", 
-                          clam_code_label),
-                clam_code_label = factor(clam_code_label,
-                                         levels = c("Live", "Shell", "Nothing")))) +
-  geom_tile(aes(x = date, y = plot_id, fill = clam_code_label)) +
-  scale_fill_manual(values = c("green4", "orange2", "grey")) +
-  labs(x = "", y = "Plot", fill = NULL) +
-  theme_classic(base_size = 10) +
-  theme(axis.text.x = element_text(size = 7, angle = 45, hjust = 1),
-        axis.text.y = element_text(size = 7),
-        legend.text = element_text(size = 7)) +
- ggh4x::facet_nested(density~burial, scales = "free", space = "free", independent = "y")
-
-
-```

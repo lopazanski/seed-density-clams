@@ -1,0 +1,309 @@
+---
+format: 
+  pdf:
+    mainfont: "Times New Roman"
+  docx: 
+    fig-cap-location: bottom
+    keep-tex: true
+    reference-doc: docs/Frontiers_Template.docx
+bibliography: references.bib
+csl: docs/frontiers-in-marine-science.csl
+editor_options:
+  markdown:
+    wrap: 80
+execute: 
+  echo: false
+  warning: false
+  error: false
+  freeze: auto
+---
+
+
+```{r setup}
+# Setup -------------------------------------------------------------------------
+library(readxl)
+library(tidyverse)
+library(lme4)
+library(lmerTest)
+library(glmmTMB)
+library(DHARMa)
+library(gt)
+library(ggeffects)
+library(emmeans) 
+library(patchwork)
+library(broom.mixed)
+
+# Helper function that will add significance to p values:
+add_significance <- function(df) {df %>%
+    mutate(significance = factor(case_when(p_value < 0.001 ~ "***",
+                                           p_value < 0.01 ~ "**",
+                                           p_value < 0.05 ~ "*",
+                                           is.na(p_value) ~ "NA",
+                                           TRUE ~ "NS"), 
+                                 levels = c("***", "**", "*", "NS", "NA")))
+}
+
+# Helper function that will clean up the fixed effects:
+clean_fixed_effects <- function(df){df %>% 
+    as.data.frame() %>% 
+    rownames_to_column("term") %>% 
+    rename(p = `Pr(>Chisq)`) %>% 
+    rename_with(~"chisq", matches("LR Chisq|Chisq")) %>%
+    janitor::clean_names() %>% 
+    mutate(chisq = round(chisq, 2),
+           p = round(p, 3))
+}
+
+# Read data from Excel file 
+dat_raw <- read_xlsx("data/seed-density.xlsx", na = "NA") 
+
+# Build ------------------------------------------------------------------------
+# - density is continuous
+# - burial is a factor
+# - plot_id identifies the repeated-measures unit
+# - time is measured as days since the first sampling date
+# - shoot_count is the number of shoots observed at each sampling event
+
+dat <- dat_raw %>% 
+  mutate(plot_id = factor(plot_id),
+         burial = factor(burial_treatment,
+                         levels = c(0, 1),
+                         labels = c("Buried", "Surface")),
+         date = lubridate::ymd(date),
+         time_days = as.numeric(date - date('2025-10-31')),
+         length_cm_5 = as.numeric(length_cm_5)) %>% 
+  # monitoring on 4 Jan 2026 was incomplete because poor conditions (remove)
+  filter(date != '2026-01-04') %>% 
+  # center density once throughout
+  mutate(density_c = density - mean(density, na.rm = T),
+         # quadratic term in case we want it for modeling
+         density_c2 = density_c^2) %>% 
+  # bin densities in case useful for later plotting
+  mutate(density_group = case_when(density <= 30 ~ "Low\n10–30 seeds",
+                                   density <= 70 ~ "Medium\n40–70 seeds",
+                                   density >= 80 ~ "High\n80–100 seeds"),
+         density_group = factor(density_group,
+                                levels = c("Low\n10–30 seeds", "Medium\n40–70 seeds",
+                                           "High\n80–100 seeds"))) %>% 
+  # calculate proportion established relative to seed density
+   mutate(est_prob = shoot_count/density) %>% 
+   mutate(failures = density - shoot_count)
+
+  
+```
+
+
+```{r build-dataframes}
+#| include: false
+
+# Calculate treatment-level means through time
+dat_means <- dat %>% 
+  group_by(date, density, burial) %>% 
+  summarize(shoot_count_mean = mean(shoot_count),
+            shoot_count_sd = sd(shoot_count),
+            shoot_count_n = n()) %>% 
+  mutate(shoot_count_se = shoot_count_sd/sqrt(shoot_count_n))
+
+# Create predation dataframe from clam checks
+pred <- dat %>% 
+  select(date:dead_clam, burial) %>% 
+  filter(!is.na(clam_code)) %>%
+  filter(date < "2026-04-01") %>% 
+  mutate(date = as.factor(date),
+         clam_code_label = case_when(clam_code == "D" ~ "Empty shell",
+                                     clam_code == "L" ~ "Live",
+                                     clam_code == "S" ~ "Shell fragments",
+                                     clam_code == "N" ~ "Nothing"))
+
+# Create growth dataframe
+dat_growth <- dat %>% 
+  select(date, plot_id, density, burial, time_days, 
+         shoot_count, starts_with("length")) %>% 
+  pivot_longer(starts_with("length"), 
+               names_to = "length_replicate", values_to = "length_cm") %>%
+  filter(!is.na(length_cm)) %>% 
+  group_by(date, plot_id, density, burial, time_days) %>% 
+  summarize(length_cm_mean = mean(length_cm) ,
+            length_cm_sd   = sd(length_cm),
+            length_cm_n    = n(), .groups = 'drop') %>% 
+  mutate(length_cm_se = length_cm_sd/sqrt(length_cm_n)) %>% 
+  mutate(time_factor = factor(time_days,
+                              levels = c('47', '78','91','106','152','168'),
+                              labels = c("Dec 17", "Jan 17", "Jan 30", "Feb 14", "Apr 1", "Apr 17")))
+
+# Build "shoot establishment" models using last sampling date (April)
+dat_end <- dat %>% 
+  filter(date == max(date))
+
+# Summarize to show treatment means and error
+dat_end_summary <- dat_end %>% 
+  group_by(density, burial) %>% 
+  summarize(mean_count = mean(shoot_count),
+            se_count = sd(shoot_count) / sqrt(n()),
+            .groups = "drop")
+
+# Clam observations from first two surveys
+dat_clam <- dat %>%
+  filter(date %in% c("2025-11-05","2025-11-17")) %>%
+  group_by(plot_id) %>%
+  summarize(ever_live  = any(live_clam == 1, na.rm = TRUE),
+            ever_shell = any(shell_frag == 1 | dead_clam == 1, na.rm = TRUE),
+            .groups = "drop") %>%
+  left_join(dat_end, by = "plot_id") %>% 
+  rowwise() %>% 
+  mutate(length_cm_mean = mean(c_across(length_cm_1:length_cm_5), na.rm = TRUE))
+ 
+```
+
+
+
+
+```{r m_predation}
+#| include: false
+
+# Burial effects on clam fate
+m_live_fate  <- glm(ever_live ~ burial, family = binomial, data = dat_clam)
+
+plot(simulateResiduals(m_live_fate)) # good
+
+m_shell_fate <- glm(ever_shell ~ burial, family = binomial, data = dat_clam)
+
+# Clam fate effects on final shoot establishment
+m_live_shoots  <- glmmTMB(shoot_count ~ density * burial + ever_live,
+                          family = nbinom2, data = dat_clam)
+
+plot(simulateResiduals(m_live_shoots)) 
+
+# Clam fate effects on per-seed establishment
+m_live_prop <- glmmTMB(cbind(shoot_count, 
+                             density - shoot_count) ~ density * burial + ever_live,
+                       family = betabinomial(), data = dat_clam)
+
+plot(simulateResiduals(m_live_prop)) 
+
+# Clam fate effects on final shoot height
+m_live_height <- glm(length_cm_mean ~ density * burial + ever_live, data = dat_clam)
+
+plot(simulateResiduals(m_live_height))
+summary(m_live_height)
+
+# Check fixed effects
+m_live_fate_tests   <- car::Anova(m_live_fate, type = 2) %>% clean_fixed_effects()
+m_live_shoot_tests  <- car::Anova(m_live_shoots, type = 2) %>% clean_fixed_effects()
+m_live_prop_tests   <- car::Anova(m_live_prop, type = 2) %>% clean_fixed_effects()
+m_live_height_tests <- car::Anova(m_live_height, type = 2) %>% clean_fixed_effects()
+
+# Pull values for results text
+m_live_fate_chisq   <- filter(m_live_fate_tests, term == "burial") %>% pull(chisq)
+m_live_fate_p       <- filter(m_live_fate_tests, term == "burial") %>% pull(p)
+m_live_shoot_chisq  <- filter(m_live_shoot_tests, term == "ever_live") %>% pull(chisq)
+m_live_shoot_p      <- filter(m_live_shoot_tests, term == "ever_live") %>% pull(p)
+m_live_prop_chisq   <- filter(m_live_prop_tests, term == "ever_live") %>% pull(chisq)
+m_live_prop_p       <- filter(m_live_prop_tests, term == "ever_live") %>% pull(p)
+m_live_height_chisq <- filter(m_live_height_tests, term == "ever_live") %>% pull(chisq)
+m_live_height_p     <- filter(m_live_height_tests, term == "ever_live") %>% pull(p)
+
+# How many plots had shells:
+n_shell_surface <- sum(dat_clam$ever_shell[dat_clam$burial == "Surface"])
+n_shell_buried <- sum(dat_clam$ever_shell[dat_clam$burial == "Buried"])
+
+```
+
+
+
+
+# Supplementary Information
+
+```{r tbl-s1}
+#| tbl-pos: "H"
+#| tbl-cap: "Results of exploratory models evaluating whether early live clam observations explained variation in restoration outcomes after accounting for seed planting density and clam placement treatment. Models included the binary live-clam indicator, seed planting density, clam placement treatment, and their interaction. Significant effects (p < 0.05) are shown in bold."
+
+library(flextable)
+library(officer)
+
+# Build data --------------------------------------------------------------
+
+tab_s1 <- bind_rows(
+  m_live_shoot_tests %>%
+    mutate(Model = "Model 1. Effects on shoot establishment"),
+  m_live_prop_tests %>%
+    mutate(Model = "Model 2. Effects on per-seed establishment probability"),
+  m_live_height_tests %>%
+    mutate(Model = "Model 3. Effects on final shoot height (cm)")) %>%
+  select(Model, Term = term, chisq, df, p_value = p) %>%
+  add_significance() %>%
+  mutate(p_value = if_else(p_value < 0.001, "< 0.001", sprintf("%.3f", p_value)),
+         significance = na_if(significance, "NS"),
+         Term = str_to_sentence(Term) %>%
+           str_replace_all("_", " "),
+         Term = recode(
+           Term,
+           "Density" = "Seed density",
+           "Burial" = "Clam placement",
+           "Ever live" = "Live clam observed",
+           "Ever shell" = "Shell evidence observed",
+           "Density:burial" = "Seed density × Clam placement"))
+
+# Flextable ---------------------------------------------------------------
+
+ft <- flextable(tab_s1)
+
+ft <- ft |>
+  merge_v(j = "Model")  %>% 
+  valign(j = "Model", valign = "top")  %>% 
+  bold(j = "Model", bold = TRUE)  %>% 
+  bold(part = "header")  %>% 
+  align(j = "Term", align = "left")  %>% 
+  align(j = c("chisq", "df", "p_value", "significance"), align = "center")  %>% 
+  bold(i = ~ !is.na(significance),
+    j = c("p_value", "significance"),
+    bold = TRUE)  %>% 
+  set_header_labels(
+    Model = "",
+    Term = "Term",
+    chisq = "\u03C7\u00B2",
+    df = "df",
+    p_value = "p",
+    significance = ""
+  )  %>% 
+  theme_booktabs()  %>% 
+  fontsize(size = 11, part = "all")  %>% 
+  font(fontname = "Arial", part = "all")  %>% 
+  width(j = "Model", width = 2.3) %>% 
+  width(j = "Term", width = 1.8) %>% 
+  width(j = c("chisq"), width = 0.5)  %>% 
+  width(j = c("p_value"), width = 0.6)  %>% 
+  width(j = c("df", "significance"), width = 0.3) 
+
+ft
+```
+
+\newpage
+
+```{r fig-s1}
+#| fig-width: 3
+#| fig-height: 6
+#| fig-dpi: 300
+#| fig-pos: "H"
+#| out-width: "3.5in"
+#| fig-cap: "Clam observations for each plot during the first two post-deployment monitoring surveys. Rows are grouped by seed density levels (10-100 seeds per plot). Colors indicate whether the clam was confirmed live (green), shell fragments or empty shells were observed (yellow), or nothing was observed (grey)."
+
+ggplot(data = pred %>% 
+         filter(date %in% c("2025-11-05","2025-11-17")) %>% 
+         mutate(clam_code_label = 
+                  if_else(clam_code_label %in% c("Empty shell", "Shell fragments"), 
+                          "Shell", 
+                          clam_code_label),
+                clam_code_label = factor(clam_code_label,
+                                         levels = c("Live", "Shell", "Nothing")))) +
+  geom_tile(aes(x = date, y = plot_id, fill = clam_code_label)) +
+  scale_fill_manual(values = c("green4", "orange2", "grey")) +
+  labs(x = "", y = "Plot", fill = NULL) +
+  theme_classic(base_size = 10) +
+  theme(axis.text.x = element_text(size = 7, angle = 45, hjust = 1),
+        axis.text.y = element_text(size = 7),
+        legend.text = element_text(size = 7)) +
+ ggh4x::facet_nested(density~burial, scales = "free", space = "free", independent = "y")
+
+
+```
