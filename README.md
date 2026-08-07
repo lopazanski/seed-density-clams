@@ -33,9 +33,3 @@ quarto render seed-density-si.qmd
 ```
 
 Rendered files are written to `output/`, which is not tracked by Git.
-
-## Manuscript history
-
-Git tracks changes to the manuscript, analyses, and data. `docs/drafts/` contains selected earlier and coauthor-reviewed manuscript versions.
-
-At each formal submission, the submitted PDF and DOCX files will be archived in `submissions/` and the corresponding repository state tagged in Git. This preserves the exact data, code, and manuscript source associated with each submitted version.
