@@ -6,7 +6,7 @@ format:
     fig-cap-location: bottom
     keep-tex: true
     reference-doc: docs/Frontiers_Template.docx
-bibliography: references.bib
+bibliography: docs/references.bib
 csl: docs/frontiers-in-marine-science.csl
 editor_options:
   markdown:
@@ -18,6 +18,13 @@ execute:
   freeze: auto
 ---
 
+```{r}
+#| include: false
+
+knitr::opts_chunk$set(
+  fig.path = "output/seed-density-si_files/figure-docx/"
+)
+```
 
 ```{r setup}
 # Setup -------------------------------------------------------------------------

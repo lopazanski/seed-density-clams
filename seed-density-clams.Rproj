@@ -14,3 +14,5 @@ LaTeX: pdfLaTeX
 
 MarkdownWrap: Column
 MarkdownWrapAtColumn: 72
+
+ZoteroLibraries: "My Library","Silliman Lab"
