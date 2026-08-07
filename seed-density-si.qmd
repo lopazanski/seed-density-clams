@@ -75,19 +75,19 @@ dat <- dat_raw %>%
   # monitoring on 4 Jan 2026 was incomplete because poor conditions (remove)
   filter(date != '2026-01-04') %>% 
   # center density once throughout
-  mutate(density_c = density - mean(density, na.rm = T),
+  mutate(density_c = seed_density - mean(seed_density, na.rm = T),
          # quadratic term in case we want it for modeling
          density_c2 = density_c^2) %>% 
   # bin densities in case useful for later plotting
-  mutate(density_group = case_when(density <= 30 ~ "Low\n10–30 seeds",
-                                   density <= 70 ~ "Medium\n40–70 seeds",
-                                   density >= 80 ~ "High\n80–100 seeds"),
+  mutate(density_group = case_when(seed_density <= 30 ~ "Low\n10–30 seeds",
+                                   seed_density <= 70 ~ "Medium\n40–70 seeds",
+                                   seed_density >= 80 ~ "High\n80–100 seeds"),
          density_group = factor(density_group,
                                 levels = c("Low\n10–30 seeds", "Medium\n40–70 seeds",
                                            "High\n80–100 seeds"))) %>% 
   # calculate proportion established relative to seed density
-   mutate(est_prob = shoot_count/density) %>% 
-   mutate(failures = density - shoot_count)
+   mutate(est_prob = shoot_count/seed_density) %>% 
+   mutate(failures = seed_density - shoot_count)
 
   
 ```
@@ -98,7 +98,7 @@ dat <- dat_raw %>%
 
 # Calculate treatment-level means through time
 dat_means <- dat %>% 
-  group_by(date, density, burial) %>% 
+  group_by(date, seed_density, burial) %>% 
   summarize(shoot_count_mean = mean(shoot_count),
             shoot_count_sd = sd(shoot_count),
             shoot_count_n = n()) %>% 
@@ -106,7 +106,7 @@ dat_means <- dat %>%
 
 # Create predation dataframe from clam checks
 pred <- dat %>% 
-  select(date:dead_clam, burial) %>% 
+  select(date:clam_code, burial) %>% 
   filter(!is.na(clam_code)) %>%
   filter(date < "2026-04-01") %>% 
   mutate(date = as.factor(date),
@@ -117,12 +117,12 @@ pred <- dat %>%
 
 # Create growth dataframe
 dat_growth <- dat %>% 
-  select(date, plot_id, density, burial, time_days, 
+  dplyr::select(date, plot_id, seed_density, burial, time_days, 
          shoot_count, starts_with("length")) %>% 
   pivot_longer(starts_with("length"), 
                names_to = "length_replicate", values_to = "length_cm") %>%
   filter(!is.na(length_cm)) %>% 
-  group_by(date, plot_id, density, burial, time_days) %>% 
+  group_by(date, plot_id, seed_density, burial, time_days) %>% 
   summarize(length_cm_mean = mean(length_cm) ,
             length_cm_sd   = sd(length_cm),
             length_cm_n    = n(), .groups = 'drop') %>% 
@@ -137,7 +137,7 @@ dat_end <- dat %>%
 
 # Summarize to show treatment means and error
 dat_end_summary <- dat_end %>% 
-  group_by(density, burial) %>% 
+  group_by(seed_density, burial) %>% 
   summarize(mean_count = mean(shoot_count),
             se_count = sd(shoot_count) / sqrt(n()),
             .groups = "drop")
@@ -145,9 +145,12 @@ dat_end_summary <- dat_end %>%
 # Clam observations from first two surveys
 dat_clam <- dat %>%
   filter(date %in% c("2025-11-05","2025-11-17")) %>%
+  mutate(live_clam = if_else(clam_code == "L", 1, 0),
+         shell_frag = if_else(clam_code == "S", 1, 0),
+         empty_shell = if_else(clam_code == "D", 1, 0)) %>% 
   group_by(plot_id) %>%
   summarize(ever_live  = any(live_clam == 1, na.rm = TRUE),
-            ever_shell = any(shell_frag == 1 | dead_clam == 1, na.rm = TRUE),
+            ever_shell = any(shell_frag == 1 | empty_shell == 1, na.rm = TRUE),
             .groups = "drop") %>%
   left_join(dat_end, by = "plot_id") %>% 
   rowwise() %>% 
@@ -169,20 +172,20 @@ plot(simulateResiduals(m_live_fate)) # good
 m_shell_fate <- glm(ever_shell ~ burial, family = binomial, data = dat_clam)
 
 # Clam fate effects on final shoot establishment
-m_live_shoots  <- glmmTMB(shoot_count ~ density * burial + ever_live,
+m_live_shoots  <- glmmTMB(shoot_count ~ seed_density * burial + ever_live,
                           family = nbinom2, data = dat_clam)
 
 plot(simulateResiduals(m_live_shoots)) 
 
 # Clam fate effects on per-seed establishment
 m_live_prop <- glmmTMB(cbind(shoot_count, 
-                             density - shoot_count) ~ density * burial + ever_live,
+                             seed_density - shoot_count) ~ seed_density * burial + ever_live,
                        family = betabinomial(), data = dat_clam)
 
 plot(simulateResiduals(m_live_prop)) 
 
 # Clam fate effects on final shoot height
-m_live_height <- glm(length_cm_mean ~ density * burial + ever_live, data = dat_clam)
+m_live_height <- glm(length_cm_mean ~ seed_density * burial + ever_live, data = dat_clam)
 
 plot(simulateResiduals(m_live_height))
 summary(m_live_height)
@@ -303,7 +306,7 @@ ggplot(data = pred %>%
   theme(axis.text.x = element_text(size = 7, angle = 45, hjust = 1),
         axis.text.y = element_text(size = 7),
         legend.text = element_text(size = 7)) +
- ggh4x::facet_nested(density~burial, scales = "free", space = "free", independent = "y")
+ ggh4x::facet_nested(seed_density~burial, scales = "free", space = "free", independent = "y")
 
 
 ```

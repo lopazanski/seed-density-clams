@@ -1,7 +1,7 @@
 ---
 title: "More seeds yield more shoots, but not higher per-seed establishment in a clam-mediated seagrass restoration experiment"
 author: 
-  - name: Cori Lopazanski^1*^
+  - name: Cori Lopazanski^1^*
     affiliations:
       - id: duml
         name: Duke University
@@ -250,20 +250,16 @@ dat <- dat_raw %>%
          length_cm_5 = as.numeric(length_cm_5)) %>% 
   # monitoring on 4 Jan 2026 was incomplete because poor conditions (remove)
   filter(date != '2026-01-04') %>% 
-  # center density once throughout
-  mutate(density_c = density - mean(density, na.rm = T),
-         # quadratic term in case we want it for modeling
-         density_c2 = density_c^2) %>% 
   # bin densities in case useful for later plotting
-  mutate(density_group = case_when(density <= 30 ~ "Low\n10–30 seeds",
-                                   density <= 70 ~ "Medium\n40–70 seeds",
-                                   density >= 80 ~ "High\n80–100 seeds"),
+  mutate(density_group = case_when(seed_density <= 30 ~ "Low\n10–30 seeds",
+                                   seed_density <= 70 ~ "Medium\n40–70 seeds",
+                                   seed_density >= 80 ~ "High\n80–100 seeds"),
          density_group = factor(density_group,
                                 levels = c("Low\n10–30 seeds", "Medium\n40–70 seeds",
                                            "High\n80–100 seeds"))) %>% 
   # calculate proportion established relative to seed density
-   mutate(est_prob = shoot_count/density) %>% 
-   mutate(failures = density - shoot_count)
+   mutate(est_prob = shoot_count/seed_density) %>% 
+   mutate(failures = seed_density - shoot_count)
 
   
 ```
@@ -318,7 +314,7 @@ effects and quantify effect sizes. All analyses were conducted in R version
 
 # Calculate treatment-level means through time
 dat_means <- dat %>% 
-  group_by(date, density, burial) %>% 
+  group_by(date, seed_density, burial) %>% 
   summarize(shoot_count_mean = mean(shoot_count),
             shoot_count_sd = sd(shoot_count),
             shoot_count_n = n()) %>% 
@@ -326,7 +322,7 @@ dat_means <- dat %>%
 
 # Create predation dataframe from clam checks
 pred <- dat %>% 
-  select(date:dead_clam, burial) %>% 
+  select(date:clam_code, burial) %>% 
   filter(!is.na(clam_code)) %>%
   filter(date < "2026-04-01") %>% 
   mutate(date = as.factor(date),
@@ -337,12 +333,12 @@ pred <- dat %>%
 
 # Create growth dataframe
 dat_growth <- dat %>% 
-  select(date, plot_id, density, burial, time_days, 
+  select(date, plot_id, seed_density, burial, time_days, 
          shoot_count, starts_with("length")) %>% 
   pivot_longer(starts_with("length"), 
                names_to = "length_replicate", values_to = "length_cm") %>%
   filter(!is.na(length_cm)) %>% 
-  group_by(date, plot_id, density, burial, time_days) %>% 
+  group_by(date, plot_id, seed_density, burial, time_days) %>% 
   summarize(length_cm_mean = mean(length_cm) ,
             length_cm_sd   = sd(length_cm),
             length_cm_n    = n(), .groups = 'drop') %>% 
@@ -357,7 +353,7 @@ dat_end <- dat %>%
 
 # Summarize to show treatment means and error
 dat_end_summary <- dat_end %>% 
-  group_by(density, burial) %>% 
+  group_by(seed_density, burial) %>% 
   summarize(mean_count = mean(shoot_count),
             se_count = sd(shoot_count) / sqrt(n()),
             .groups = "drop")
@@ -365,9 +361,12 @@ dat_end_summary <- dat_end %>%
 # Clam observations from first two surveys
 dat_clam <- dat %>%
   filter(date %in% c("2025-11-05","2025-11-17")) %>%
+  mutate(live_clam = if_else(clam_code == "L", 1, 0),
+         shell_frag = if_else(clam_code == "S", 1, 0),
+         empty_shell = if_else(clam_code == "D", 1, 0)) %>% 
   group_by(plot_id) %>%
   summarize(ever_live  = any(live_clam == 1, na.rm = TRUE),
-            ever_shell = any(shell_frag == 1 | dead_clam == 1, na.rm = TRUE),
+            ever_shell = any(shell_frag == 1 | empty_shell == 1, na.rm = TRUE),
             .groups = "drop") %>%
   left_join(dat_end, by = "plot_id") %>% 
   rowwise() %>% 
@@ -379,7 +378,7 @@ dat_clam <- dat %>%
 #| include: false
 
 # Test whether more seeds = more shoots  
-m_count <- glmmTMB(shoot_count ~ density * burial, family = nbinom2, data = dat_end)
+m_count <- glmmTMB(shoot_count ~ seed_density * burial, family = nbinom2, data = dat_end)
 
 summary(m_count)
 
@@ -394,41 +393,41 @@ m_count_tests <-  car::Anova(m_count, type = 2) %>% clean_fixed_effects()
   
 # Get the values for the results text
 # From the m_count model:
-density_chisq <- filter(m_count_tests, term == "density") %>% pull(chisq)
-density_p     <- filter(m_count_tests, term == "density") %>% pull(p)
+density_chisq <- filter(m_count_tests, term == "seed_density") %>% pull(chisq)
+density_p     <- filter(m_count_tests, term == "seed_density") %>% pull(p)
 burial_chisq  <- filter(m_count_tests, term == "burial")  %>% pull(chisq)
 burial_p      <- filter(m_count_tests, term == "burial")  %>% pull(p) 
-int_chisq     <- filter(m_count_tests, term == "density:burial") %>% pull(chisq)
-int_p         <- filter(m_count_tests, term == "density:burial") %>% pull(p)
+int_chisq     <- filter(m_count_tests, term == "seed_density:burial") %>% pull(chisq)
+int_p         <- filter(m_count_tests, term == "seed_density:burial") %>% pull(p)
 
 # Get the expected shoots counts for 10 vs 100 seeds, averaged over burial treatment
-m_count_pred <- emmeans(m_count, ~ density, 
-                        at = list(density = c(10, 100)),
+m_count_pred <- emmeans(m_count, ~ seed_density, 
+                        at = list(seed_density = c(10, 100)),
                         type = "response") %>%  
   summary() %>% 
   janitor::clean_names() %>% 
   mutate(across(c(response, se, asymp_lcl, asymp_ucl), ~round(.x, 3)))
 
-shoot10      <- filter(m_count_pred, density == 10) %>% pull(response) %>% round(., 1)
-shoot10_low  <- filter(m_count_pred, density == 10) %>% pull(asymp_lcl) %>% round(., 1)
-shoot10_high <- filter(m_count_pred, density == 10) %>% pull(asymp_ucl) %>% round(., 1)
+shoot10      <- filter(m_count_pred, seed_density == 10) %>% pull(response) %>% round(., 1)
+shoot10_low  <- filter(m_count_pred, seed_density == 10) %>% pull(asymp_lcl) %>% round(., 1)
+shoot10_high <- filter(m_count_pred, seed_density == 10) %>% pull(asymp_ucl) %>% round(., 1)
 
-shoot100      <- filter(m_count_pred, density == 100) %>% pull(response) %>% round(., 1)
-shoot100_low  <- filter(m_count_pred, density == 100) %>% pull(asymp_lcl) %>% round(., 1)
-shoot100_high <- filter(m_count_pred, density == 100) %>% pull(asymp_ucl) %>% round(., 1)
+shoot100      <- filter(m_count_pred, seed_density == 100) %>% pull(response) %>% round(., 1)
+shoot100_low  <- filter(m_count_pred, seed_density == 100) %>% pull(asymp_lcl) %>% round(., 1)
+shoot100_high <- filter(m_count_pred, seed_density == 100) %>% pull(asymp_ucl) %>% round(., 1)
 
 # Estimate the average density effect
-m_count_trend <- emtrends(m_count, ~1, var = "density") |>
+m_count_trend <- emtrends(m_count, ~1, var = "seed_density") |>
   summary()
 
 # Convert avg density effect te expected % increase in final shoot count per 10 additional seeds
-pct10      <- round((exp(m_count_trend$density.trend * 10) - 1) * 100, 1)
+pct10      <- round((exp(m_count_trend$seed_density.trend * 10) - 1) * 100, 1)
 pct10_low  <- round((exp(m_count_trend$asymp.LCL * 10) - 1) * 100, 1)
 pct10_high <- round((exp(m_count_trend$asymp.UCL * 10) - 1) * 100, 1)
 
 # Generate predictions for the figure
-m_count_pred_all <- ggpredict(m_count, terms = c("density[10:100]", "burial")) %>% 
-  rename(density = x, burial = group)
+m_count_pred_all <- ggpredict(m_count, terms = c("seed_density[10:100]", "burial")) %>% 
+  rename(seed_density = x, burial = group)
 
 ```
 
@@ -438,7 +437,7 @@ m_count_pred_all <- ggpredict(m_count, terms = c("density[10:100]", "burial")) %
 # Start with a binomial mixed model where the response is the number of shoots relative to the initial seeds. Each plot started with a set number of seeds, and each sampling event we see a number of shoots. As a binomial process, the "successes" are the seeds that produce shoots and the "failures" are seeds that didn't. Answers the question "out of # seeds, how many became shoots?" It also accounts for the different starting number of seeds (different number of 'chances') and explicitly models the probability of establishment per seed, answering questions about density-dependent net shoot establishment.
 
 # Test if higher density changes establishment efficiency
-m_prop <- glmmTMB(cbind(shoot_count, density - shoot_count) ~ density * burial,
+m_prop <- glmmTMB(cbind(shoot_count, seed_density - shoot_count) ~ seed_density * burial,
                   family = betabinomial(), data = dat_end)
 
 summary(m_prop)
@@ -454,16 +453,16 @@ m_prop_tests <- car::Anova(m_prop, type = 2) %>% clean_fixed_effects()
 
 # Get the values for the results text
 # From the m_prop model:
-m_prop_density_chisq <- filter(m_prop_tests, term == "density") %>% pull(chisq)
-m_prop_density_p     <- filter(m_prop_tests, term == "density") %>% pull(p)
+m_prop_density_chisq <- filter(m_prop_tests, term == "seed_density") %>% pull(chisq)
+m_prop_density_p     <- filter(m_prop_tests, term == "seed_density") %>% pull(p)
 m_prop_burial_chisq  <- filter(m_prop_tests, term == "burial")  %>% pull(chisq)
 m_prop_burial_p      <- filter(m_prop_tests, term == "burial")  %>% pull(p) 
-m_prop_int_chisq     <- filter(m_prop_tests, term == "density:burial") %>% pull(chisq)
-m_prop_int_p         <- filter(m_prop_tests, term == "density:burial") %>% pull(p) 
+m_prop_int_chisq     <- filter(m_prop_tests, term == "seed_density:burial") %>% pull(chisq)
+m_prop_int_p         <- filter(m_prop_tests, term == "seed_density:burial") %>% pull(p) 
 
 # Generate predictions for the figure
-m_prop_pred_all <- ggpredict(m_prop, terms = c("density[10:100]", "burial")) %>% 
-  rename(density = x, burial = group)
+m_prop_pred_all <- ggpredict(m_prop, terms = c("seed_density[10:100]", "burial")) %>% 
+  rename(seed_density = x, burial = group)
 
 ```
 
@@ -471,16 +470,16 @@ m_prop_pred_all <- ggpredict(m_prop, terms = c("density[10:100]", "burial")) %>%
 #| include: false
  
 # Build model that examines shoot height through time
-m_growth <- lmer(length_cm_mean ~ density * time_factor + burial + (1 | plot_id),
+m_growth <- lmer(length_cm_mean ~ seed_density * time_factor + burial + (1 | plot_id),
                data = dat_growth)
 
-m_growth2 <- lmer(length_cm_mean ~ density * time_days * burial + (1 | plot_id),
+m_growth2 <- lmer(length_cm_mean ~ seed_density * time_days * burial + (1 | plot_id),
                data = dat_growth)
 
-m_growth3 <- lmer(length_cm_mean ~ density * time_factor * burial + (1 | plot_id),
+m_growth3 <- lmer(length_cm_mean ~ seed_density * time_factor * burial + (1 | plot_id),
                data = dat_growth)
 
-m_growth4 <- lmer(length_cm_mean ~ density * time_days + burial + (1 | plot_id),
+m_growth4 <- lmer(length_cm_mean ~ seed_density * time_days + burial + (1 | plot_id),
                data = dat_growth)
 
 anova(m_growth, m_growth2, m_growth3, m_growth4) 
@@ -502,31 +501,33 @@ m_growth_tests <- car::Anova(m_growth, type = 2) %>% clean_fixed_effects()
 
 # Get the values for the results text
 # From the m_growth model:
-m_growth_density_chisq <- filter(m_growth_tests, term == "density") %>% pull(chisq)
-m_growth_density_p     <- filter(m_growth_tests, term == "density") %>% pull(p)
+m_growth_density_chisq <- filter(m_growth_tests, term == "seed_density") %>% pull(chisq)
+m_growth_density_p     <- filter(m_growth_tests, term == "seed_density") %>% pull(p)
 m_growth_time_chisq    <- filter(m_growth_tests, term == "time_factor")  %>% pull(chisq)
 m_growth_time_p        <- filter(m_growth_tests, term == "time_factor")  %>% pull(p) 
 m_growth_burial_chisq  <- filter(m_growth_tests, term == "burial")  %>% pull(chisq)
 m_growth_burial_p      <- filter(m_growth_tests, term == "burial")  %>% pull(p) 
-m_growth_int_chisq     <- filter(m_growth_tests, term == "density:time_factor") %>% pull(chisq)
-m_growth_int_p         <- filter(m_growth_tests, term == "density:time_factor") %>% pull(p) 
+m_growth_int_chisq     <- filter(m_growth_tests, term == "seed_density:time_factor") %>% 
+  pull(chisq)
+m_growth_int_p         <- filter(m_growth_tests, term == "seed_density:time_factor") %>% 
+  pull(p) 
 
 
 # Shoot height increased through time, and the effect of planting density 
 # varied among sampling dates (density × sampling date interaction, Table X).
 
 # Use emtrends to identify when the differences in heights across densities emerged
-emtrends(m_growth, ~ time_factor, var = "density")
+emtrends(m_growth, ~ time_factor, var = "seed_density")
 
 
-emm <- emmeans(m_growth, ~ density | time_factor,
-               at = list(density = c(10, 100)))
+emm <- emmeans(m_growth, ~ seed_density | time_factor,
+               at = list(seed_density = c(10, 100)))
 
 pairs(emm)
 
 # Generate predictions for the figure
 growth_pred <- ggpredict(m_growth, 
-                         terms = c("time_factor", "density [10,20,40,60,80,100]"))
+                         terms = c("time_factor", "seed_density [10,20,40,60,80,100]"))
 
 ```
 
@@ -541,20 +542,20 @@ plot(simulateResiduals(m_live_fate)) # good
 m_shell_fate <- glm(ever_shell ~ burial, family = binomial, data = dat_clam)
 
 # Clam fate effects on final shoot establishment
-m_live_shoots  <- glmmTMB(shoot_count ~ density * burial + ever_live,
+m_live_shoots  <- glmmTMB(shoot_count ~ seed_density * burial + ever_live,
                           family = nbinom2, data = dat_clam)
 
 plot(simulateResiduals(m_live_shoots)) 
 
 # Clam fate effects on per-seed establishment
 m_live_prop <- glmmTMB(cbind(shoot_count, 
-                             density - shoot_count) ~ density * burial + ever_live,
+                             seed_density - shoot_count) ~ seed_density * burial + ever_live,
                        family = betabinomial(), data = dat_clam)
 
 plot(simulateResiduals(m_live_prop)) 
 
 # Clam fate effects on final shoot height
-m_live_height <- glm(length_cm_mean ~ density * burial + ever_live, data = dat_clam)
+m_live_height <- glm(length_cm_mean ~ seed_density * burial + ever_live, data = dat_clam)
 
 plot(simulateResiduals(m_live_height))
 summary(m_live_height)
@@ -752,15 +753,15 @@ scales.
 
 plot_m_count <- ggplot() +
   geom_point(data = dat_end, 
-             aes(x = density, y = shoot_count, 
+             aes(x = seed_density, y = shoot_count, 
                  color = burial, shape = burial),
              alpha = 0.8, size = 2.5,
              position = position_jitter(width = 1.5, height = 0)) +
   geom_ribbon(data = m_count_pred_all,
-              aes(x = density, ymin = conf.low, ymax = conf.high, fill = burial),
+              aes(x = seed_density, ymin = conf.low, ymax = conf.high, fill = burial),
               alpha = 0.15, color = NA) +
   geom_line(data = m_count_pred_all,
-            aes(x = density, y = predicted, color = burial, linetype = burial), 
+            aes(x = seed_density, y = predicted, color = burial, linetype = burial), 
             linewidth = 1.2) +
   # geom_point(data = dat_end_summary, 
   #            aes(x = density, y = mean_count, 
@@ -790,7 +791,7 @@ plot_m_count <- ggplot() +
 ```{r m_prop-figure}
 #| fig-cap: "Relationship between initial seed density and shoot establishment at the final sampling point. Establishment is defined as the proportion of seeds that resulted in observable shoots, reflecting the combined effects of seed retention, germination, and early seedling survival. Points represent individual plots; lines show model predictions (±95% CI) by clam placement treatment, on the sediment surface (green circles, solid lie) or manually buried (purple triangles, dashed line)."
 # Mean shoot height increased throughout the experiment, and the relationship between 
-# planting density and shoot height varied across sampling dates 
+# planting seed_density and shoot height varied across sampling dates 
 # (density × sampling date interaction; Table X). 
 # Although the estimated effect of planting density was weakest early in the experiment
 # and strongest during the latter sampling periods, differences among sampling dates 
@@ -798,14 +799,14 @@ plot_m_count <- ggplot() +
 
 plot_m_prop <- ggplot() +
   geom_point(data = dat_end,
-             aes(x = density, y = est_prob, color = burial, fill = burial, shape = burial),
+             aes(x = seed_density, y = est_prob, color = burial, fill = burial, shape = burial),
              alpha = 0.8, size = 2.5,
              position = position_jitter(width = 1.5, height = 0)) +
   geom_ribbon(data = m_prop_pred_all,
-              aes(x = density, ymin = conf.low, ymax = conf.high, fill = burial),
+              aes(x = seed_density, ymin = conf.low, ymax = conf.high, fill = burial),
               alpha = 0.15, color = NA) +
   geom_line(data = m_prop_pred_all,
-            aes(x = density, y = predicted, color = burial, linetype = burial), 
+            aes(x = seed_density, y = predicted, color = burial, linetype = burial), 
             linewidth = 1.2) +
   scale_x_continuous(n.breaks = 10) +
   scale_y_continuous(n.breaks = 6) +
@@ -864,8 +865,8 @@ dat_density_group_means <- dat %>%
   group_by(date, burial, density_group) %>%
   summarise(shoot_count_mean = mean(shoot_count, na.rm = TRUE),
             shoot_count_se = sd(shoot_count, na.rm = TRUE) / sqrt(n()),
-            establishment_mean = mean(shoot_count / density, na.rm = TRUE),
-            establishment_se = sd(shoot_count / density, na.rm = TRUE) / sqrt(n()),
+            establishment_mean = mean(shoot_count / seed_density, na.rm = TRUE),
+            establishment_se = sd(shoot_count / seed_density, na.rm = TRUE) / sqrt(n()),
             .groups = "drop")
 
 ggplot(dat_density_group_means,
@@ -960,8 +961,9 @@ p_shell <- emmeans(m_shell_fate, ~ burial, type = "response") %>% as.data.frame(
 
 # Data Availability
 
-The data that support the findings of this study are available on request from
-the corresponding author, CL.
+The datasets and analysis code supporting the conclusions of this study are
+publicly available in the Dryad Digital Repository at
+<https://doi.org/10.5061/dryad.cnp5hqcmx>
 
 # Author Contributions
 
@@ -984,7 +986,9 @@ conflict of interest.
 
 # Acknowledgments
 
-Facilities were provided by the Duke University Marine Lab.
+Facilities and logistical support were provided by the Duke University Marine
+Lab and the Duke RESTORE Seagrass Team. We thank Megan LeDoux for assistance
+with tank maintenance and field monitoring.
 
 # References
 
