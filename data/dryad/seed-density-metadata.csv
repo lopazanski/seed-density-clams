@@ -1,0 +1,12 @@
+﻿date,date of sampling 
+plot_id,"numbered id for each plot, starting in top left corner of the sampling site and proceeding rowwise"
+seed_density,"seed density on clam for that plot in number of seeds, increments of 10"
+burial_treatment,binary variable for whether clam was buried manually (1) or placed on sediment surface (0)
+clam_code,"code used in the field to identify one of the following about the status of the clam: S = shell_frag (at date of sampling, whether there were shell fragments within the plot (1) or not (0)), L = live_clam (at date of sampling, whether there was a live clam located within the plot (1) or not (0); live clams were determined through visual confirmation of siphon holes or light tactile stimulation for clam presence beneath the sediment surface (no digging, just light touches to feel for clam edges in divots), D= empty shell (at date of sampling, whether there was an empty shell located in the plot (1) or not (0); empty clams were identified as clams with shells that were fully intact yet open such that there was no living organism inside), or N = nothing_observed (at date of sampling, whether there was nothing observed in the plot - e.g., no clam found, no shell fragments (1), or not (0); nothing observed means no siphone holes or detection of clams beneath the surface and no shell fragments on the surface)."
+shoot_count,total number of shoots in the plot (cm)
+length_cm_1,"one of up to five random shoot lengths, measured to nearest centimeter"
+length_cm_2,"one of up to five random shoot lengths, measured to nearest centimeter"
+length_cm_3,"one of up to five random shoot lengths, measured to nearest centimeter"
+length_cm_4,"one of up to five random shoot lengths, measured to nearest centimeter"
+length_cm_5,"one of up to five random shoot lengths, measured to nearest centimeter"
+notes,additional notes observed during sampling
