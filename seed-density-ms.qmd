@@ -101,41 +101,47 @@ marine organisms, shoreline stabilization, and carbon storage [@barbier2011;
 increasingly important tool for recovering lost seagrass habitat
 [@vankatwijk2016]. Seed-based seagrass restoration is especially attractive
 because it can be scaled to larger areas than traditional transplant-based
-approaches with less damage to donor meadows [@reynolds2012; @orth2000], but
-establishment rates are often low and highly variable [@bayraktarov2016;
+approaches while minimizing damage to donor meadows [@reynolds2012; @orth2000],
+but establishment rates are often low and highly variable [@bayraktarov2016;
 @orth2020].
 
 One of the challenges in seed-based restoration is determining how many seeds
 should be deployed [@orth2003; @gräfnings2023]. Increasing seed density may
 increase the total number of seedlings that establish simply because more seeds
-are available. However, establishment may not increase proportionally if seeds
-or seedlings begin competing with one another or if other factors limit success
-[@gräfnings2023]. From a restoration perspective, it is important to know
-whether adding more seeds increases the number of established shoots, improves
-the probability that individual seeds establish, or both. It is also unclear
-whether increasing seed density results in proportional increases in shoot
-establishment or whether density-dependent processes alter establishment
-success.
+are available. However, changing planting density may also alter interactions
+among individual seeds or seedlings. At higher densities, these interactions
+could reduce establishment through competition for space or light, or enhance it
+through intraspecific facilitation [@zhang2021; @gräfnings2023]. From a
+restoration perspective, it is important to know whether adding more seeds
+increases the number of established shoots, improves the probability that
+individual seeds establish, or both. It is also unclear whether increasing seed
+density results in proportional increases in shoot establishment or whether
+density-dependent processes alter establishment success.
 
 Recent restoration studies have increasingly suggested incorporating positive
-species interactions to enhance success [@valdez2020]. In seagrass, experimental
-studies have shown that bivalve addition can enhance several measures of
-performance, including patch expansion, increased shoot density and biomass, and
-greater resilience to disturbance [@zhang2021; @donaher2021]. Proposed
-mechanisms include nutrient inputs through excretion, sediment bioturbation,
-suspension feeding that improves water clarity, and modification of sediment
-biogeochemistry [@peterson2001; @wall2008].
+interactions among species to enhance success [@valdez2020; @zhang2021]. In
+seagrass systems, associated organisms can facilitate seagrass through diverse
+mechanisms, including reducing herbivory [@morton2026], enhancing nutrient
+availability [@peterson2001], and improving water clarity [@wall2008]. Bivalves
+in particular have received considerable attention because they can enhance
+seagrass biomass, growth, patch expansion, and resilience to disturbance through
+several of these pathways [@peterson2001; @wall2008; @donaher2021; @zhang2021].
+While incorporating facilitating species such as bivalves represents a promising
+restoration approach, questions remain about how these interactions can best be
+incorporated.
 
 Building on these positive interactions, attaching seagrass seeds to live clams
 may provide a novel means of harnessing their natural burrowing behavior for
 seed delivery. As clams burrow, they may carry attached seeds below the sediment
-surface where conditions are favorable for germination. However, it remains
-unclear whether clams burrow rapidly enough after deployment to protect both
-themselves and attached seeds from predation or physical disturbance. Manually
-burying seeded clams may reduce this initial vulnerability but also increases
-deployment effort and may limit scalability. Whether natural clam burrowing is
-sufficient for seed deployment will affect the scalability of clam-mediated
-seagrass restoration.
+surface where conditions are favorable for germination. This approach extends
+the use of positive species interactions in restoration by creating a functional
+link between species that harnesses natural behavior for a new restoration
+function [@silliman2026]. However, it remains unclear whether clams burrow
+rapidly enough after deployment to protect both themselves and attached seeds
+from predation or physical disturbance. Manually burying seeded clams may reduce
+this initial vulnerability but also increases deployment effort and may limit
+scalability. Whether natural clam burrowing is sufficient for seed deployment
+will affect the scalability of clam-mediated seagrass restoration.
 
 In this study, we attached eelgrass (*Zostera marina*) seeds to live hard clams
 (*Mercenaria mercenaria)*, and tested how seed density and clam placement
@@ -297,25 +303,25 @@ To evaluate whether clam placement treatment influenced early detection of
 deployed clams, we fit a binomial generalized linear model with clam placement
 treatment as the predictor and the presence or absence of a live clam during the
 first two post-deployment surveys as the response variable. A clam was
-classified as present if it was observed during either survey. \[Wordy, fix
-this\]: Although occurrence of shells or shell fragments on the sediment surface
-were also recorded, these observations were not used as the primary response
-because shell observations were occasionally followed by subsequent live clam
-observations within the same plot, making shell evidence an ambiguous indicator
-of deployed clam fate. Only the first two surveys were included because they
-occurred before the first seedlings were observed. We then fit exploratory
-models for final shoot density, per-seed establishment, and final shoot height
-that included seed planting density, clam placement treatment, their
-interaction, and the binary clam indicator as an additional fixed effect to
-evaluate whether early clam presence explained variation in restoration outcomes
-after accounting for the experimental treatments.
+classified as present if it was observed during either survey. Although
+occurrence of shells or shell fragments on the sediment surface were also
+recorded, these observations were not used as the primary response because shell
+observations were occasionally followed by subsequent live clam observations
+within the same plot, making shell evidence an ambiguous indicator of deployed
+clam fate. Only the first two surveys were included because they occurred before
+the first seedlings were observed. We then fit exploratory models for final
+shoot density, per-seed establishment, and final shoot height that included seed
+planting density, clam placement treatment, their interaction, and the binary
+clam indicator as an additional fixed effect to evaluate whether early clam
+presence explained variation in restoration outcomes after accounting for the
+experimental treatments.
 
 Significance of fixed effects was evaluated using Type II ANOVA ($\chi^2$
 tests), and model assumptions were assessed using simulated residual diagnostics
-(DHARMa; [@hartig2026]) to evaluate dispersion and zero inflation. Model
+(DHARMa; @hartig2026) to evaluate dispersion and zero inflation. Model
 predictions and estimated marginal means were used to visualize treatment
 effects and quantify effect sizes. All analyses were conducted in R version
-4.5.3 [@rcoreteam2025] & RStudio (version 2025.09.2+418; [@positteam2025]).
+4.5.3 [@rcoreteam2025] & RStudio (version 2025.09.2+418; @positteam2025).
 
 ```{r build-dataframes}
 #| include: false
@@ -754,6 +760,44 @@ scales.
 
 \newpage
 
+# Figure Captions
+
+**Figure 1.** Clam-mediated seed deployment and subsequent seagrass
+establishment. A) Juvenile hard clam (*Mercenaria mercenaria*) with eelgrass
+(*Zostera marina*) seeds attached using a gelatin adhesive prior to deployment.
+B) Experimental plot showing seagrass within the PVC monitoring quadrat used for
+repeated surveys in April 2026, five months post-deployment.
+
+**Figure 2.** Effects of seed planting density on (A) final shoot count and (B)
+establishment probability at the final sampling point. Establishment probability
+was calculated as the proportion of planted seeds that produced observable
+shoots, integrating seed retention, germination, and early seedling survival.
+Points represent individual plots. Lines show model predictions (±95% CI) by
+clam placement treatment: on the sediment surface (purple triangles, dashed
+line) or manually buried (green circles, solid line).
+
+**Figure 3.** Temporal patterns in shoot establishment across seed planting
+density groups and clam placement treatments. For visualization, seed planting
+densities were grouped into low (10-30 seeds), medium (40-70 seeds), and high
+(80-100 seeds) categories. Points represent the average shoot count per plot
+(±SE) at each sampling date, averaged across all plots within each seed density
+group and clam placement treatment. Green circles and solid lines indicate
+manually buried clams; purple triangles and dashed lines indicate clams placed
+on the sediment surface.
+
+**Figure 4.** Effects of seed planting density on mean shoot height (cm) over
+the course of the experiment. Lines show model-predicted mean shoot height (±95%
+CI) from a linear mixed effects model, averaged across clam placement
+treatments. Darker blue lines indicate higher seed densities. For clarity, only
+six seed densities are shown; ommitted densities follow the same trend.
+
+**Figure 5.** Effects of clam placement treatment on short-term clam fate.
+Model-predicted probabilities (±95% CI) of observing (A) a live clam and (B)
+shell evidence (shell fragments or empty shells) during the first two
+post-deployment surveys from binomial generalized linear models.
+
+\newpage
+
 # Figures
 
 ```{r m_count-figure}
@@ -969,9 +1013,10 @@ p_shell <- emmeans(m_shell_fate, ~ burial, type = "response") %>% as.data.frame(
 
 # Data Availability
 
-The datasets and analysis code supporting the conclusions of this study are
-publicly available in the Dryad Digital Repository at
-<https://doi.org/10.5061/dryad.cnp5hqcmx>
+The datasets supporting the conclusions of this study are publicly available in
+the Dryad Digital Repository at <https://doi.org/10.5061/dryad.cnp5hqcmx>. The
+code used to conduct the analyses and generate figures is publicly available at
+<https://github.com/lopazanski/seed-density-clams>.
 
 # Author Contributions
 
