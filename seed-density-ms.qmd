@@ -92,8 +92,6 @@ large-scale restoration efforts.\newpage
 
 # Introduction
 
-<!--# Mason: 1) Maybe add a few sentences in the beginning about more generalized coastal restoration and the issues with large scale restoration, before jumping into seagrass as the system? 2) And maybe some larger theory on competition and/or density dependence. 3) Perhaps add something in this paragraph about the amount of seeds available for restoration potentially being a bottleneck resource. So if more dense seed additions do have a negative or null effect, then seeds can be more properly allocated to make the most of the stock at hand.  -->
-
 Seagrass meadows provide important ecosystem services, including habitat for
 marine organisms, shoreline stabilization, and carbon storage [@barbier2011;
 @fourqurean2012], but they continue to decline in many regions worldwide
@@ -119,29 +117,30 @@ density results in proportional increases in shoot establishment or whether
 density-dependent processes alter establishment success.
 
 Recent restoration studies have increasingly suggested incorporating positive
-interactions among species to enhance success [@valdez2020; @zhang2021]. In
-seagrass systems, associated organisms can facilitate seagrass through diverse
-mechanisms, including reducing herbivory [@morton2026], enhancing nutrient
-availability [@peterson2001], and improving water clarity [@wall2008]. Bivalves
-in particular have received considerable attention because they can enhance
-seagrass biomass, growth, patch expansion, and resilience to disturbance through
-several of these pathways [@peterson2001; @wall2008; @donaher2021; @zhang2021].
-While incorporating facilitating species such as bivalves represents a promising
-restoration approach, questions remain about how these interactions can best be
-incorporated.
+interactions among species to enhance success [@silliman2015; @valdez2020;
+@zhang2021]. In seagrass systems, associated organisms can facilitate seagrass
+through diverse mechanisms, including reducing herbivory [@morton2026],
+enhancing nutrient availability [@peterson2001], and improving water clarity
+[@wall2008]. Bivalves in particular have received considerable attention because
+they can enhance seagrass biomass, growth, patch expansion, and resilience to
+disturbance through several of these pathways [@peterson2001; @wall2008;
+@donaher2021; @zhang2021]. While incorporating facilitating species such as
+bivalves represents a promising restoration approach, questions remain about how
+these interactions can best be incorporated.
 
 Building on these positive interactions, attaching seagrass seeds to live clams
 may provide a novel means of harnessing their natural burrowing behavior for
 seed delivery. As clams burrow, they may carry attached seeds below the sediment
 surface where conditions are favorable for germination. This approach extends
 the use of positive species interactions in restoration by creating a functional
-link between species that harnesses natural behavior for a new restoration
-function [@silliman2026]. However, it remains unclear whether clams burrow
-rapidly enough after deployment to protect both themselves and attached seeds
-from predation or physical disturbance. Manually burying seeded clams may reduce
-this initial vulnerability but also increases deployment effort and may limit
-scalability. Whether natural clam burrowing is sufficient for seed deployment
-will affect the scalability of clam-mediated seagrass restoration.
+link between species that leverages natural behavior for a new restoration
+function [@silliman2026], a subfield of ecosystem technology called ecomimicry
+[@silliman2026]. However, it remains unclear whether clams burrow rapidly enough
+after deployment to protect both themselves and attached seeds from predation or
+physical disturbance. Manually burying seeded clams may reduce this initial
+vulnerability but also increases deployment effort and may limit scalability.
+Whether natural clam burrowing is sufficient for seed deployment will affect the
+scalability of clam-mediated seagrass restoration.
 
 In this study, we attached eelgrass (*Zostera marina*) seeds to live hard clams
 (*Mercenaria mercenaria)*, and tested how seed density and clam placement
@@ -753,10 +752,11 @@ persistence, and establishment efficiency remained consistent across a broad
 range of planting densities. These findings support clam-mediated seed
 deployment as a practical addition to the growing suite of seed-based
 restoration approaches, and illustrate how harnessing natural organismal
-behaviors can inform the design of restoration techniques that work with, rather
-than against, ecological processes [@silliman2026]. Together, these findings
-provide a framework for optimizing seed allocation and deployment at broader
-scales.
+behaviors through ecosystem technology, or ecotech, can inform the design of
+restoration techniques that work with, rather than against, ecological processes
+[@silliman2026]. Together, these findings provide a framework for optimizing
+seed allocation and deployment at broader scales and for evaluating these
+strategies across environmental contexts.
 
 \newpage
 
