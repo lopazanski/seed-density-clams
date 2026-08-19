@@ -56,6 +56,10 @@ University, Beaufort, NC 28517
 
 \*Corresponding author (cori.lopazanski\@duke.edu)
 
+Word Count: 3011
+
+Figure Count: 5
+
 \newpage
 
 # Abstract
@@ -152,7 +156,7 @@ quantified total shoot establishment, per-seed establishment, and shoot height
 through time to evaluate how restoration efficiency changes across a range of
 seeding densities.
 
-# Methods
+# Materials and methods
 
 ## *Seed retrieval and storage*
 
@@ -172,16 +176,16 @@ establishment and growth, we conducted a field experiment near Harker’s Island
 North Carolina. Juvenile live clams (*Mercenaria mercenaria;* \~2 cm shell
 length) were sourced from aquaculture facilities at Carteret Community College
 and stored in flow-through seawater tanks prior to deployment. Seagrass seeds
-were attached to live clams using a gelatin-based bioglue at one of ten density
+were attached to live clams using a gelatin-based adhesive at one of ten density
 levels, spanning 10-100 seeds per clam in increments of 10 seeds. Seed planting
 density was crossed with two clam placement treatments (manually buried or
 placed on sediment surface) in a fully factorial design with four replicates per
 treatment combination (80 plots total).
 
-The bioglue was prepared by dissolving dry gelatin powder in saltwater (35 ppt)
+The adhesive was prepared by dissolving dry gelatin powder in saltwater (35 ppt)
 to a final concentration of 9% (w/v). The solution was heated to 35°C until
 fully dissolved and then cooled to 25°C before application, as exposure to high
-temperatures can reduce viability [@pan2011]. A thin layer of bioglue was
+temperatures can reduce viability [@pan2011]. A thin layer of adhesive was
 pipetted onto one shell from each clam and allowed to partially set before seeds
 were arranged in a single layer and covered with a second thin coat of glue.
 Clams with seeds were refrigerated at 9°C for 30 minutes to allow the glue to
@@ -698,7 +702,10 @@ for approximately 8-12 hours, potentially allowing sufficient time for natural
 burrowing before seed release. The duration of seed attachment is therefore
 likely to be an important consideration in the design of this restoration
 approach, with the objective of timing seed release with initial sediment
-incorporation rather than maintaining long-term attachment.
+incorporation rather than maintaining long-term attachment. The effects of the
+attachment process itself on seed viability and germination also remain
+uncertain and should be considered alongside adhesive performance when further
+optimizing this deployment approach.
 
 The limited relationship between clam persistence and restoration outcomes
 should not be interpreted as evidence that bivalves do not facilitate seagrass
@@ -880,10 +887,11 @@ plot_m_prop <- ggplot() +
 ```{r fig-method}
 #| echo: false
 #| out-width: "6in"
+#| fig-dpi: 300
 #| fig-pos: "H"
 #| fig.cap: "Clam-mediated seed deployment and subsequent seagrass establishment. A) Juvenile hard clam (*Mercenaria mercenaria*) with eelgrass (*Zostera marina*) seeds attached using a gelatin adhesive prior to deployment. B) Experimental plot showing seagrass within the PVC monitoring quadrat used for repeated surveys in April 2026, five months post-deployment."
 
-knitr::include_graphics("photos/figure1-methods.png")
+knitr::include_graphics("photos/figure1-methods.jpg")
 
 ```
 
@@ -1027,9 +1035,9 @@ revision and approved the final manuscript.
 
 # Funding
 
-This research was funded by Oceankind and the Oak Foundation. CL, CLC, MI, and
-BRS were supported by this funding. BRS is grateful for support from the JR and
-Jennifer Mathews Foundation. 
+This research was funded by Oceankind, the Oak Foundation and the Brown
+Foundation. CL, CLC, MI, and BRS were supported by this funding. BRS is grateful
+for support from the JR and Jennifer Mathews Foundation. 
 
 # Conflict of Interest
 

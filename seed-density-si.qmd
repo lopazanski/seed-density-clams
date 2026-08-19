@@ -5,7 +5,7 @@ format:
   docx: 
     fig-cap-location: bottom
     keep-tex: true
-    reference-doc: docs/Frontiers_Template.docx
+    reference-doc: docs/Supplementary_Material.docx
 bibliography: docs/references.bib
 csl: docs/frontiers-in-marine-science.csl
 editor_options:
@@ -293,7 +293,7 @@ ft
 ```{r fig-s1}
 #| fig-width: 3
 #| fig-height: 6
-#| fig-dpi: 300
+#| fig-dpi: 150
 #| fig-pos: "H"
 #| out-width: "3.5in"
 #| fig-cap: "Clam observations for each plot during the first two post-deployment monitoring surveys. Rows are grouped by seed density levels (10-100 seeds per plot). Colors indicate whether the clam was confirmed live (green), shell fragments or empty shells were observed (yellow), or nothing was observed (grey)."
