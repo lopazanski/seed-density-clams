@@ -166,8 +166,6 @@ dat_clam <- dat %>%
 ```
 
 
-
-
 ```{r m_predation}
 #| include: false
 
@@ -218,9 +216,6 @@ n_shell_surface <- sum(dat_clam$ever_shell[dat_clam$burial == "Surface"])
 n_shell_buried <- sum(dat_clam$ever_shell[dat_clam$burial == "Buried"])
 
 ```
-
-
-
 
 # Supplementary Information
 
@@ -317,3 +312,66 @@ ggplot(data = pred %>%
 
 
 ```
+
+
+
+```{r m_prop_time}
+#| include: false
+
+# Temporal per-seed establishment model
+m_prop_time <- glmmTMB(cbind(shoot_count, seed_density - shoot_count) ~ seed_density * time_days * burial + (1 | plot_id),
+                       family = betabinomial(link = "logit"), data = dat_time)
+
+summary(m_prop_time)
+
+# Check diagnostics
+res_prop_time <- simulateResiduals(m_prop_time)
+plot(res_prop_time)
+testUniformity(res_prop_time)
+testDispersion(res_prop_time)
+testOutliers(res_prop_time)
+
+
+# Test fixed effects
+m_prop_time_tests <- car::Anova(m_prop_time, type = 2) %>% clean_fixed_effects()
+
+m_prop_time_tests
+
+ggplot(data = dat_time, aes(x = time_days, y = shoot_count/seed_density,
+       color = burial, group = burial)) +
+  geom_point() +
+  geom_line()
+
+```
+
+```{r fig-s2}
+dat_prop_time <- dat %>%
+  mutate(any_shoot = as.integer(shoot_count > 0))
+  mutate(per_seed_establishment = shoot_count / seed_density,
+         seed_density = factor(seed_density, levels = sort(unique(seed_density))))
+
+prop_summary <- dat_prop_time %>%
+  group_by(time_days, date, seed_density) %>%
+  summarise(mean_per_seed = mean(per_seed_establishment, na.rm = TRUE),
+            se_per_seed = sd(per_seed_establishment, na.rm = TRUE) / sqrt(sum(!is.na(per_seed_establishment))), 
+            .groups = "drop")
+
+ggplot(prop_summary,
+       aes(x = date, y = mean_per_seed, colour = seed_density, group = seed_density)) +
+  geom_ribbon(aes(ymin = pmax(0, mean_per_seed - se_per_seed),
+                  ymax = mean_per_seed + se_per_seed,
+                  fill = seed_density),
+              alpha = 0.15, colour = NA) +
+  geom_line(linewidth = 0.7) +
+  geom_point(size = 2) +
+  scale_colour_viridis_d(option = "G", begin = 0.15, end = 0.8, direction = -1, name = "Seed density") +
+  scale_fill_viridis_d(option = "G", begin = 0.15, end = 0.8, direction = -1, guide = "none") +
+  labs(x = NULL,
+       y = "Cumulative per-seed establishment probability") +
+  theme_classic() +
+  theme(legend.position = "right",
+        axis.text.x = element_text(
+          angle = 45,
+          hjust = 1)) 
+```
+
