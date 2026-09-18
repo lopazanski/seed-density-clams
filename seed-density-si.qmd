@@ -318,6 +318,9 @@ ggplot(data = pred %>%
 ```{r m_prop_time}
 #| include: false
 
+dat_time <- dat %>%
+  mutate(any_shoot = as.integer(shoot_count > 0))
+
 # Temporal per-seed establishment model
 m_prop_time <- glmmTMB(cbind(shoot_count, seed_density - shoot_count) ~ seed_density * time_days * burial + (1 | plot_id),
                        family = betabinomial(link = "logit"), data = dat_time)
@@ -337,16 +340,24 @@ m_prop_time_tests <- car::Anova(m_prop_time, type = 2) %>% clean_fixed_effects()
 
 m_prop_time_tests
 
-ggplot(data = dat_time, aes(x = time_days, y = shoot_count/seed_density,
-       color = burial, group = burial)) +
-  geom_point() +
-  geom_line()
+# ggplot(data = dat_time, aes(x = time_days, y = shoot_count/seed_density,
+#        color = burial, group = burial)) +
+#   geom_point() +
+#   geom_line()
 
 ```
 
 ```{r fig-s2}
+#| fig-width: 4
+#| fig-height: 3
+#| fig-dpi: 150
+#| fig-pos: "H"
+#| out-width: "3.5in"
+#| fig-cap: "Temporal patterns in observed shoots per initially deployed seed across planting densities. Lines and points show mean observed live-shoot abundance relative to the number of seeds initially deployed per plot (±SE) at each sampling date. Colors indicate the ten seed planting densities."
+
+
 dat_prop_time <- dat %>%
-  mutate(any_shoot = as.integer(shoot_count > 0))
+  mutate(any_shoot = as.integer(shoot_count > 0)) %>% 
   mutate(per_seed_establishment = shoot_count / seed_density,
          seed_density = factor(seed_density, levels = sort(unique(seed_density))))
 
